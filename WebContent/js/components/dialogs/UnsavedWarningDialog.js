@@ -1,0 +1,44 @@
+/**
+ * This program and the accompanying materials are made available under the terms of the
+ * Eclipse Public License v2.0 which accompanies this distribution, and is available at
+ * https://www.eclipse.org/legal/epl-v20.html
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *
+ * Copyright IBM Corporation 2016, 2018
+ */
+
+import React from 'react';
+
+import PropTypes from 'prop-types';
+import ModalAlertDialog from './ModalAlertDialog';
+
+export default class UnsavedWarningDialog extends React.Component {
+    handleClose = () => {
+        this.setState({ open: false });
+    };
+
+    render() {
+        const { editorLabel, yesAction, noAction } = this.props;
+        const dialogContent = <div>{`${editorLabel} has modifed content. Do you wish to save changes?`}</div>;
+
+        const actions = [
+            { label: 'Yes',
+                onClick: () => { yesAction(); } },
+            { label: 'No',
+                onClick: () => { noAction(); },
+            },
+        ];
+
+        return (<ModalAlertDialog
+            actions={actions}
+            dialogContent={dialogContent}
+        />);
+    }
+}
+
+UnsavedWarningDialog.propTypes = {
+    yesAction: PropTypes.func.isRequired,
+    noAction: PropTypes.func.isRequired,
+    editorLabel: PropTypes.string.isRequired,
+};
