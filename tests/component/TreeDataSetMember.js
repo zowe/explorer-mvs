@@ -25,7 +25,7 @@ function setUpPathAndMember(path, member) {
 
 function testGetDataSetMemberName(path, member, expected) {
     const treeDataSetMember = setUpPathAndMember(path, member);
-    it(`getDataSetMemberName should be ${expected}`, () => {
+    it(`getDataSetAndMemberName should be ${expected}`, () => {
         expect(treeDataSetMember.instance().getDataSetAndMemberName()).toEqual(expected);
     });
 }
