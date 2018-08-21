@@ -1,7 +1,7 @@
 # explorer-mvs
 
 Requires access to npm registry with orion-editor-component
-https://gizaartifactory.jfrog.io/gizaartifactory/webapp/#/artifacts/browse/tree/General/npm-local-release
+https://gizaartifactory.jfrog.io/gizaartifactory/webapp/#/artifacts/browse/tree/General/npm-release
 
 **Pre reqs**
 ```
@@ -9,7 +9,7 @@ npm install
 ```
 Update npm.rc or run 
 ```
-npm config set registry https://gizaartifactory.jfrog.io/gizaartifactory/api/npm/npm-local-release/
+npm config set registry https://gizaartifactory.jfrog.io/gizaartifactory/api/npm/npm-release/
 npm login
 ```
 
