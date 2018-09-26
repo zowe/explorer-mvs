@@ -80,11 +80,11 @@ export default class TreeDatasetMember extends React.Component {
             case DELETE_MEMBER: {
                 return (
                     <DeleteDatasetMemberDialog
-                        DSName={this.getDataSetMemberName()}
+                        DSName={this.getDataSetAndMemberName()}
                         dispatch={dispatch}
                         DSPath={parent}
                         dialogReturn={this.dialogReturn}
-                        isOpenInViewer={TreeDataset.isOpenInViewer(this.getDataSetMemberName(), viewerDSName, viewerDSMember)}
+                        isOpenInViewer={TreeDataset.isOpenInViewer(this.getDataSetAndMemberName(), viewerDSName, viewerDSMember)}
                     />);
             }
             default:
