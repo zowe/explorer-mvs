@@ -61,6 +61,9 @@ class Editor extends React.Component {
                 this.setState({ syntax: JCL_TEXT });
             }
         }
+        if (location !== nextProps.location) {
+            window.location.reload();
+        }
     }
 
     getContent = content => {
