@@ -49,11 +49,11 @@ class Editor extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        const { checksum, location, content, file } = this.props;
+        const { checksum, location, content, file, isFetching } = this.props;
         if (checksum !== nextProps.checksum) {
             this.setState({ currentChecksum: nextProps.checksum });
         }
-        if (location && (nextProps.content !== content)) {
+        if (location && nextProps.content !== null && nextProps.content !== content && !isFetching) {
             this.setState({ currentContent: nextProps.content });
         }
         if (file !== nextProps.file) {
@@ -139,6 +139,7 @@ Editor.propTypes = {
     content: PropTypes.string,
     checksum: PropTypes.string,
     file: PropTypes.string,
+    isFetching: PropTypes.bool,
     dispatch: PropTypes.func,
     location: PropTypes.shape({
         query: PropTypes.shape({
@@ -149,12 +150,11 @@ Editor.propTypes = {
 
 function mapStateToProps(state) {
     const editorRoot = state.get('editor');
-    const validationRoot = state.get('validation');
     return {
         content: editorRoot.get('content'),
         checksum: editorRoot.get('checksum'),
         file: editorRoot.get('file'),
-        isValidating: validationRoot.get('isFetching'),
+        isFetching: editorRoot.get('isFetching'),
     };
 }
 
