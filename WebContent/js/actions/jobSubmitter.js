@@ -61,7 +61,7 @@ export function submitJob(job) {
                 throw Error(response.statusText);
             })
             .then(response => {
-                dispatch(constructAndPushMessage(`${response.jobName} ${JOB_SUBMIT_SUCCESS_MESSAGE}, id=${response.jobId}`));
+                dispatch(constructAndPushMessage(`${response.jobName} ${JOB_SUBMIT_SUCCESS_MESSAGE}, test id=${response.jobId}`));
                 dispatch(receiveRC(response));
             })
             .catch(() => {
