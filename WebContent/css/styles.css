@@ -32,6 +32,17 @@ body {
     padding-top: 0px !important;
 }
 
+.component-header {
+    display: inline-flex;
+    width: 100%;
+}
+
+/* Override inline width style */
+.component-text-field-fill{
+    padding-left: 8px;
+    width: 100% !important;
+}
+
 .tree-card {
     padding-bottom: 0;
 }
@@ -40,6 +51,17 @@ body {
 .content-link {
     cursor: pointer;
     color: #2E77A1;
+}
+
+.node-label {
+    font-size: 14px;
+}
+
+/* Override inline height/width icon style */
+.node-icon {
+    padding: 0;
+    height: 20px !important;
+    width: 20px !important;
 }
 
 .node-toggle {

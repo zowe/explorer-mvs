@@ -42,11 +42,16 @@ export default class FulleHeightTree extends React.Component {
 
     render() {
         const { overrideHeight, children } = this.props;
+        const treeStyle = {
+            overflow: 'auto',
+            whiteSpace: 'nowrap',
+            height: overrideHeight || this.state.height,
+        };
         return (
             <div
                 className="node"
                 ref={this.onDivRef}
-                style={{ overflow: 'auto', height: overrideHeight || this.state.height }}
+                style={treeStyle}
             >
                 {children}
             </div>

@@ -10,7 +10,7 @@
 
 import PropTypes from 'prop-types';
 import React from 'react';
-import DescriptionIcon from 'material-ui/svg-icons/action/description';
+import ContentIcon from 'material-ui/svg-icons/action/description';
 import ErrorIcon from 'material-ui/svg-icons/alert/error';
 import { ContextMenuTrigger } from 'react-contextmenu';
 import { fetchDS } from '../../actions/editor';
@@ -100,7 +100,7 @@ export default class TreeDatasetMember extends React.Component {
                     <ContextMenuTrigger id={member}>
                         <div onClick={() => { this.handleEdit(); }}>
                             <li>
-                                <DescriptionIcon />
+                                <ContentIcon className="node-icon" />
                                 <span className="node-label content-link">{member}</span>
                             </li>
                         </div>
