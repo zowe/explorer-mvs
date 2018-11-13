@@ -12,7 +12,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 import { Map } from 'immutable';
-import { Card, CardHeader, CardText } from 'material-ui/Card';
+import { Card, CardText } from 'material-ui/Card';
 import ConnectedTreeDataset from '../components/explorer/TreeDataset';
 import RefreshIcon from '../components/explorer/RefreshIcon';
 import { setDSPath, fetchDatasetTreeChildren, resetDSChildren } from '../actions/treeDS';
@@ -85,25 +85,24 @@ export class DSTree extends React.Component {
     }
 
     render() {
-        const { isToggled, isFetching, DSChildren, DSPath, title, subtitle, dispatch } = this.props;
-        const textFieldStyle = { paddingLeft: 8 };
+        const { isToggled, isFetching, DSChildren, DSPath, dispatch } = this.props;
         return (this.props.validated ?
             <Card class="tree-card" containerStyle={{ paddingBottom: 0 }}>
-                <CardHeader title={title} subtitle={subtitle} />
                 <CardText>
-                    Qualifier:
-                    <UpperCaseTextField
-                        style={textFieldStyle}
-                        id="path"
-                        value={DSPath}
-                        fullWidth={false}
-                        fieldChangedCallback={this.handlePathChange}
-                    />
-                    <RefreshIcon
-                        isFetching={isFetching}
-                        submitAction={this.refreshDSTree}
-                        dispatch={dispatch}
-                    />
+                    <div className="component-header">
+                        <UpperCaseTextField
+                            className="component-text-field-fill"
+                            id="path"
+                            value={DSPath}
+                            fullWidth={false}
+                            fieldChangedCallback={this.handlePathChange}
+                        />
+                        <RefreshIcon
+                            isFetching={isFetching}
+                            submitAction={this.refreshDSTree}
+                            dispatch={dispatch}
+                        />
+                    </div>
                     <FullHeightTree offset={16}>
                         <ul>
                             {isToggled ? DSChildren.keySeq().toArray().map(this.renderDSChild) : null}
@@ -117,8 +116,6 @@ export class DSTree extends React.Component {
 }
 
 DSTree.propTypes = {
-    title: PropTypes.string.isRequired,
-    subtitle: PropTypes.string.isRequired,
     dispatch: PropTypes.func.isRequired,
     isToggled: PropTypes.bool.isRequired,
     isFetching: PropTypes.bool.isRequired,

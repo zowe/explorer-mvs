@@ -11,11 +11,10 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
-import IconButton from 'material-ui/IconButton';
-import DownArrowIcon from 'material-ui/svg-icons/hardware/keyboard-arrow-down';
-import RightArrowIcon from 'material-ui/svg-icons/hardware/keyboard-arrow-right';
-import DescriptionIcon from 'material-ui/svg-icons/action/description';
-import DnsIcon from 'material-ui/svg-icons/action/dns';
+import OpenFolderIcon from 'material-ui/svg-icons/file/folder-open';
+import ClosedFolderIcon from 'material-ui/svg-icons/file/folder';
+import ContentIcon from 'material-ui/svg-icons/action/description';
+import UnsupportedIcon from 'material-ui/svg-icons/action/dns';
 import { ContextMenuTrigger } from 'react-contextmenu';
 import { Map } from 'immutable';
 import { fetchDSMembers, toggleDSNode } from '../../actions/treeDatasets';
@@ -53,11 +52,8 @@ export class TreeDataset extends React.Component {
     }
 
     getToggleIcon() {
-        const style = { padding: 0, height: 24, width: 24 };
         return (
-            <IconButton onClick={this.handleToggle} style={style}>
-                {this.isDSToggled() ? <DownArrowIcon /> : <RightArrowIcon />}
-            </IconButton>
+            this.isDSToggled() ? <OpenFolderIcon className="node-icon" /> : <ClosedFolderIcon className="node-icon" />
         );
     }
 
@@ -148,7 +144,7 @@ export class TreeDataset extends React.Component {
                 <ContextMenuTrigger id={childId}>
                     <div onClick={this.handleToggle()}>
                         {this.getToggleIcon()}
-                        <span className="node-label">{childId}</span>
+                        <span className="node-label node-toggle">{childId}</span>
                     </div>
                 </ContextMenuTrigger>
                 <DatasetPartitionedMenu
@@ -168,7 +164,7 @@ export class TreeDataset extends React.Component {
         return (
             <div>
                 <ContextMenuTrigger id={childId}>
-                    <DescriptionIcon />
+                    <ContentIcon className="node-icon" />
                     <span className="node-label content-link" onClick={this.handleToggle()}>{childId}</span>
                 </ContextMenuTrigger>
                 <DatasetSequentialMenu
@@ -188,7 +184,7 @@ export class TreeDataset extends React.Component {
         return (
             <div>
                 <ContextMenuTrigger id={childId}>
-                    <DnsIcon />
+                    <UnsupportedIcon className="node-icon" />
                     <span className="node-label">{childId}</span>
                 </ContextMenuTrigger>
                 <DatasetUnsupportedMenu
