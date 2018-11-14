@@ -35,17 +35,11 @@ class Editor extends React.Component {
             dialog: NO_DIALOG,
         };
         this.getContent = this.getContent.bind(this);
+        this.editorReady = this.editorReady.bind(this);
         this.handleChangeSyntax = this.handleChangeSyntax.bind(this);
         this.handleSave = this.handleSave.bind(this);
         this.handleSaveAs = this.handleSaveAs.bind(this);
         this.dialogReturn = this.dialogReturn.bind(this);
-    }
-
-    componentWillMount() {
-        const { dispatch, location } = this.props;
-        if (location) {
-            dispatch(fetchDS(location.query.dataset));
-        }
     }
 
     componentWillReceiveProps(nextProps) {
@@ -87,6 +81,13 @@ class Editor extends React.Component {
         this.setState({ dialog: NO_DIALOG });
     }
 
+    editorReady = () => {
+        const { location, dispatch } = this.props;
+        if (location) {
+            dispatch(fetchDS(location.query.dataset));
+        }
+    }
+
     renderDialog() {
         const { dispatch, file, checksum } = this.props;
         switch (this.state.dialog) {
@@ -126,6 +127,7 @@ class Editor extends React.Component {
                             languageFilesHost={location.host}
                             fullscreen={!!location}
                             editorTopOffset={56}
+                            editorReady={this.editorReady}
                         />
                     </CardText>
                 </Card>
