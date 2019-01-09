@@ -1,8 +1,0 @@
-{
-    "files": [
-        {
-            "pattern": "./WebContent/explorer-mvs-*.war",
-            "target": "zlux-applications/explorer-mvs/${version}/"
-        }
-    ]
-}

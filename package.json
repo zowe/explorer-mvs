@@ -1,7 +1,6 @@
 {
   "name": "explorer-mvs",
-  "version": "0.0.1",
-  "main": "index.js",
+  "version": "0.0.2",
   "directories": {
     "test": "tests"
   },
@@ -24,6 +23,9 @@
     "redux-thunk": "^2.1.0",
     "url-loader": "^0.5.7",
     "whatwg-fetch": "^2.0.3"
+  },
+  "peerDependencies": {
+    "explorer-ui-server": "0.0.7"
   },
   "devDependencies": {
     "babel-eslint": "^7.2.3",
@@ -59,33 +61,47 @@
     "sinon": "^4.1.2",
     "style-loader": "^0.18.2",
     "webpack": "^2.6.1",
-    "webpack-dev-server": "^2.4.5",
-    "webpack-war-plugin": "^1.0.0-beta.3"
+    "webpack-dev-server": "^2.4.5"
   },
   "scripts": {
     "dev": "webpack-dev-server --content-base WebContent --inline --hot",
     "lint": "eslint ./WebContent/js/ ./tests/",
-    "test": "JUNIT_REPORT_PATH=target/report.xml mocha --compilers js:babel-register tests --recursive --reporter mocha-jenkins-reporter",
     "testWatch": "mocha --watch --compilers js:babel-register tests --recursive",
-    "coverage": "JUNIT_REPORT_PATH=target/report.xml nyc --report cobertura --require babel-core/register --all mocha --compilers js:babel-register tests --recursive --colors --reporter mocha-jenkins-reporter",
-    "coverageReport": "nyc report --reporter=cobertura",
-    "coverageReportHTML": "nyc report --reporter=lcov ",
-    "prod": "cross-env NODE_ENV='production' webpack -p",
+    "test": "JUNIT_REPORT_PATH=target/report.xml nyc mocha --compilers js:babel-register tests --recursive --colors --reporter mocha-jenkins-reporter",
+    "prod": "cross-env NODE_ENV='production' webpack -p && cp -r ./WebContent/css ./dist/ && cp -r ./WebContent/img ./dist/ && cp ./WebContent/index.html ./dist/",
     "preCommit": "npm-run-all --aggregate-output --parallel --print-label lint test prod"
   },
   "nyc": {
+    "reporter": [
+      "lcov",
+      "cobertura",
+      "text"
+    ],
+    "report-dir": "./coverage",
+    "require": [
+      "babel-core/register"
+    ],
+    "all": true,
     "include": [
       "WebContent/js"
     ],
     "exclude": [
       "tests",
       "WebContent/js/themes",
-      "WebContent/js/resources/languages",
-      "WebContent/js/actions/proclib.js",
-      "WebContent/js/actions/messages.js"
+      "WebContent/js/resources/languages"
     ]
   },
-  "description": "Installation Requirements: - Node.js",
+  "repository": "zowe/explorer-mvs",
+  "publishConfig": {
+    "registry": "https://gizaartifactory.jfrog.io/gizaartifactory/api/npm/npm-local-release/"
+  },
+  "description": "MVS Explorer",
   "author": "IBM",
-  "license": "EPL-2.0"
+  "license": "EPL-2.0",
+  "config": {
+    "pluginId": "org.zowe.explorer-mvs",
+    "pluginName": "MVS Explorer",
+    "baseuri": "/ui/v1/explorer-mvs",
+    "port": 8548
+  }
 }
