@@ -21,5 +21,5 @@ export const fetchDSMembersLargeData = ['DEMOJOB', 'TSTJCICS', 'TSTJDB2', 'TSTJI
     'TSTJ0002', 'DEMOJOB', 'TSTJCICS', 'TSTJDB2', 'TSTJIMS', 'TSTJMQ', 'TSTJ0001', 'TSTJ0002', 'DEMOJOB', 'TSTJCICS', 'TSTJDB2', 'TSTJIMS', 'TSTJMQ', 'TSTJ0001', 'TSTJ0002',
     'DEMOJOB', 'TSTJCICS', 'TSTJDB2', 'TSTJIMS', 'TSTJMQ', 'TSTJ0001', 'TSTJ0002'];
 
-export const DSProperties = Map({ dsname: 'ATLAS.TEST', blksize: 0, primary: 300, lrecl: 80, secondary: 100, dirblk: 20, dsorg: 'PO', recfm: 'FB', alcunit: 'TRK' });
+export const DSProperties = Map({ dsname: 'ATLAS.TEST', blockSize: 0, primary: 300, recordLength: 80, secondary: 100, dirblk: 20, dataSetOrganization: 'PO', recordFormat: 'FB', allocationUnit: 'TRK' });
 

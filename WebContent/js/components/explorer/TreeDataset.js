@@ -22,7 +22,6 @@ import { fetchDS } from '../../actions/editor';
 import { submitJob } from '../../actions/jobSubmitter';
 import CreateMemberDialog from '../dialogs/datasets/CreateMemberDialog';
 import CreateDatasetDialog from '../dialogs/datasets/CreateDatasetDialog';
-import AllocateLikeDialog from '../dialogs/datasets/AllocateLikeDialog';
 import DeleteDatasetDialog from '../dialogs/datasets/DeleteDatasetDialog';
 import DatasetPartitionedMenu from '../contextMenus/DatasetPartitionedMenu';
 import DatasetSequentialMenu from '../contextMenus/DatasetSequentialMenu';
@@ -67,9 +66,9 @@ export class TreeDataset extends React.Component {
 
     handleToggle() {
         return (() => {
-            const { childId, dispatch, dsorg } = this.props;
+            const { childId, dispatch, dataSetOrganization } = this.props;
             if (!this.isDSToggled()) {
-                if (dsorg === DATASET_ORG_SEQUENTIAL) {
+                if (dataSetOrganization === DATASET_ORG_SEQUENTIAL) {
                     this.handleEdit();
                 } else {
                     dispatch(fetchDSMembers(childId));
@@ -110,8 +109,8 @@ export class TreeDataset extends React.Component {
     }
 
     handleEdit = () => {
-        const { childId, dispatch, dsorg } = this.props;
-        if (dsorg === DATASET_ORG_SEQUENTIAL) {
+        const { childId, dispatch, dataSetOrganization } = this.props;
+        if (dataSetOrganization === DATASET_ORG_SEQUENTIAL) {
             dispatch(fetchDS(childId));
         }
     }
@@ -126,19 +125,19 @@ export class TreeDataset extends React.Component {
     }
 
     renderDS() {
-        const { dsorg } = this.props;
-        if (dsorg.startsWith(DATASET_ORG_PARTITIONED)) {
+        const { dataSetOrganization } = this.props;
+        if (dataSetOrganization.startsWith(DATASET_ORG_PARTITIONED)) {
             return this.renderPartitionedDS();
-        } else if (dsorg.startsWith(DATASET_ORG_SEQUENTIAL)) {
+        } else if (dataSetOrganization.startsWith(DATASET_ORG_SEQUENTIAL)) {
             return this.renderSequentialDS();
-        } else if (dsorg.startsWith(DATASET_ORG_VSAM)) {
+        } else if (dataSetOrganization.startsWith(DATASET_ORG_VSAM)) {
             return this.renderUnsupportedDS();
         }
         return this.renderUnsupportedDS();
     }
 
     renderPartitionedDS() {
-        const { childId, dsorg } = this.props;
+        const { childId, dataSetOrganization } = this.props;
         return (
             <div>
                 <ContextMenuTrigger id={childId}>
@@ -148,7 +147,7 @@ export class TreeDataset extends React.Component {
                     </div>
                 </ContextMenuTrigger>
                 <DatasetPartitionedMenu
-                    dsorg={dsorg}
+                    dataSetOrganization={dataSetOrganization}
                     childId={childId}
                     handleAllocateLike={() => { this.handleAllocateLike(); }}
                     handleCreateDataset={() => { this.handleCreateDataset(); }}
@@ -216,8 +215,6 @@ export class TreeDataset extends React.Component {
                 return <CreateMemberDialog DSName={childId} dispatch={dispatch} dialogReturn={this.dialogReturn} />;
             case CREATE_DATASET:
                 return <CreateDatasetDialog DSPath={DSPath} dispatch={dispatch} dialogReturn={this.dialogReturn} />;
-            case ALLOCATE_LIKE:
-                return <AllocateLikeDialog DSName={childId} dispatch={dispatch} DSPath={DSPath} dialogReturn={this.dialogReturn} />;
             case DELETE_DATASET:
                 return (
                     <DeleteDatasetDialog
@@ -254,7 +251,7 @@ export class TreeDataset extends React.Component {
 TreeDataset.propTypes = {
     childId: PropTypes.string.isRequired,
     dispatch: PropTypes.func.isRequired,
-    dsorg: PropTypes.string.isRequired,
+    dataSetOrganization: PropTypes.string.isRequired,
     DSPath: PropTypes.string,
     datasets: PropTypes.instanceOf(Map),
     viewerDSName: PropTypes.string,

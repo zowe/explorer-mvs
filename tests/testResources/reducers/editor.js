@@ -90,10 +90,10 @@ export const recievedDatasetAttributes = Map({
     DSPath: dataset,
     isFetching: false,
     attributes: Map({
-        blksize: '3213',
-        dsorg: 'PO',
-        lrecl: '80',
+        blockSize: '3213',
+        dataSetOrganization: 'PO',
+        recordLength: '80',
         name: 'JCAIN.SPF.ISPROF',
-        recfm: 'FB',
+        recordFormat: 'FB',
     }),
 });

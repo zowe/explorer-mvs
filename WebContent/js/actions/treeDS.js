@@ -8,7 +8,7 @@
  * Copyright IBM Corporation 2016, 2018
  */
 
-import { atlasFetch } from '../utilities/urlUtils';
+import { atlasGet } from '../utilities/urlUtils';
 import { constructAndPushMessage } from './snackbarNotifications';
 
 export const REQUEST_DS_TREE_CHILDREN = 'REQUEST_DS_TREE_CHILDREN';
@@ -73,8 +73,8 @@ export function removeDataset(DSName) {
 export function fetchDatasetTreeChildren(path) {
     return dispatch => {
         dispatch(requestDSChildren(path));
-        const endpoint = `datasets/${path}/attributes`;
-        return atlasFetch(endpoint, { credentials: 'include' })
+        const endpoint = `datasets/${path}`;
+        return atlasGet(endpoint)
             .then(response => {
                 if (response.ok) {
                     return response.json();

@@ -17,6 +17,7 @@ WebContent/app.min.js
 bin
 .scannerwork
 .DS_Store
+dist/
 
 # pax workspace
 pax-workspace/*

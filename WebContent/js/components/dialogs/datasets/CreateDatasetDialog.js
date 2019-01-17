@@ -41,9 +41,9 @@ const SEQUENTIAL = {
 const DATA_SET_TYPES = [PARTITIONED, SEQUENTIAL];
 
 export default class CreateDatasetDialog extends React.Component {
-    static getTypeFromDsorg = dsorg => {
+    static getTypeFromDsorg = dataSetOrganization => {
         const selectedType = DATA_SET_TYPES.find(type => {
-            return type.Dsorg === dsorg;
+            return type.Dsorg === dataSetOrganization;
         });
         return selectedType.Name;
     }
@@ -63,8 +63,8 @@ export default class CreateDatasetDialog extends React.Component {
         this.state = {
             preset: PRESET_JCL,
             dsname: '',
-            type: CreateDatasetDialog.getTypeFromDsorg(PRESETS.get('JCL').dsorg),
-            alcunit: PRESETS.get('JCL').alcunit,
+            type: CreateDatasetDialog.getTypeFromDsorg(PRESETS.get('JCL').dataSetOrganization),
+            allocationUnit: PRESETS.get('JCL').allocationUnit,
             primary: PRESETS.get('JCL').primary,
             secondary: PRESETS.get('JCL').secondary,
             dirblk: PRESETS.get('JCL').dirblk,
@@ -78,8 +78,8 @@ export default class CreateDatasetDialog extends React.Component {
         const { DSPath } = this.props;
         let properties = Map({
             dsname: this.state.dsname,
-            dsorg: CreateDatasetDialog.getDsorgFromType(this.state.type),
-            alcunit: this.state.alcunit,
+            dataSetOrganization: CreateDatasetDialog.getDsorgFromType(this.state.type),
+            allocationUnit: this.state.allocationUnit,
             primary: parseInt(this.state.primary, 10),
             secondary: parseInt(this.state.secondary, 10),
             dirblk: parseInt(this.state.dirblk, 10),
@@ -87,7 +87,7 @@ export default class CreateDatasetDialog extends React.Component {
             blksize: parseInt(this.state.blksize, 10),
             lrecl: parseInt(this.state.lrecl, 10),
         });
-        if (properties.get('dsorg') === SEQUENTIAL.Dsorg) {
+        if (properties.get('dataSetOrganization') === SEQUENTIAL.Dsorg) {
             properties = properties.delete('dirblk');
         }
         return createDataset(properties, DSPath);
@@ -95,8 +95,8 @@ export default class CreateDatasetDialog extends React.Component {
 
     handlePresetChange = (event, index, value) => {
         this.setState({ preset: value });
-        this.setState({ type: CreateDatasetDialog.getTypeFromDsorg(PRESETS.get(value).dsorg) });
-        this.setState({ alcunit: PRESETS.get(value).alcunit });
+        this.setState({ type: CreateDatasetDialog.getTypeFromDsorg(PRESETS.get(value).dataSetOrganization) });
+        this.setState({ allocationUnit: PRESETS.get(value).allocationUnit });
         this.setState({ primary: PRESETS.get(value).primary });
         this.setState({ secondary: PRESETS.get(value).secondary });
         this.setState({ dirblk: PRESETS.get(value).dirblk });
@@ -120,7 +120,7 @@ export default class CreateDatasetDialog extends React.Component {
     }
 
     handleAlcunitChange = (event, index, value) => {
-        this.setState({ alcunit: value });
+        this.setState({ allocationUnit: value });
     }
 
     render() {
@@ -160,7 +160,7 @@ export default class CreateDatasetDialog extends React.Component {
                     <div style={floatRightStyle}>
                         <SelectField
                             floatingLabelText="Allocation Unit"
-                            value={this.state.alcunit}
+                            value={this.state.allocationUnit}
                             onChange={this.handleAlcunitChange}
                         >
                             <MenuItem value={ALLOCATION_UNITS.Tracks} primaryText={ALLOCATION_UNITS.Tracks} />

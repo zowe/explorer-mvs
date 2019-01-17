@@ -62,12 +62,11 @@ describe('Action: editor', () => {
                     type: editorActions.RECEIVE_CONTENT,
                     file: dataset,
                     content: editorResources.content,
-                    checksum: editorResources.checksum,
                 },
             ];
             nock(BASE_URL)
-                .get(`/datasets/${dataset}/content?convert=true&checksum=true`)
-                .reply(200, { records: editorResources.content, checksum: editorResources.checksum });
+                .get(`/datasets/${dataset}/content`)
+                .reply(200, { records: editorResources.content });
 
             const store = mockStore();
 
@@ -88,12 +87,11 @@ describe('Action: editor', () => {
                 type: editorActions.RECEIVE_CONTENT,
                 file: dataset,
                 content: editorResources.content,
-                checksum: editorResources.checksum,
             }];
 
             nock(BASE_URL)
-                .get(`/datasets/${dataset}/content?convert=true&checksum=true`)
-                .reply(200, { records: editorResources.content, checksum: editorResources.checksum });
+                .get(`/datasets/${dataset}/content`)
+                .reply(200, { records: editorResources.content });
 
             const store = mockStore();
 
@@ -146,7 +144,7 @@ describe('Action: editor', () => {
             }];
 
             nock(BASE_URL)
-                .get(`/datasets/${dataset})/content?convert=true&checksum=true`)
+                .get(`/datasets/${dataset})/content`)
                 .reply(404, '');
 
             const store = mockStore();
@@ -168,15 +166,15 @@ describe('Action: editor', () => {
         });
     });
 
-    describe('updateEditorChecksum', () => {
-        it('Should create an action to update the editor checksum', () => {
-            const expectedAction = {
-                type: editorActions.UPDATE_EDITOR_CHECKSUM,
-                checksum: editorResources.checksum,
-            };
-            expect(editorActions.updateEditorChecksum(editorResources.checksum)).toEqual(expectedAction);
-        });
-    });
+    // describe('updateEditorChecksum', () => {
+    //     it('Should create an action to update the editor checksum', () => {
+    //         const expectedAction = {
+    //             type: editorActions.UPDATE_EDITOR_CHECKSUM,
+
+    //         };
+    //         expect(editorActions.updateEditorChecksum(editorResources.checksum)).toEqual(expectedAction);
+    //     });
+    // });
 
     describe('getNewDatasetChecksum', () => {
         it('Should create an action to request a checksum then update editor checksum', () => {
@@ -199,13 +197,13 @@ describe('Action: editor', () => {
 
 
             nock(BASE_URL)
-                .get(`/datasets/${editorResources.dataset}/content?convert=true&checksum=true`)
+                .get(`/datasets/${editorResources.dataset}/content`)
                 .reply(200, { records: editorResources.content, checksum: editorResources.newChecksum });
 
             const store = mockStore(fromJS({
                 editor: {
                     content: editorResources.content,
-                    checksum: editorResources.checksum,
+                    // checksum: editorResources.checksum,
                     dataset: editorResources.dataset,
                 },
             }));
@@ -231,13 +229,13 @@ describe('Action: editor', () => {
 
 
             nock(BASE_URL)
-                .get(`/datasets/${editorResources.dataset}/content?convert=true&checksum=true`)
+                .get(`/datasets/${editorResources.dataset}/content`)
                 .reply(404);
 
             const store = mockStore(fromJS({
                 editor: {
                     content: editorResources.content,
-                    checksum: editorResources.checksum,
+                    // checksum: editorResources.checksum,
                     dataset: editorResources.dataset,
                 },
             }));
@@ -276,13 +274,13 @@ describe('Action: editor', () => {
                 .put(`/datasets/${editorResources.dataset}/content`)
                 .reply(200);
             nock(BASE_URL)
-                .get(`/datasets/${editorResources.dataset}/content?convert=true&checksum=true`)
+                .get(`/datasets/${editorResources.dataset}/content`)
                 .reply(200, { records: editorResources.content, checksum: editorResources.newChecksum });
 
             const store = mockStore(fromJS({
                 editor: {
                     content: editorResources.content,
-                    checksum: editorResources.checksum,
+                    // checksum: editorResources.checksum,
                     dataset: editorResources.dataset,
                 },
             }));
@@ -320,7 +318,7 @@ describe('Action: editor', () => {
             const store = mockStore(fromJS({
                 editor: {
                     content: editorResources.content,
-                    checksum: editorResources.checksum,
+                    // checksum: editorResources.checksum,
                     dataset: editorResources.dataset,
                 },
             }));
