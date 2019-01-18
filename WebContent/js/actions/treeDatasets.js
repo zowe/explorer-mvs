@@ -136,8 +136,7 @@ function invalidateDeleteDataset(DSName) {
 }
 
 export function createDataset(DSProperties, path) {
-    const DSName = DSProperties.get('name');
-    // const dSPropertiesWithoutName = DSProperties.delete('dsname');
+    const name = DSProperties.get('name');
     return dispatch => {
         dispatch(requestNewDataset(DSProperties));
         return atlasPost('datasets', JSON.stringify(DSProperties)).then(response => {
@@ -146,14 +145,14 @@ export function createDataset(DSProperties, path) {
             }
             throw Error(response.statusText);
         }).then(() => {
-            dispatch(constructAndPushMessage(`${DATASET_CREATE_SUCCESS_MESSAGE} ${DSName}`));
+            dispatch(constructAndPushMessage(`${DATASET_CREATE_SUCCESS_MESSAGE} ${name}`));
             dispatch(receiveNewDataset(DSProperties));
         }).then(() => {
             // Now refresh the dataset tree
             return dispatch(fetchDatasetTreeChildren(path));
         })
             .catch(() => {
-                dispatch(constructAndPushMessage(`${DATASET_CREATE_FAIL_MESSAGE} ${DSName}`));
+                dispatch(constructAndPushMessage(`${DATASET_CREATE_FAIL_MESSAGE} ${name}`));
                 dispatch(invalidateNewDataset(DSProperties));
             });
     };

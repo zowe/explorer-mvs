@@ -330,7 +330,7 @@ describe('Action: editor', () => {
         });
     });
 
-    describe.only('saveAsDatasets', () => {
+    describe('saveAsDatasets', () => {
         describe('saveAsDataset', () => {
             it('Should create an action to request a saveAs, receiveSave', () => {
                 const expectedActions = [
@@ -502,7 +502,7 @@ describe('Action: editor', () => {
             ];
 
             nock(BASE_URL)
-                .get(`/datasets/${path}/attributes`)
+                .get(`/datasets/${path}`)
                 .reply(200, attributes);
 
             const store = mockStore();

@@ -141,12 +141,11 @@ describe('Action: treeDatasets', () => {
         it('Should create an action to request and then receive a new dataset, then refresh the datasets via fetchDatasetTreeChildren', () => {
             const DSName = treeDatasetsData.DSProperties.get('name');
             const DSProperties = treeDatasetsData.DSProperties;
-            const DSPropertiesNoName = treeDatasetsData.DSProperties.delete('name');
             const path = 'ATLAS';
             const newTreeData = treeData.DatasetFetchChildrenLargeDataPlusOne;
             const expectedActions = [{
                 type: treeDatasets.REQUEST_NEW_DATASET,
-                DSProperties: DSPropertiesNoName,
+                DSProperties,
             },
             {
                 type: snackbarActions.PUSH_NOTIFICATION_MESSAGE,
@@ -156,7 +155,7 @@ describe('Action: treeDatasets', () => {
             },
             {
                 type: treeDatasets.RECEIVE_NEW_DATASET,
-                DSProperties: DSPropertiesNoName,
+                DSProperties,
             },
             {
                 type: tree.REQUEST_DS_TREE_CHILDREN,
@@ -169,10 +168,10 @@ describe('Action: treeDatasets', () => {
             }];
 
             nock(BASE_URL)
-                .post(`/datasets/${DSName}`)
+                .post('/datasets')
                 .reply(201, '');
             nock(BASE_URL)
-                .get(`/datasets/${path}/attributes`)
+                .get(`/datasets/${path}`)
                 .reply(200, newTreeData);
 
             const store = mockStore();
@@ -186,11 +185,10 @@ describe('Action: treeDatasets', () => {
         it('Should create an action to request and then invalidate', () => {
             const DSName = treeDatasetsData.DSProperties.get('name');
             const DSProperties = treeDatasetsData.DSProperties;
-            const DSPropertiesNoName = treeDatasetsData.DSProperties.delete('name');
             const path = 'ATLAS';
             const expectedActions = [{
                 type: treeDatasets.REQUEST_NEW_DATASET,
-                DSProperties: DSPropertiesNoName,
+                DSProperties,
             },
             {
                 type: snackbarActions.PUSH_NOTIFICATION_MESSAGE,
@@ -200,11 +198,11 @@ describe('Action: treeDatasets', () => {
             },
             {
                 type: treeDatasets.INVALIDATE_NEW_DATASET,
-                DSProperties: DSPropertiesNoName,
+                DSProperties,
             }];
 
             nock(BASE_URL)
-                .post(`/datasets/${DSName}`)
+                .post('/datasets')
                 .reply(500, '');
 
             const store = mockStore();

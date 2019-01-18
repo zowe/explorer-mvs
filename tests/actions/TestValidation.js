@@ -15,9 +15,7 @@ import expect from 'expect';
 import * as validation from '../../WebContent/js/actions/validation';
 import {
     LOCAL_HOST_ENDPOINT,
-    LOCAL_HOST_SERVER_WITH_PROTOCOL,
 } from '../testResources/hostConstants';
-import portConfig from '../../WebContent/portConfig.json';
 
 describe('Action: validation', () => {
     afterEach(() => {
@@ -36,16 +34,13 @@ describe('Action: validation', () => {
                 },
                 {
                     type: validation.RECEIVE_VALIDATION,
-                    username: 'JCAIN',
+                    username,
                 },
             ];
-            nock(`${LOCAL_HOST_SERVER_WITH_PROTOCOL}`)
-                .get('/ZLUX/plugins/com.ibm.atlas.atlasMVS/web/portConfig.json')
-                .reply(200, portConfig);
 
             nock(LOCAL_HOST_ENDPOINT)
-                .get('/zos/username')
-                .reply(200, username);
+                .get('/datasets/username')
+                .reply(200, { username });
 
             const store = mockStore();
 
@@ -61,8 +56,8 @@ describe('Action: validation', () => {
                 { type: validation.INVALIDATE_VALIDATION },
             ];
 
-            nock(LOCAL_HOST_SERVER_WITH_PROTOCOL)
-                .get('/zos/username')
+            nock(LOCAL_HOST_ENDPOINT)
+                .get('/datasets/username')
                 .reply(500, '');
 
             const store = mockStore();
