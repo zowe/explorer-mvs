@@ -51,7 +51,7 @@ export function atlasDelete(endpoint) {
 export function atlasPost(endpoint, body) {
     const fetchParams = {
         method: 'POST',
-        body: `{ ${body} }`,
+        body,
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include' };
     return atlasAction(endpoint, fetchParams);

@@ -14,7 +14,7 @@ import { DATASET_ORG_PARTITIONED } from '../../../constants/DataSetConstants';
 const PRESETS = Map({
     JCL: {
         dataSetOrganization: DATASET_ORG_PARTITIONED,
-        allocationUnit: 'TRK',
+        allocationUnit: 'TRACK',
         primary: '300',
         secondary: '100',
         dirblk: '20',
@@ -24,7 +24,7 @@ const PRESETS = Map({
     },
     COBOL: {
         dataSetOrganization: DATASET_ORG_PARTITIONED,
-        allocationUnit: 'TRK',
+        allocationUnit: 'TRACK',
         primary: '300',
         secondary: '150',
         dirblk: '20',
@@ -34,7 +34,7 @@ const PRESETS = Map({
     },
     PLX: {
         dataSetOrganization: DATASET_ORG_PARTITIONED,
-        allocationUnit: 'TRK',
+        allocationUnit: 'TRACK',
         primary: '300',
         secondary: '150',
         dirblk: '20',
@@ -44,7 +44,7 @@ const PRESETS = Map({
     },
     XML: {
         dataSetOrganization: DATASET_ORG_PARTITIONED,
-        allocationUnit: 'TRK',
+        allocationUnit: 'TRACK',
         primary: '200',
         secondary: '100',
         dirblk: '20',

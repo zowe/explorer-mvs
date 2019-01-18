@@ -26,8 +26,8 @@ const PRESET_PLX = 'PLX';
 const PRESET_XML = 'XML';
 
 const ALLOCATION_UNITS = {
-    Tracks: 'TRK',
-    Cylinders: 'CYL',
+    Tracks: 'TRACK',
+    Cylinders: 'CYLINDER',
 };
 
 const PARTITIONED = {
@@ -62,34 +62,39 @@ export default class CreateDatasetDialog extends React.Component {
 
         this.state = {
             preset: PRESET_JCL,
-            dsname: '',
+            name: '',
             type: CreateDatasetDialog.getTypeFromDsorg(PRESETS.get('JCL').dataSetOrganization),
             allocationUnit: PRESETS.get('JCL').allocationUnit,
             primary: PRESETS.get('JCL').primary,
             secondary: PRESETS.get('JCL').secondary,
-            dirblk: PRESETS.get('JCL').dirblk,
-            recfm: PRESETS.get('JCL').recfm,
-            blksize: PRESETS.get('JCL').blksize,
-            lrecl: PRESETS.get('JCL').lrecl,
+            directoryBlocks: PRESETS.get('JCL').dirblk,
+            recordFormat: PRESETS.get('JCL').recfm,
+            blockSize: PRESETS.get('JCL').blksize,
+            recordLength: PRESETS.get('JCL').lrecl,
         };
     }
 
     submitAction = () => {
         const { DSPath } = this.props;
         let properties = Map({
-            dsname: this.state.dsname,
+            name: this.state.dsname,
             dataSetOrganization: CreateDatasetDialog.getDsorgFromType(this.state.type),
             allocationUnit: this.state.allocationUnit,
             primary: parseInt(this.state.primary, 10),
             secondary: parseInt(this.state.secondary, 10),
-            dirblk: parseInt(this.state.dirblk, 10),
-            recfm: this.state.recfm,
-            blksize: parseInt(this.state.blksize, 10),
-            lrecl: parseInt(this.state.lrecl, 10),
+            directoryBlocks: parseInt(this.state.dirblk, 10),
+            recordFormat: this.state.recfm,
+            blockSize: parseInt(this.state.blksize, 10),
+            recordLength: parseInt(this.state.lrecl, 10),
         });
         if (properties.get('dataSetOrganization') === SEQUENTIAL.Dsorg) {
-            properties = properties.delete('dirblk');
+            properties = properties.delete('directoryBlocks');
         }
+        properties.forEach((value, key) => {
+            if (value === null || value === 'undefined') {
+                properties.delete(key);
+            }
+        });
         return createDataset(properties, DSPath);
     }
 

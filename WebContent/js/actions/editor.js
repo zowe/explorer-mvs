@@ -151,15 +151,6 @@ function replaceAll(str, find, replace) {
     return str.replace(new RegExp(find, 'g'), replace);
 }
 
-function asciiToHex(str) {
-    const arr1 = [];
-    for (let n = 0, l = str.length; n < l; n++) {
-        const hex = Number(str.charCodeAt(n)).toString(16);
-        arr1.push(hex);
-	 }
-    return arr1.join('');
-}
-
 function encodeContentString(content) {
     let newContent = replaceAll(content, /\\/, '\\\\'); // Escape backslashes
     newContent = replaceAll(newContent, /"/, '\\"'); // Escape double quotes
