@@ -185,22 +185,19 @@ export function fetchDSMembers(DSName) {
 export function createMember(DSName, member) {
     return dispatch => {
         dispatch(requestNewMember(DSName, member));
-        return atlasPut(`datasets/${encodeURIComponent(DSName)}(${encodeURIComponent(member)})/content`, {
-            credentials: 'include',
-            method: 'PUT',
-            body: "{'records':''}",
-        }).then(response => {
-            if (response.ok) {
-                return response.text();
-            }
-            throw Error(response.statusText);
-        }).then(() => {
-            dispatch(constructAndPushMessage(`${DATASET_CREATE_SUCCESS_MESSAGE} ${DSName}(${member})`));
-            dispatch(receiveNewMember(DSName, member));
-        }).then(() => {
+        return atlasPut(`datasets/${encodeURIComponent(DSName)}(${encodeURIComponent(member)})/content`, '')
+            .then(response => {
+                if (response.ok) {
+                    return response.text();
+                }
+                throw Error(response.statusText);
+            }).then(() => {
+                dispatch(constructAndPushMessage(`${DATASET_CREATE_SUCCESS_MESSAGE} ${DSName}(${member})`));
+                dispatch(receiveNewMember(DSName, member));
+            }).then(() => {
             // Now refresh the datasets members
-            return dispatch(fetchDSMembers(DSName));
-        })
+                return dispatch(fetchDSMembers(DSName));
+            })
             .catch(() => {
                 dispatch(constructAndPushMessage(`${DATASET_CREATE_FAIL_MESSAGE} ${DSName}(${member})`));
                 dispatch(invalidateCreateNewMember(DSName, member));
