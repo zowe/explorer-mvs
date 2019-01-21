@@ -139,14 +139,13 @@ describe('Action: treeDatasets', () => {
 
     describe('createDataset', () => {
         it('Should create an action to request and then receive a new dataset, then refresh the datasets via fetchDatasetTreeChildren', () => {
-            const DSName = treeDatasetsData.DSProperties.get('dsname');
+            const DSName = treeDatasetsData.DSProperties.get('name');
             const DSProperties = treeDatasetsData.DSProperties;
-            const DSPropertiesNoName = treeDatasetsData.DSProperties.delete('dsname');
             const path = 'ATLAS';
             const newTreeData = treeData.DatasetFetchChildrenLargeDataPlusOne;
             const expectedActions = [{
                 type: treeDatasets.REQUEST_NEW_DATASET,
-                DSProperties: DSPropertiesNoName,
+                DSProperties,
             },
             {
                 type: snackbarActions.PUSH_NOTIFICATION_MESSAGE,
@@ -156,7 +155,7 @@ describe('Action: treeDatasets', () => {
             },
             {
                 type: treeDatasets.RECEIVE_NEW_DATASET,
-                DSProperties: DSPropertiesNoName,
+                DSProperties,
             },
             {
                 type: tree.REQUEST_DS_TREE_CHILDREN,
@@ -169,10 +168,10 @@ describe('Action: treeDatasets', () => {
             }];
 
             nock(BASE_URL)
-                .post(`/datasets/${DSName}`)
+                .post('/datasets')
                 .reply(201, '');
             nock(BASE_URL)
-                .get(`/datasets/${path}/attributes`)
+                .get(`/datasets/${path}`)
                 .reply(200, newTreeData);
 
             const store = mockStore();
@@ -184,13 +183,12 @@ describe('Action: treeDatasets', () => {
         });
 
         it('Should create an action to request and then invalidate', () => {
-            const DSName = treeDatasetsData.DSProperties.get('dsname');
+            const DSName = treeDatasetsData.DSProperties.get('name');
             const DSProperties = treeDatasetsData.DSProperties;
-            const DSPropertiesNoName = treeDatasetsData.DSProperties.delete('dsname');
             const path = 'ATLAS';
             const expectedActions = [{
                 type: treeDatasets.REQUEST_NEW_DATASET,
-                DSProperties: DSPropertiesNoName,
+                DSProperties,
             },
             {
                 type: snackbarActions.PUSH_NOTIFICATION_MESSAGE,
@@ -200,11 +198,11 @@ describe('Action: treeDatasets', () => {
             },
             {
                 type: treeDatasets.INVALIDATE_NEW_DATASET,
-                DSProperties: DSPropertiesNoName,
+                DSProperties,
             }];
 
             nock(BASE_URL)
-                .post(`/datasets/${DSName}`)
+                .post('/datasets')
                 .reply(500, '');
 
             const store = mockStore();
@@ -289,88 +287,6 @@ describe('Action: treeDatasets', () => {
             const store = mockStore();
 
             return store.dispatch(treeDatasets.createMember(DSName, memberName))
-                .then(() => {
-                    expect(store.getActions()).toEqual(expectedActions);
-                });
-        });
-    });
-
-    describe('allocateLike', () => {
-        it('Should create an action to request and receive allocate like, then refresh the dataset tree to update if it appears', () => {
-            const DSName = 'JCAIN.SPFLOG1.LIST';
-            const newDSName = 'JCAIN.TEST.JCL2';
-            const path = 'JCAIN';
-            const newTreeData = treeData.DatasetFetchChildrenDataPlusOne;
-            const expectedActions = [{
-                type: treeDatasets.REQUEST_ALLOCATE_LIKE,
-                DSName,
-                newDSName,
-            },
-            {
-                type: snackbarActions.PUSH_NOTIFICATION_MESSAGE,
-                message: new Map({
-                    message: `${createSuccess} ${newDSName}`,
-                }),
-            },
-            {
-                type: treeDatasets.RECEIVE_ALLOCATE_LIKE,
-                newDSName,
-            },
-            {
-                type: tree.REQUEST_DS_TREE_CHILDREN,
-                DSPath: path,
-            },
-            {
-                type: tree.RECEIVE_DS_TREE_CHILDREN,
-                DSPath: path,
-                childData: newTreeData,
-            }];
-
-            nock(BASE_URL)
-                .post(`/datasets/${newDSName}`, {
-                    basedsn: DSName,
-                })
-                .reply(200, '');
-            nock(BASE_URL)
-                .get(`/datasets/${path}/attributes`)
-                .reply(200, newTreeData);
-
-            const store = mockStore();
-
-            return store.dispatch(treeDatasets.allocateLike(DSName, newDSName, path))
-                .then(() => {
-                    expect(store.getActions()).toEqual(expectedActions);
-                });
-        });
-
-        it('Should create an action to request and invalidate allocate like', () => {
-            const DSName = 'JCAIN.SPFLOG1.LIST';
-            const newDSName = 'JCAIN.TEST.JCL2';
-            const path = 'JCAIN';
-            const expectedActions = [{
-                type: treeDatasets.REQUEST_ALLOCATE_LIKE,
-                DSName,
-                newDSName,
-            },
-            {
-                type: snackbarActions.PUSH_NOTIFICATION_MESSAGE,
-                message: new Map({
-                    message: `${createFail} ${newDSName}`,
-                }),
-            },
-            {
-                type: treeDatasets.INVALIDATE_ALLOCATE_LIKE,
-                DSName,
-                newDSName,
-            }];
-
-            nock(BASE_URL)
-                .post(`/datasets/${newDSName}`)
-                .reply(404, '');
-
-            const store = mockStore();
-
-            return store.dispatch(treeDatasets.allocateLike(DSName, newDSName, path))
                 .then(() => {
                     expect(store.getActions()).toEqual(expectedActions);
                 });

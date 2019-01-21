@@ -81,7 +81,7 @@ export class DSTree extends React.Component {
 
     renderDSChild(childId) {
         const { DSChildren } = this.props;
-        return (<ConnectedTreeDataset childId={childId} key={childId} dsorg={DSChildren.get(childId)} />);
+        return (<ConnectedTreeDataset childId={childId} key={childId} dataSetOrganization={DSChildren.get(childId)} />);
     }
 
     render() {

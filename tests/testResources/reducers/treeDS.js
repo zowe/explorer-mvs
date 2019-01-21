@@ -57,18 +57,18 @@ export const DSChildData = [
         name: 'JCAIN',
     },
     {
-        blksize: '3213',
-        dsorg: 'PO',
-        lrecl: '80',
+        blockSize: '3213',
+        dataSetOrganization: 'PO',
+        recordLength: '80',
         name: 'JCAIN.SPF.ISPROF',
-        recfm: 'FB',
+        recordFormat: 'FB',
     },
     {
-        blksize: '5213',
-        dsorg: 'PS',
-        lrecl: '125',
+        blockSize: '5213',
+        dataSetOrganization: 'PS',
+        recordLength: '125',
         name: 'JCAIN.SPFLOG1.LIST',
-        recfm: 'VA',
+        recordFormat: 'VA',
     },
 ];
 

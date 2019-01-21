@@ -11,7 +11,7 @@
 import HTTPStatusCodes from '../constants/HTTPStatusCodeConstants';
 import { fetchDatasetTreeChildren, removeDataset } from './treeDS';
 import { invalidateContent } from './editor';
-import { atlasFetch } from '../utilities/urlUtils';
+import { atlasGet, atlasPost, atlasPut, atlasDelete } from '../utilities/urlUtils';
 import { constructAndPushMessage } from './snackbarNotifications';
 
 export const REQUEST_TREE_DS_CHILD_MEMBERS = 'REQUEST_TREE_DS_CHILD_MEMBERS';
@@ -114,29 +114,6 @@ function invalidateCreateNewMember(DSName, member) {
     };
 }
 
-function requestAllocateLike(DSName, newDSName) {
-    return {
-        type: REQUEST_ALLOCATE_LIKE,
-        DSName,
-        newDSName,
-    };
-}
-
-function receiveAllocateLike(newDSName) {
-    return {
-        type: RECEIVE_ALLOCATE_LIKE,
-        newDSName,
-    };
-}
-
-function invalidateAllocateLike(DSName, newDSName) {
-    return {
-        type: INVALIDATE_ALLOCATE_LIKE,
-        DSName,
-        newDSName,
-    };
-}
-
 function requestDeleteDataset(DSName) {
     return {
         type: REQUEST_DELETE_DATASET,
@@ -159,29 +136,24 @@ function invalidateDeleteDataset(DSName) {
 }
 
 export function createDataset(DSProperties, path) {
-    const DSName = DSProperties.get('dsname');
-    const dSPropertiesWithoutName = DSProperties.delete('dsname');
+    const name = DSProperties.get('name');
     return dispatch => {
-        dispatch(requestNewDataset(dSPropertiesWithoutName));
-        return atlasFetch(`datasets/${encodeURIComponent(DSName)}`, {
-            credentials: 'include',
-            method: 'POST',
-            body: JSON.stringify(dSPropertiesWithoutName),
-        }).then(response => {
+        dispatch(requestNewDataset(DSProperties));
+        return atlasPost('datasets', JSON.stringify(DSProperties)).then(response => {
             if (response.ok) {
                 return response.text();
             }
             throw Error(response.statusText);
         }).then(() => {
-            dispatch(constructAndPushMessage(`${DATASET_CREATE_SUCCESS_MESSAGE} ${DSName}`));
-            dispatch(receiveNewDataset(dSPropertiesWithoutName));
+            dispatch(constructAndPushMessage(`${DATASET_CREATE_SUCCESS_MESSAGE} ${name}`));
+            dispatch(receiveNewDataset(DSProperties));
         }).then(() => {
             // Now refresh the dataset tree
             return dispatch(fetchDatasetTreeChildren(path));
         })
             .catch(() => {
-                dispatch(constructAndPushMessage(`${DATASET_CREATE_FAIL_MESSAGE} ${DSName}`));
-                dispatch(invalidateNewDataset(dSPropertiesWithoutName));
+                dispatch(constructAndPushMessage(`${DATASET_CREATE_FAIL_MESSAGE} ${name}`));
+                dispatch(invalidateNewDataset(DSProperties));
             });
     };
 }
@@ -189,9 +161,7 @@ export function createDataset(DSProperties, path) {
 export function fetchDSMembers(DSName) {
     return dispatch => {
         dispatch(requestChildMembers(DSName));
-        return atlasFetch(`datasets/${encodeURIComponent(DSName)}/members`, {
-            credentials: 'include',
-        }).then(response => {
+        return atlasGet(`datasets/${encodeURIComponent(DSName)}/members`).then(response => {
             if (response.ok) {
                 return response.json();
             } else if (response.status === HTTPStatusCodes.Forbidden) {
@@ -214,51 +184,22 @@ export function fetchDSMembers(DSName) {
 export function createMember(DSName, member) {
     return dispatch => {
         dispatch(requestNewMember(DSName, member));
-        return atlasFetch(`datasets/${encodeURIComponent(DSName)}(${encodeURIComponent(member)})/content`, {
-            credentials: 'include',
-            method: 'PUT',
-            body: "{'records':''}",
-        }).then(response => {
-            if (response.ok) {
-                return response.text();
-            }
-            throw Error(response.statusText);
-        }).then(() => {
-            dispatch(constructAndPushMessage(`${DATASET_CREATE_SUCCESS_MESSAGE} ${DSName}(${member})`));
-            dispatch(receiveNewMember(DSName, member));
-        }).then(() => {
+        return atlasPut(`datasets/${encodeURIComponent(DSName)}(${encodeURIComponent(member)})/content`, '')
+            .then(response => {
+                if (response.ok) {
+                    return response.text();
+                }
+                throw Error(response.statusText);
+            }).then(() => {
+                dispatch(constructAndPushMessage(`${DATASET_CREATE_SUCCESS_MESSAGE} ${DSName}(${member})`));
+                dispatch(receiveNewMember(DSName, member));
+            }).then(() => {
             // Now refresh the datasets members
-            return dispatch(fetchDSMembers(DSName));
-        })
+                return dispatch(fetchDSMembers(DSName));
+            })
             .catch(() => {
                 dispatch(constructAndPushMessage(`${DATASET_CREATE_FAIL_MESSAGE} ${DSName}(${member})`));
                 dispatch(invalidateCreateNewMember(DSName, member));
-            });
-    };
-}
-
-// TODO:: add dirblk and secondary parameters
-export function allocateLike(DSName, newDSName, path) {
-    return dispatch => {
-        dispatch(requestAllocateLike(DSName, newDSName));
-        return atlasFetch(`datasets/${encodeURIComponent(newDSName)}`, {
-            credentials: 'include',
-            method: 'POST',
-            body: `{"basedsn": "${encodeURIComponent(DSName)}"}`,
-        }).then(response => {
-            if (response.ok) {
-                return response.text();
-            }
-            throw Error(response.statusText);
-        }).then(() => {
-            dispatch(constructAndPushMessage(`${DATASET_CREATE_SUCCESS_MESSAGE} ${newDSName}`));
-            dispatch(receiveAllocateLike(newDSName));
-        }).then(() => {
-            return dispatch(fetchDatasetTreeChildren(path));
-        })
-            .catch(() => {
-                dispatch(constructAndPushMessage(`${DATASET_CREATE_FAIL_MESSAGE} ${newDSName}`));
-                dispatch(invalidateAllocateLike(DSName, newDSName));
             });
     };
 }
@@ -284,10 +225,7 @@ function cleanupStateAfterDelete(DSName, isOpenInViewer) {
 export function deleteDataset(DSName, isOpenInViewer) {
     return dispatch => {
         dispatch(requestDeleteDataset(DSName));
-        return atlasFetch(`datasets/${encodeURIComponent(DSName)}`, {
-            credentials: 'include',
-            method: 'DELETE',
-        }).then(response => {
+        return atlasDelete(`datasets/${encodeURIComponent(DSName)}`).then(response => {
             if (response.ok) {
                 return response.text();
             }

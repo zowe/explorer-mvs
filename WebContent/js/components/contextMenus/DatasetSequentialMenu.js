@@ -15,7 +15,6 @@ import { ContextMenu, MenuItem } from 'react-contextmenu';
 const DatasetSequentialMenu = props => {
     const {
         childId,
-        handleAllocateLike,
         handleCreateDataset,
         handleDeleteDataset,
         handleEdit,
@@ -24,9 +23,6 @@ const DatasetSequentialMenu = props => {
         <ContextMenu id={childId}>
             <MenuItem onClick={handleCreateDataset}>
                 New Dataset...
-            </MenuItem>
-            <MenuItem onClick={handleAllocateLike}>
-                Allocate Like
             </MenuItem>
             <MenuItem onClick={handleEdit}>
                 Open
@@ -45,7 +41,6 @@ export default DatasetSequentialMenu;
 
 DatasetSequentialMenu.propTypes = {
     childId: PropTypes.string.isRequired,
-    handleAllocateLike: PropTypes.func.isRequired,
     handleCreateDataset: PropTypes.func.isRequired,
     handleDeleteDataset: PropTypes.func.isRequired,
     handleEdit: PropTypes.func.isRequired,

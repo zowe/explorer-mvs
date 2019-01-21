@@ -9,7 +9,7 @@
  */
 
 import { constructAndPushMessage } from './snackbarNotifications';
-import { atlasFetch } from '../utilities/urlUtils';
+import { atlasPost } from '../utilities/urlUtils';
 
 export const REQUEST_JOB_SUBMIT = 'REQUEST_JOB_SUBMIT';
 export const RECEIVE_JOB_SUBMIT_RESPONSE = 'RECEIVE_JOB_SUBMIT_RESPONSE';
@@ -50,10 +50,7 @@ export function resetResponse() {
 export function submitJob(job) {
     return dispatch => {
         dispatch(requestSubmit());
-        return atlasFetch('jobs', {
-            credentials: 'include',
-            method: 'POST',
-            body: `{ "file":  "'${job}'"}` })
+        return atlasPost('jobs/dataset', JSON.stringify({ file: `'${job}'` }))
             .then(response => {
                 if (response.ok) {
                     return response.json();

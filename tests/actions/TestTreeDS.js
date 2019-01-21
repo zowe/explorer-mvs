@@ -92,7 +92,7 @@ describe('Action: treeDS', () => {
             ];
 
             nock(BASE_URL)
-                .get(`/datasets/${path}/attributes`)
+                .get(`/datasets/${path}`)
                 .reply(200, treeData.DatasetFetchChildrenData);
 
             const store = mockStore();
@@ -114,7 +114,7 @@ describe('Action: treeDS', () => {
             ];
 
             nock(BASE_URL)
-                .get(`/datasets/${path}/attributes`)
+                .get(`/datasets/${path}`)
                 .reply(200, treeData.DatasetFetchChildrenLargeData);
 
             const store = mockStore();
@@ -136,7 +136,7 @@ describe('Action: treeDS', () => {
             ];
 
             nock(BASE_URL)
-                .get(`/datasets/${path}/attributes`)
+                .get(`/datasets/${path}`)
                 .reply(200, treeData.DatasetFetchChildrenNoData);
 
             const store = mockStore();

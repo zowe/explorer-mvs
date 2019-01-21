@@ -10,7 +10,7 @@
 
 import { fetchDatasetTreeChildren } from './treeDS';
 import { fetchDSMembers } from '../actions/treeDatasets';
-import { atlasFetch, encodeURLComponent } from '../utilities/urlUtils';
+import { atlasGet, atlasPut, atlasPost, encodeURLComponent } from '../utilities/urlUtils';
 import { constructAndPushMessage } from './snackbarNotifications';
 
 export const REQUEST_CONTENT = 'REQUEST_CONTENT';
@@ -43,12 +43,12 @@ function requestDSContent(file) {
     };
 }
 
-function receiveDSContent(file, content, checksum) {
+function receiveDSContent(file, content) { // , checksum) {
     return {
         type: RECEIVE_CONTENT,
         file,
         content,
-        checksum,
+        //        checksum,
     };
 }
 
@@ -61,8 +61,8 @@ export function invalidateContent() {
 export function fetchDS(file) {
     return dispatch => {
         dispatch(requestDSContent(file));
-        const endpoint = `datasets/${encodeURIComponent(file)}/content?convert=true&checksum=true`;
-        return atlasFetch(endpoint, { credentials: 'include' })
+        const endpoint = `datasets/${encodeURIComponent(file)}/content`;
+        return atlasGet(endpoint, { })
             .then(response => { return response.json(); })
             .then(json => {
                 return dispatch(receiveDSContent(file, json.records, json.checksum));
@@ -81,19 +81,19 @@ export function updateEditorContent(content) {
     };
 }
 
-function requestChecksum(file) {
-    return {
-        type: REQUEST_CHECKSUM,
-        file,
-    };
-}
+// function requestChecksum(file) {
+//     return {
+//         type: REQUEST_CHECKSUM,
+//         file,
+//     };
+// }
 
-function receiveChecksum(file) {
-    return {
-        type: RECEIVE_CHECKSUM,
-        file,
-    };
-}
+// function receiveChecksum(file) {
+//     return {
+//         type: RECEIVE_CHECKSUM,
+//         file,
+//     };
+// }
 
 export function updateEditorChecksum(checksum) {
     return {
@@ -102,30 +102,30 @@ export function updateEditorChecksum(checksum) {
     };
 }
 
-function invalidateChecksumChange() {
-    return {
-        type: INVALIDATE_CHECKSUM,
-    };
-}
+// function invalidateChecksumChange() {
+//     return {
+//         type: INVALIDATE_CHECKSUM,
+//     };
+// }
 
-function getNewDatasetChecksum(file) {
-    return dispatch => {
-        dispatch(requestChecksum(file));
-        const endpoint = `datasets/${encodeURLComponent(file)}/content?convert=true&checksum=true`;
-        const requestBody = { credentials: 'include' };
-        return atlasFetch(endpoint, requestBody).then(response => {
-            if (response.ok) {
-                dispatch(receiveChecksum(file));
-                return response.json();
-            }
-            throw Error(response.statusText);
-        }).then(json => {
-            dispatch(updateEditorChecksum(json.checksum));
-        }).catch(() => {
-            dispatch(invalidateChecksumChange());
-        });
-    };
-}
+// function getNewDatasetChecksum(file) {
+//     return dispatch => {
+//         dispatch(requestChecksum(file));
+//         const endpoint = `datasets/${encodeURLComponent(file)}/content`;
+//         const requestBody = { credentials: 'include' };
+//         return atlasFetch(endpoint, requestBody).then(response => {
+//             if (response.ok) {
+//                 dispatch(receiveChecksum(file));
+//                 return response.json();
+//             }
+//             throw Error(response.statusText);
+//         }).then(json => {
+//             dispatch(updateEditorChecksum(json.checksum));
+//         }).catch(() => {
+//             dispatch(invalidateChecksumChange());
+//         });
+//     };
+// }
 
 function requestSave(file) {
     return {
@@ -152,27 +152,28 @@ function replaceAll(str, find, replace) {
 }
 
 function encodeContentString(content) {
-    const newContent = replaceAll(content, /\\/, '\\\\'); // Escape backslashes
-    return replaceAll(newContent, /"/, '\\"'); // Escape double quotes
+    let newContent = replaceAll(content, /\\/, '\\\\'); // Escape backslashes
+    newContent = replaceAll(newContent, /"/, '\\"'); // Escape double quotes
+    // The new server interface is unable to accept steings with hex values
+    newContent = replaceAll(newContent, '\x0a', '\\n'); // Escape line feed
+    newContent = replaceAll(newContent, '\x0d', '\\r'); // Escape return
+    newContent = replaceAll(newContent, '\x09', '\\t'); // Escape tab
+    return newContent;
 }
 
-export function saveDataset(file, content, checksum) {
+export function saveDataset(file, content) {
     return dispatch => {
         dispatch(requestSave(file));
         const endpoint = `datasets/${encodeURLComponent(file)}/content`;
-        const requestBody = {
-            credentials: 'include',
-            method: 'PUT',
-            body: `{"records": "${encodeContentString(content)}", "checksum": "${checksum}"}`,
-        };
-        return atlasFetch(endpoint, requestBody).then(response => {
+        return atlasPut(endpoint, `${encodeContentString(content)}`).then(response => {
+        // return atlasPut(endpoint, encodeContentString(content), null).then(response => {
             if (response.ok) {
                 dispatch(constructAndPushMessage(`${SAVE_SUCCESS_MESSAGE} ${file}`));
                 return dispatch(receiveSave(file));
             }
             throw Error(response.statusText);
-        }).then(() => {
-            dispatch(getNewDatasetChecksum(file));
+        // }).then(() => {
+        //     dispatch(getNewDatasetChecksum(file));
         }).catch(response => {
             dispatch(constructAndPushMessage(`${SAVE_FAIL_MESSAGE} ${file}`));
             dispatch(invalidateSave(response));
@@ -196,20 +197,18 @@ function invalidateSaveAs() {
 export function saveAsDataset(file, newFile, newContent) {
     return dispatch => {
         dispatch(requestSaveAs(file, newFile));
-        return atlasFetch(`datasets/${newFile}`, {
-            credentials: 'include',
-            method: 'POST',
-            body: `{"basedsn": "${file}", "records": "${encodeContentString(newContent)}"}`,
-        }).then(response => {
-            if (response.ok) {
-                dispatch(constructAndPushMessage(`${SAVE_SUCCESS_MESSAGE} ${file}`));
-                return dispatch(receiveSave(newFile));
-            }
-            throw response;
-        }).then(() => {
-            dispatch(fetchDatasetTreeChildren(newFile));
-            dispatch(fetchDS(newFile));
-        })
+        return atlasPost(`datasets/${newFile}`,
+            `{"basedsn": "${file}", "records": "${encodeContentString(newContent)}"}`, null)
+            .then(response => {
+                if (response.ok) {
+                    dispatch(constructAndPushMessage(`${SAVE_SUCCESS_MESSAGE} ${file}`));
+                    return dispatch(receiveSave(newFile));
+                }
+                throw response;
+            }).then(() => {
+                dispatch(fetchDatasetTreeChildren(newFile));
+                dispatch(fetchDS(newFile));
+            })
             .catch(response => {
                 return response.text().then(textResponse => {
                     dispatch(constructAndPushMessage(`${SAVE_FAIL_MESSAGE} ${file}`));
@@ -223,11 +222,7 @@ export function saveAsDatasetMember(DSName, newDSMember, newContent) {
     return dispatch => {
         const newDS = `${DSName}(${newDSMember})`;
         dispatch(requestSaveAs(newDS));
-        return atlasFetch(`datasets/${newDS}/content`, {
-            credentials: 'include',
-            method: 'PUT',
-            body: `{"records": "${encodeContentString(newContent)}"}`,
-        }).then(response => {
+        return atlasPut(`datasets/${newDS}/content`, encodeContentString(newContent), null).then(response => {
             if (response.ok) {
                 dispatch(constructAndPushMessage(`${SAVE_SUCCESS_MESSAGE} ${newDS}`));
                 return dispatch(receiveSave(newDS));
@@ -264,10 +259,8 @@ function receiveDSAttributes(path, data) {
 export function fetchDatasetAttributes(path) {
     return dispatch => {
         dispatch(requestDSAttributes(path));
-        const contentURL = `datasets/${encodeURIComponent(path)}/attributes`;
-        return atlasFetch(contentURL, {
-            credentials: 'include',
-        }).then(response => {
+        const contentURL = `datasets/${encodeURIComponent(path)}`;
+        return atlasGet(contentURL).then(response => {
             if (response.ok) {
                 return response.json();
             }

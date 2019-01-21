@@ -88,5 +88,5 @@ DatasetSaveAsDialog.propTypes = {
     dispatch: PropTypes.func.isRequired,
     dialogReturn: PropTypes.func.isRequired,
     content: PropTypes.string.isRequired,
-    checksum: PropTypes.string.isRequired,
+    checksum: PropTypes.string,
 };

@@ -7,8 +7,8 @@
  *
  * Copyright IBM Corporation 2018, 2019
  */
-
-let host = 'winmvs3b.hursley.ibm.com:7443';
+// let host = 'winmvs3b.hursley.ibm.com:7288';
+let host = 'localhost:22957';
 if (typeof location !== 'undefined') {
     const hostname = location.hostname;
     if (hostname !== 'localhost') {
@@ -21,11 +21,51 @@ export function encodeURLComponent(URL) {
     return encodeURIComponent(URL);
 }
 
-export function atlasFetch(endpoint, content) {
+function whichServer() {
     let server = LOCAL_DEV_SERVER;
-
     if (location.hostname === 'tester.test.com') {
         server = 'tester.test.com:7443';
     }
-    return fetch(`https://${server}/api/v1/${endpoint}`, content);
+    return `${server}/api/v1`;
+}
+function atlasAction(endpoint, fetchParams) {
+    return fetch(`https://${whichServer()}/${endpoint}`, fetchParams);
+}
+
+export function atlasGet(endpoint) {
+    const fetchParams = {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include' };
+    return atlasAction(endpoint, fetchParams);
+}
+
+export function atlasDelete(endpoint) {
+    const fetchParams = {
+        method: 'DELETE',
+        headers: { },
+        credentials: 'include' };
+    return atlasAction(endpoint, fetchParams);
+}
+
+export function atlasPost(endpoint, body) {
+    const fetchParams = {
+        method: 'POST',
+        body,
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include' };
+    return atlasAction(endpoint, fetchParams);
+}
+
+export function atlasPut(endpoint, content, checksum) {
+    const header = { 'Content-Type': 'application/json' };
+    if (checksum) {
+        header['If-Match'] = checksum;
+    }
+    const fetchParams = {
+        method: 'PUT',
+        body: `{"records": "${content}"}`,
+        headers: header,
+        credentials: 'include' };
+    return atlasAction(endpoint, fetchParams);
 }

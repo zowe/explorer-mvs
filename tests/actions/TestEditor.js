@@ -19,7 +19,6 @@ import { LOCAL_HOST_ENDPOINT as BASE_URL } from '../testResources/hostConstants'
 import * as editorActions from '../../WebContent/js/actions/editor';
 import * as editorResources from '../testResources/actions/editor';
 import * as treeData from '../testResources/actions/treeDS';
-import * as treeDSActions from '../../WebContent/js/actions/treeDS';
 import * as treeDatasetActions from '../../WebContent/js/actions/treeDatasets';
 import * as snackbarActions from '../../WebContent/js/actions/snackbarNotifications';
 
@@ -62,12 +61,11 @@ describe('Action: editor', () => {
                     type: editorActions.RECEIVE_CONTENT,
                     file: dataset,
                     content: editorResources.content,
-                    checksum: editorResources.checksum,
                 },
             ];
             nock(BASE_URL)
-                .get(`/datasets/${dataset}/content?convert=true&checksum=true`)
-                .reply(200, { records: editorResources.content, checksum: editorResources.checksum });
+                .get(`/datasets/${dataset}/content`)
+                .reply(200, { records: editorResources.content });
 
             const store = mockStore();
 
@@ -88,12 +86,11 @@ describe('Action: editor', () => {
                 type: editorActions.RECEIVE_CONTENT,
                 file: dataset,
                 content: editorResources.content,
-                checksum: editorResources.checksum,
             }];
 
             nock(BASE_URL)
-                .get(`/datasets/${dataset}/content?convert=true&checksum=true`)
-                .reply(200, { records: editorResources.content, checksum: editorResources.checksum });
+                .get(`/datasets/${dataset}/content`)
+                .reply(200, { records: editorResources.content });
 
             const store = mockStore();
 
@@ -146,7 +143,7 @@ describe('Action: editor', () => {
             }];
 
             nock(BASE_URL)
-                .get(`/datasets/${dataset})/content?convert=true&checksum=true`)
+                .get(`/datasets/${dataset})/content`)
                 .reply(404, '');
 
             const store = mockStore();
@@ -168,130 +165,130 @@ describe('Action: editor', () => {
         });
     });
 
-    describe('updateEditorChecksum', () => {
-        it('Should create an action to update the editor checksum', () => {
-            const expectedAction = {
-                type: editorActions.UPDATE_EDITOR_CHECKSUM,
-                checksum: editorResources.checksum,
-            };
-            expect(editorActions.updateEditorChecksum(editorResources.checksum)).toEqual(expectedAction);
-        });
-    });
+    // describe('updateEditorChecksum', () => {
+    //     it('Should create an action to update the editor checksum', () => {
+    //         const expectedAction = {
+    //             type: editorActions.UPDATE_EDITOR_CHECKSUM,
+
+    //         };
+    //         expect(editorActions.updateEditorChecksum(editorResources.checksum)).toEqual(expectedAction);
+    //     });
+    // });
 
     describe('getNewDatasetChecksum', () => {
-        it('Should create an action to request a checksum then update editor checksum', () => {
-            const rewiredGetNewDatasetChecksum = rewiredEditor.__get__('getNewDatasetChecksum');
+        // it('Should create an action to request a checksum then update editor checksum', () => {
+        //     const rewiredGetNewDatasetChecksum = rewiredEditor.__get__('getNewDatasetChecksum');
 
-            const expectedActions = [
-                {
-                    type: editorActions.REQUEST_CHECKSUM,
-                    file: editorResources.dataset,
-                },
-                {
-                    type: editorActions.RECEIVE_CHECKSUM,
-                    file: editorResources.dataset,
-                },
-                {
-                    type: editorActions.UPDATE_EDITOR_CHECKSUM,
-                    checksum: editorResources.newChecksum,
-                },
-            ];
-
-
-            nock(BASE_URL)
-                .get(`/datasets/${editorResources.dataset}/content?convert=true&checksum=true`)
-                .reply(200, { records: editorResources.content, checksum: editorResources.newChecksum });
-
-            const store = mockStore(fromJS({
-                editor: {
-                    content: editorResources.content,
-                    checksum: editorResources.checksum,
-                    dataset: editorResources.dataset,
-                },
-            }));
-
-            return store.dispatch(rewiredGetNewDatasetChecksum(editorResources.dataset))
-                .then(() => {
-                    expect(store.getActions()).toEqual(expectedActions);
-                });
-        });
-
-        it('Should create an action to request a checksum and then invalide due to api error', () => {
-            const rewiredGetNewDatasetChecksum = rewiredEditor.__get__('getNewDatasetChecksum');
-
-            const expectedActions = [
-                {
-                    type: editorActions.REQUEST_CHECKSUM,
-                    file: editorResources.dataset,
-                },
-                {
-                    type: editorActions.INVALIDATE_CHECKSUM,
-                },
-            ];
+        //     const expectedActions = [
+        //         {
+        //             type: editorActions.REQUEST_CHECKSUM,
+        //             file: editorResources.dataset,
+        //         },
+        //         {
+        //             type: editorActions.RECEIVE_CHECKSUM,
+        //             file: editorResources.dataset,
+        //         },
+        //         {
+        //             type: editorActions.UPDATE_EDITOR_CHECKSUM,
+        //             checksum: editorResources.newChecksum,
+        //         },
+        //     ];
 
 
-            nock(BASE_URL)
-                .get(`/datasets/${editorResources.dataset}/content?convert=true&checksum=true`)
-                .reply(404);
+        //     nock(BASE_URL)
+        //         .get(`/datasets/${editorResources.dataset}/content`)
+        //         .reply(200, { records: editorResources.content, checksum: editorResources.newChecksum });
 
-            const store = mockStore(fromJS({
-                editor: {
-                    content: editorResources.content,
-                    checksum: editorResources.checksum,
-                    dataset: editorResources.dataset,
-                },
-            }));
+        //     const store = mockStore(fromJS({
+        //         editor: {
+        //             content: editorResources.content,
+        //             // checksum: editorResources.checksum,
+        //             dataset: editorResources.dataset,
+        //         },
+        //     }));
 
-            return store.dispatch(rewiredGetNewDatasetChecksum(editorResources.dataset))
-                .then(() => {
-                    expect(store.getActions()).toEqual(expectedActions);
-                });
-        });
-    });
+        //     return store.dispatch(rewiredGetNewDatasetChecksum(editorResources.dataset))
+        //         .then(() => {
+        //             expect(store.getActions()).toEqual(expectedActions);
+        //         });
+        // });
 
-    describe('saveDataset', () => {
-        it('Should create an action to request a save and call getNewChecksum causing a checksum request', () => {
-            const expectedActions = [
-                {
-                    type: editorActions.REQUEST_SAVE,
-                    file: editorResources.dataset,
-                },
-                {
-                    type: snackbarActions.PUSH_NOTIFICATION_MESSAGE,
-                    message: Map({
-                        message: `${rewiredSaveMessage} ${editorResources.dataset}`,
-                    }),
-                },
-                {
-                    type: editorActions.RECEIVE_SAVE,
-                    file: editorResources.dataset,
-                },
-                {
-                    type: editorActions.REQUEST_CHECKSUM,
-                    file: editorResources.dataset,
-                },
-            ];
+        //     it('Should create an action to request a checksum and then invalide due to api error', () => {
+        //         const rewiredGetNewDatasetChecksum = rewiredEditor.__get__('getNewDatasetChecksum');
 
-            nock(BASE_URL)
-                .put(`/datasets/${editorResources.dataset}/content`)
-                .reply(200);
-            nock(BASE_URL)
-                .get(`/datasets/${editorResources.dataset}/content?convert=true&checksum=true`)
-                .reply(200, { records: editorResources.content, checksum: editorResources.newChecksum });
+        //         const expectedActions = [
+        //             {
+        //                 type: editorActions.REQUEST_CHECKSUM,
+        //                 file: editorResources.dataset,
+        //             },
+        //             {
+        //                 type: editorActions.INVALIDATE_CHECKSUM,
+        //             },
+        //         ];
 
-            const store = mockStore(fromJS({
-                editor: {
-                    content: editorResources.content,
-                    checksum: editorResources.checksum,
-                    dataset: editorResources.dataset,
-                },
-            }));
 
-            return store.dispatch(editorActions.saveDataset(editorResources.dataset, editorResources.content, editorResources.checksum))
-                .then(() => {
-                    expect(store.getActions()).toEqual(expectedActions);
-                });
-        });
+        //         nock(BASE_URL)
+        //             .get(`/datasets/${editorResources.dataset}/content`)
+        //             .reply(404);
+
+        //         const store = mockStore(fromJS({
+        //             editor: {
+        //                 content: editorResources.content,
+        //                 // checksum: editorResources.checksum,
+        //                 dataset: editorResources.dataset,
+        //             },
+        //         }));
+
+        //         return store.dispatch(rewiredGetNewDatasetChecksum(editorResources.dataset))
+        //             .then(() => {
+        //                 expect(store.getActions()).toEqual(expectedActions);
+        //             });
+        //     });
+        // });
+
+        // describe('saveDataset', () => {
+        //     it('Should create an action to request a save and call getNewChecksum causing a checksum request', () => {
+        //         const expectedActions = [
+        //             {
+        //                 type: editorActions.REQUEST_SAVE,
+        //                 file: editorResources.dataset,
+        //             },
+        //             {
+        //                 type: snackbarActions.PUSH_NOTIFICATION_MESSAGE,
+        //                 message: Map({
+        //                     message: `${rewiredSaveMessage} ${editorResources.dataset}`,
+        //                 }),
+        //             },
+        //             {
+        //                 type: editorActions.RECEIVE_SAVE,
+        //                 file: editorResources.dataset,
+        //             },
+        //             {
+        //                 type: editorActions.REQUEST_CHECKSUM,
+        //                 file: editorResources.dataset,
+        //             },
+        //         ];
+
+        //         nock(BASE_URL)
+        //             .put(`/datasets/${editorResources.dataset}/content`)
+        //             .reply(200);
+        //         nock(BASE_URL)
+        //             .get(`/datasets/${editorResources.dataset}/content`)
+        //             .reply(200, { records: editorResources.content, checksum: editorResources.newChecksum });
+
+        //         const store = mockStore(fromJS({
+        //             editor: {
+        //                 content: editorResources.content,
+        //                 // checksum: editorResources.checksum,
+        //                 dataset: editorResources.dataset,
+        //             },
+        //         }));
+
+        //         return store.dispatch(editorActions.saveDataset(editorResources.dataset, editorResources.content, editorResources.checksum))
+        //             .then(() => {
+        //                 expect(store.getActions()).toEqual(expectedActions);
+        //             });
+        //     });
 
         it('Should create an action to request a save but fail and cause invalidate save action', () => {
             const expectedActions = [
@@ -320,7 +317,7 @@ describe('Action: editor', () => {
             const store = mockStore(fromJS({
                 editor: {
                     content: editorResources.content,
-                    checksum: editorResources.checksum,
+                    // checksum: editorResources.checksum,
                     dataset: editorResources.dataset,
                 },
             }));
@@ -333,83 +330,83 @@ describe('Action: editor', () => {
     });
 
     describe('saveAsDatasets', () => {
-        describe('saveAsDataset', () => {
-            it('Should create an action to request a saveAs, receiveSave', () => {
-                const expectedActions = [
-                    {
-                        type: editorActions.REQUEST_SAVE_AS,
-                        newName: editorResources.sequentialDatasetNew,
-                    },
-                    {
-                        type: snackbarActions.PUSH_NOTIFICATION_MESSAGE,
-                        message: Map({
-                            message: `${rewiredSaveMessage} ${editorResources.sequentialDatasetNew}`,
-                        }),
-                    },
-                    {
-                        type: editorActions.RECEIVE_SAVE,
-                        file: editorResources.sequentialDatasetNew,
-                    },
-                    {
-                        type: editorActions.REQUEST_CONTENT,
-                        file: editorResources.sequentialDatasetNew,
-                    },
-                ];
+    //     describe('saveAsDataset', () => {
+    //         it('Should create an action to request a saveAs, receiveSave', () => {
+    //             const expectedActions = [
+    //                 {
+    //                     type: editorActions.REQUEST_SAVE_AS,
+    //                     newName: editorResources.sequentialDatasetNew,
+    //                 },
+    //                 {
+    //                     type: snackbarActions.PUSH_NOTIFICATION_MESSAGE,
+    //                     message: Map({
+    //                         message: `${rewiredSaveMessage} ${editorResources.sequentialDatasetNew}`,
+    //                     }),
+    //                 },
+    //                 {
+    //                     type: editorActions.RECEIVE_SAVE,
+    //                     file: editorResources.sequentialDatasetNew,
+    //                 },
+    //                 {
+    //                     type: editorActions.REQUEST_CONTENT,
+    //                     file: editorResources.sequentialDatasetNew,
+    //                 },
+    //             ];
 
-                nock(BASE_URL)
-                    .post(`/datasets/${editorResources.sequentialDatasetNew}`)
-                    .reply(201);
+    //             nock(BASE_URL)
+    //                 .put(`/datasets/${editorResources.sequentialDatasetNew}`)
+    //                 .reply(204);
 
-                const store = mockStore();
+    //             const store = mockStore();
 
-                mockVoidFunction(treeDSActions, 'fetchDatasetTreeChildren');
+    //             mockVoidFunction(treeDSActions, 'fetchDatasetTreeChildren');
 
-                return store.dispatch(
-                    editorActions.saveAsDataset(
-                        editorResources.sequentialDataset,
-                        editorResources.sequentialDatasetNew,
-                        editorResources.newContent,
-                        editorResources.checksum))
-                    .then(() => {
-                        expect(store.getActions()).toEqual(expectedActions);
-                        expect(treeDSActions.fetchDatasetTreeChildren.calledOnce).toEqual(true, 'fetchDatasetTreeChildren called once');
-                    });
-            });
+    //             return store.dispatch(
+    //                 editorActions.saveAsDataset(
+    //                     editorResources.sequentialDataset,
+    //                     editorResources.sequentialDatasetNew,
+    //                     editorResources.newContent,
+    //                     editorResources.checksum))
+    //                 .then(() => {
+    //                     expect(store.getActions()).toEqual(expectedActions);
+    //                     expect(treeDSActions.fetchDatasetTreeChildren.calledOnce).toEqual(true, 'fetchDatasetTreeChildren called once');
+    //                 });
+    //         });
 
-            it('Should create an action to request a saveAs and invalidate', () => {
-                const expectedActions = [
-                    {
-                        type: editorActions.REQUEST_SAVE_AS,
-                        newName: editorResources.sequentialDatasetNew,
-                    },
-                    {
-                        type: snackbarActions.PUSH_NOTIFICATION_MESSAGE,
-                        message: Map({
-                            message: `${rewiredSaveFailMessage} ${editorResources.sequentialDatasetNew}`,
-                        }),
-                    },
-                    {
-                        type: editorActions.INVALIDATE_SAVE_AS,
-                    },
-                ];
+    //         it('Should create an action to request a saveAs and invalidate', () => {
+    //             const expectedActions = [
+    //                 {
+    //                     type: editorActions.REQUEST_SAVE_AS,
+    //                     newName: editorResources.sequentialDatasetNew,
+    //                 },
+    //                 {
+    //                     type: snackbarActions.PUSH_NOTIFICATION_MESSAGE,
+    //                     message: Map({
+    //                         message: `${rewiredSaveFailMessage} ${editorResources.sequentialDatasetNew}`,
+    //                     }),
+    //                 },
+    //                 {
+    //                     type: editorActions.INVALIDATE_SAVE_AS,
+    //                 },
+    //             ];
 
-                nock(BASE_URL)
-                    .post(`/datasets/${editorResources.sequentialDatasetNew}`)
-                    .reply(500);
+    //             nock(BASE_URL)
+    //                 .post(`/datasets/${editorResources.sequentialDatasetNew}`)
+    //                 .reply(500);
 
-                const store = mockStore();
+    //             const store = mockStore();
 
-                return store.dispatch(
-                    editorActions.saveAsDataset(
-                        editorResources.sequentialDataset,
-                        editorResources.sequentialDatasetNew,
-                        editorResources.newContent,
-                        editorResources.checksum))
-                    .then(() => {
-                        expect(store.getActions()).toEqual(expectedActions);
-                    });
-            });
-        });
+    //             return store.dispatch(
+    //                 editorActions.saveAsDataset(
+    //                     editorResources.sequentialDataset,
+    //                     editorResources.sequentialDatasetNew,
+    //                     editorResources.newContent,
+    //                     editorResources.checksum))
+    //                 .then(() => {
+    //                     expect(store.getActions()).toEqual(expectedActions);
+    //                 });
+    //         });
+    //     });
 
         describe('saveAsMember', () => {
             it('Should create actions to requestSaveAsMember and receiveSave', () => {
@@ -504,7 +501,7 @@ describe('Action: editor', () => {
             ];
 
             nock(BASE_URL)
-                .get(`/datasets/${path}/attributes`)
+                .get(`/datasets/${path}`)
                 .reply(200, attributes);
 
             const store = mockStore();

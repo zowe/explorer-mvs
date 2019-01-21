@@ -11,17 +11,10 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { ContextMenu, MenuItem } from 'react-contextmenu';
-import { DATASET_ORG_EXTENDED } from '../../constants/DataSetConstants';
 
 const DatasetPartitionedMenu = props => {
-    const { dsorg, childId, handleAllocateLike, handleCreateDataset, handleCreateMember, handleDeleteDataset } = props;
-    let allocateLikeMenutItem;
-    // Don't show Allocate Like for Enhanced datasets, API does not support it
-    if (!dsorg.includes(DATASET_ORG_EXTENDED)) {
-        allocateLikeMenutItem = (<MenuItem onClick={handleAllocateLike}>
-                Allocate Like
-        </MenuItem>);
-    }
+    const { childId, handleCreateDataset, handleCreateMember, handleDeleteDataset } = props;
+
     return (
         <ContextMenu id={childId}>
             <MenuItem onClick={handleCreateDataset}>
@@ -30,7 +23,6 @@ const DatasetPartitionedMenu = props => {
             <MenuItem onClick={handleCreateMember}>
                 New Dataset Member...
             </MenuItem>
-            {allocateLikeMenutItem}
             <MenuItem onClick={handleDeleteDataset}>
                 Delete
             </MenuItem>
@@ -41,9 +33,7 @@ const DatasetPartitionedMenu = props => {
 export default DatasetPartitionedMenu;
 
 DatasetPartitionedMenu.propTypes = {
-    dsorg: PropTypes.string.isRequired,
     childId: PropTypes.string.isRequired,
-    handleAllocateLike: PropTypes.func.isRequired,
     handleCreateDataset: PropTypes.func.isRequired,
     handleCreateMember: PropTypes.func.isRequired,
     handleDeleteDataset: PropTypes.func.isRequired,
