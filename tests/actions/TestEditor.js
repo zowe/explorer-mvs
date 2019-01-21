@@ -19,7 +19,6 @@ import { LOCAL_HOST_ENDPOINT as BASE_URL } from '../testResources/hostConstants'
 import * as editorActions from '../../WebContent/js/actions/editor';
 import * as editorResources from '../testResources/actions/editor';
 import * as treeData from '../testResources/actions/treeDS';
-import * as treeDSActions from '../../WebContent/js/actions/treeDS';
 import * as treeDatasetActions from '../../WebContent/js/actions/treeDatasets';
 import * as snackbarActions from '../../WebContent/js/actions/snackbarNotifications';
 

@@ -10,7 +10,7 @@
 
 import { fetchDatasetTreeChildren } from './treeDS';
 import { fetchDSMembers } from '../actions/treeDatasets';
-import { atlasGet, atlasPut, encodeURLComponent } from '../utilities/urlUtils';
+import { atlasGet, atlasPut, atlasPost, encodeURLComponent } from '../utilities/urlUtils';
 import { constructAndPushMessage } from './snackbarNotifications';
 
 export const REQUEST_CONTENT = 'REQUEST_CONTENT';
@@ -43,7 +43,7 @@ function requestDSContent(file) {
     };
 }
 
-function receiveDSContent(file, content, checksum) {
+function receiveDSContent(file, content) { // , checksum) {
     return {
         type: RECEIVE_CONTENT,
         file,
@@ -197,16 +197,18 @@ function invalidateSaveAs() {
 export function saveAsDataset(file, newFile, newContent) {
     return dispatch => {
         dispatch(requestSaveAs(file, newFile));
-        return atlasPut(`datasets/${newFile}`, encodeContentString(newContent), null).then(response => {
-            if (response.ok) {
-                dispatch(constructAndPushMessage(`${SAVE_SUCCESS_MESSAGE} ${file}`));
-                return dispatch(receiveSave(newFile));
-            }
-            throw response;
-        }).then(() => {
-            dispatch(fetchDatasetTreeChildren(newFile));
-            dispatch(fetchDS(newFile));
-        })
+        return atlasPost(`datasets/${newFile}`,
+            `{"basedsn": "${file}", "records": "${encodeContentString(newContent)}"}`, null)
+            .then(response => {
+                if (response.ok) {
+                    dispatch(constructAndPushMessage(`${SAVE_SUCCESS_MESSAGE} ${file}`));
+                    return dispatch(receiveSave(newFile));
+                }
+                throw response;
+            }).then(() => {
+                dispatch(fetchDatasetTreeChildren(newFile));
+                dispatch(fetchDS(newFile));
+            })
             .catch(response => {
                 return response.text().then(textResponse => {
                     dispatch(constructAndPushMessage(`${SAVE_FAIL_MESSAGE} ${file}`));
