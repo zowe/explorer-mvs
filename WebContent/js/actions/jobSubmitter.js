@@ -50,7 +50,7 @@ export function resetResponse() {
 export function submitJob(job) {
     return dispatch => {
         dispatch(requestSubmit());
-        return atlasPost('jobs/dataset', `"file":  "${job}"`)
+        return atlasPost('jobs/dataset', JSON.stringify({ file: `'${job}'` }))
             .then(response => {
                 if (response.ok) {
                     return response.json();

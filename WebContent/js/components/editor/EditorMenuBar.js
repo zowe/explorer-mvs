@@ -89,7 +89,7 @@ export default class EditorMenuBar extends React.Component {
                     label="Save as.."
                     secondary={true}
                     style={{ margin: '5px' }}
-                    disabled={!file}
+                    disabled={!file || !file.includes('(')}
                     onClick={handleSaveAs}
                 />
                 {file}

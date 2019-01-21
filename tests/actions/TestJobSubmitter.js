@@ -40,7 +40,7 @@ describe('Action: jobSubmitter', () => {
             const rewiredSuccessMessage = rewiredJobSubmitter.__get__('JOB_SUBMIT_SUCCESS_MESSAGE');
             const job = 'ATLAS.TEST.JCL(TSTJ0001)';
             nock(BASE_URL)
-                .post('/jobs', {
+                .post('/jobs/dataset', {
                     file: "'ATLAS.TEST.JCL(TSTJ0001)'",
                 })
                 .reply(200, jobSubmitterData.jobSubmitResponse);
