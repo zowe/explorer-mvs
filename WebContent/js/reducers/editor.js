@@ -10,12 +10,12 @@
 
 import { Map } from 'immutable';
 import {
-    UPDATE_EDITOR_CHECKSUM,
+    UPDATE_EDITOR_ETAG,
     UPDATE_EDITOR_CONTENT,
-    INVALIDATE_CHECKSUM,
+    INVALIDATE_ETAG,
     INVALIDATE_SAVE,
     REQUEST_SAVE,
-    REQUEST_CHECKSUM,
+    REQUEST_ETAG,
     REQUEST_ATTRIBUTES,
     RECEIVE_ATTRIBUTES,
     INVALIDATE_CONTENT,
@@ -26,7 +26,7 @@ const CONTENT_UNABLE_TO_RETRIEVE_MESSAGE = 'Unable to retrieve content';
 
 const INITIAL_EDITOR_STATE = Map({
     content: null,
-    checksum: null,
+    etag: null,
     file: '',
     isFetching: false,
 });
@@ -43,7 +43,7 @@ export default function editor(state = INITIAL_EDITOR_STATE, action) {
                 file: action.file,
                 content: action.content,
                 isFetching: false,
-                checksum: action.checksum,
+                etag: action.etag,
             });
         // TODO:: Do we need two invalidates?
         case INVALIDATE_CONTENT:
@@ -51,13 +51,13 @@ export default function editor(state = INITIAL_EDITOR_STATE, action) {
                 isFetching: false,
                 file: CONTENT_UNABLE_TO_RETRIEVE_MESSAGE,
                 content: CONTENT_UNABLE_TO_RETRIEVE_MESSAGE,
-                checksum: null,
+                etag: null,
             });
         case REQUEST_SAVE:
             return state.merge({
                 file: action.file,
             });
-        case REQUEST_CHECKSUM:
+        case REQUEST_ETAG:
             return state.merge({
                 file: action.file,
             });
@@ -65,17 +65,17 @@ export default function editor(state = INITIAL_EDITOR_STATE, action) {
             return state.merge({
                 content: action.content,
             });
-        case UPDATE_EDITOR_CHECKSUM:
+        case UPDATE_EDITOR_ETAG:
             return state.merge({
-                checksum: action.checksum,
+                etag: action.etag,
             });
-        case INVALIDATE_CHECKSUM:
+        case INVALIDATE_ETAG:
             return state.merge({
-                checksum: null,
+                etag: null,
             });
         case INVALIDATE_SAVE:
             return state.merge({
-                checksum: null,
+                etag: null,
             });
         case REQUEST_ATTRIBUTES:
             return state.set('isFetching', true);

@@ -83,11 +83,11 @@ export const DSRequestFailed = "Request for content using z/OSMF failed for data
 
 export const USSContent = 'Hello world';
 
-export const USSChecksum = 'wugbwaskdugfasudfu';
+export const USSEtag = 'wugbwaskdugfasudfu';
 
 export const USSFetchResponse = {
     content: USSContent,
-    checksum: USSChecksum,
+    etag: USSEtag,
 };
 
 export const USSRequestFailed = "Could not read content from file '/u/jcain//hello1.txt':";

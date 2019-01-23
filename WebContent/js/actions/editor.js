@@ -17,16 +17,16 @@ export const REQUEST_CONTENT = 'REQUEST_CONTENT';
 export const RECEIVE_CONTENT = 'RECEIVE_CONTENT';
 export const INVALIDATE_CONTENT = 'INVALIDATE_CONTENT';
 export const UPDATE_EDITOR_CONTENT = 'UPDATE_EDITOR_CONTENT';
-export const UPDATE_EDITOR_CHECKSUM = 'UPDATE_EDITOR_CHECKSUM';
-export const INVALIDATE_CHECKSUM = 'INVALIDATE_CHECKSUM';
+export const UPDATE_EDITOR_ETAG = 'UPDATE_EDITOR_ETAG';
+export const INVALIDATE_ETAG = 'INVALIDATE_ETAG';
 export const INVALIDATE_SAVE = 'INVALIDATE_SAVE';
 export const INVALIDATE_SAVE_AS = 'INVALIDATE_SAVE_AS';
 export const REQUEST_SAVE = 'REQUEST_SAVE';
 export const REQUEST_SAVE_AS = 'REQUEST_SAVE_AS';
 export const REQUEST_SAVE_AS_MEMBER = 'REQUEST_SAVE_AS_MEMBER';
 export const RECEIVE_SAVE = 'RECEIVE_SAVE';
-export const REQUEST_CHECKSUM = 'REQUEST_CHECKSUM';
-export const RECEIVE_CHECKSUM = 'RECEIVE_CHECKSUM';
+export const REQUEST_ETAG = 'REQUEST_ETAG';
+export const RECEIVE_ETAG = 'RECEIVE_ETAG';
 export const SET_FULLSCREEN = 'SET_FULLSCREEN';
 export const SET_NOT_FULLSCREEN = 'SET_NOT_FULLSCREEN';
 export const REQUEST_ATTRIBUTES = 'REQUEST_ATTRIBUTES';
@@ -43,12 +43,12 @@ function requestDSContent(file) {
     };
 }
 
-function receiveDSContent(file, content) { // , checksum) {
+function receiveDSContent(file, content, etag) {
     return {
         type: RECEIVE_CONTENT,
         file,
         content,
-        //        checksum,
+        etag,
     };
 }
 
@@ -62,10 +62,17 @@ export function fetchDS(file) {
     return dispatch => {
         dispatch(requestDSContent(file));
         const endpoint = `datasets/${encodeURIComponent(file)}/content`;
+        let etag;
         return atlasGet(endpoint, { })
-            .then(response => { return response.json(); })
+            .then(response => {
+                etag = response.headers.get('etag');
+                return response;
+            })
+            .then(response => {
+                return response.json();
+            })
             .then(json => {
-                return dispatch(receiveDSContent(file, json.records, json.checksum));
+                return dispatch(receiveDSContent(file, json.records, etag));
             })
             .catch(() => {
                 dispatch(constructAndPushMessage(`${GET_CONTENT_FAIL_MESSAGE} ${file}`));
@@ -81,51 +88,50 @@ export function updateEditorContent(content) {
     };
 }
 
-// function requestChecksum(file) {
-//     return {
-//         type: REQUEST_CHECKSUM,
-//         file,
-//     };
-// }
-
-// function receiveChecksum(file) {
-//     return {
-//         type: RECEIVE_CHECKSUM,
-//         file,
-//     };
-// }
-
-export function updateEditorChecksum(checksum) {
+function requestEtag(file) {
     return {
-        type: UPDATE_EDITOR_CHECKSUM,
-        checksum,
+        type: REQUEST_ETAG,
+        file,
     };
 }
 
-// function invalidateChecksumChange() {
-//     return {
-//         type: INVALIDATE_CHECKSUM,
-//     };
-// }
+function receiveEtag(file) {
+    return {
+        type: RECEIVE_ETAG,
+        file,
+    };
+}
 
-// function getNewDatasetChecksum(file) {
-//     return dispatch => {
-//         dispatch(requestChecksum(file));
-//         const endpoint = `datasets/${encodeURLComponent(file)}/content`;
-//         const requestBody = { credentials: 'include' };
-//         return atlasFetch(endpoint, requestBody).then(response => {
-//             if (response.ok) {
-//                 dispatch(receiveChecksum(file));
-//                 return response.json();
-//             }
-//             throw Error(response.statusText);
-//         }).then(json => {
-//             dispatch(updateEditorChecksum(json.checksum));
-//         }).catch(() => {
-//             dispatch(invalidateChecksumChange());
-//         });
-//     };
-// }
+export function updateEditorEtag(etag) {
+    return {
+        type: UPDATE_EDITOR_ETAG,
+        etag,
+    };
+}
+
+function invalidateEtagChange() {
+    return {
+        type: INVALIDATE_ETAG,
+    };
+}
+
+function getNewDatasetEtag(file) {
+    return dispatch => {
+        dispatch(requestEtag(file));
+        const endpoint = `datasets/${encodeURLComponent(file)}/content`;
+        return atlasGet(endpoint, { }).then(response => {
+            if (response.ok) {
+                dispatch(receiveEtag(file));
+                return response.headers.get('etag');
+            }
+            throw Error(response.statusText);
+        }).then(etag => {
+            dispatch(updateEditorEtag(etag));
+        }).catch(() => {
+            dispatch(invalidateEtagChange());
+        });
+    };
+}
 
 function requestSave(file) {
     return {
@@ -154,29 +160,30 @@ function replaceAll(str, find, replace) {
 function encodeContentString(content) {
     let newContent = replaceAll(content, /\\/, '\\\\'); // Escape backslashes
     newContent = replaceAll(newContent, /"/, '\\"'); // Escape double quotes
-    // The new server interface is unable to accept steings with hex values
+    // The new server interface is unable to accept setings with hex values
     newContent = replaceAll(newContent, '\x0a', '\\n'); // Escape line feed
     newContent = replaceAll(newContent, '\x0d', '\\r'); // Escape return
     newContent = replaceAll(newContent, '\x09', '\\t'); // Escape tab
     return newContent;
 }
 
-export function saveDataset(file, content) {
+export function saveDataset(file, content, etag) {
     return dispatch => {
         dispatch(requestSave(file));
         const endpoint = `datasets/${encodeURLComponent(file)}/content`;
-        return atlasPut(endpoint, `${encodeContentString(content)}`).then(response => {
-        // return atlasPut(endpoint, encodeContentString(content), null).then(response => {
+        return atlasPut(endpoint, `${encodeContentString(content)}`, etag).then(response => {
             if (response.ok) {
                 dispatch(constructAndPushMessage(`${SAVE_SUCCESS_MESSAGE} ${file}`));
                 return dispatch(receiveSave(file));
             }
+            if (response.status !== 412) { // Precondition failed (usually etag invalid) so don't enable save
+                dispatch(invalidateSave(response));
+            }
             throw Error(response.statusText);
-        // }).then(() => {
-        //     dispatch(getNewDatasetChecksum(file));
-        }).catch(response => {
+        }).then(() => {
+            dispatch(getNewDatasetEtag(file));
+        }).catch(() => {
             dispatch(constructAndPushMessage(`${SAVE_FAIL_MESSAGE} ${file}`));
-            dispatch(invalidateSave(response));
         });
     };
 }

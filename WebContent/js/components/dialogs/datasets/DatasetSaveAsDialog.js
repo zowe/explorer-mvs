@@ -39,10 +39,10 @@ export default class DatasetSaveAsDialog extends React.Component {
     }
 
     submitAction = () => {
-        const { file, content, checksum } = this.props;
+        const { file, content, etag } = this.props;
         return DatasetSaveAsDialog.isMember(file) ?
             saveAsDatasetMember(DatasetSaveAsDialog.getDatasetFromFile(file), this.state.newDSMember, content) :
-            saveAsDataset(file, this.state.newDSName, content, checksum);
+            saveAsDataset(file, this.state.newDSName, content, etag);
     }
 
 
@@ -88,5 +88,5 @@ DatasetSaveAsDialog.propTypes = {
     dispatch: PropTypes.func.isRequired,
     dialogReturn: PropTypes.func.isRequired,
     content: PropTypes.string.isRequired,
-    checksum: PropTypes.string,
+    etag: PropTypes.string,
 };

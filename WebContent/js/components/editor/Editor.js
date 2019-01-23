@@ -30,7 +30,7 @@ class Editor extends React.Component {
 
         this.state = {
             currentContent: props.content,
-            currentChecksum: props.checksum,
+            currentEtag: props.etag,
             syntax: PLAIN_TEXT,
             dialog: NO_DIALOG,
         };
@@ -43,9 +43,9 @@ class Editor extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        const { checksum, location, content, file, isFetching } = this.props;
-        if (checksum !== nextProps.checksum) {
-            this.setState({ currentChecksum: nextProps.checksum });
+        const { etag, location, content, file, isFetching } = this.props;
+        if (etag !== nextProps.etag) {
+            this.setState({ currentEtag: nextProps.etag });
         }
         if (location && nextProps.content !== null && nextProps.content !== content && !isFetching) {
             this.setState({ currentContent: nextProps.content });
@@ -70,7 +70,7 @@ class Editor extends React.Component {
 
     handleSave() {
         const { dispatch, file } = this.props;
-        dispatch(saveDataset(file, this.state.currentContent, this.state.currentChecksum));
+        dispatch(saveDataset(file, this.state.currentContent, this.state.currentEtag));
     }
 
     handleSaveAs() {
@@ -89,13 +89,13 @@ class Editor extends React.Component {
     }
 
     renderDialog() {
-        const { dispatch, file, checksum } = this.props;
+        const { dispatch, file, etag } = this.props;
         switch (this.state.dialog) {
             case SAVE_AS_DATASET:
                 return (<DatasetSaveAsDialog
                     file={file}
                     content={this.state.currentContent}
-                    checksum={checksum}
+                    etag={etag}
                     dispatch={dispatch}
                     dialogReturn={this.dialogReturn}
                 />);
@@ -139,7 +139,7 @@ class Editor extends React.Component {
 
 Editor.propTypes = {
     content: PropTypes.string,
-    checksum: PropTypes.string,
+    etag: PropTypes.string,
     file: PropTypes.string,
     isFetching: PropTypes.bool,
     dispatch: PropTypes.func,
@@ -154,7 +154,7 @@ function mapStateToProps(state) {
     const editorRoot = state.get('editor');
     return {
         content: editorRoot.get('content'),
-        checksum: editorRoot.get('checksum'),
+        etag: editorRoot.get('etag'),
         file: editorRoot.get('file'),
         isFetching: editorRoot.get('isFetching'),
     };
