@@ -78,6 +78,7 @@ export default class DatasetSaveAsDialog extends React.Component {
                 dispatch={dispatch}
                 dialogContent={DatasetSaveAsDialog.isMember(file) ? dialogContentMember : dialogContentDataset}
                 contentStyle={dialogWidthStyle}
+                bodyStyle={{ overflowY: 'auto' }}
             />
         );
     }
