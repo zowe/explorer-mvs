@@ -20,6 +20,6 @@ export const datasetMemberNew = 'TSTJNEW';
 
 export const datasetDiffMemeber = `ATLAS.TEST.JCL(${datasetMemberNew})`;
 
-export const checksum = '1EAC8542504731CBDBC42BB95008EAA8';
+export const etag = '1EAC8542504731CBDBC42BB95008EAA8';
 
-export const newChecksum = 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA';
+export const newEtag = 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA';

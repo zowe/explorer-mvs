@@ -61,6 +61,7 @@ describe('Action: editor', () => {
                     type: editorActions.RECEIVE_CONTENT,
                     file: dataset,
                     content: editorResources.content,
+                    etag: null,
                 },
             ];
             nock(BASE_URL)
@@ -165,132 +166,89 @@ describe('Action: editor', () => {
         });
     });
 
-    // describe('updateEditorChecksum', () => {
-    //     it('Should create an action to update the editor checksum', () => {
-    //         const expectedAction = {
-    //             type: editorActions.UPDATE_EDITOR_CHECKSUM,
+    describe('updateEditorEtag', () => {
+        it('Should create an action to update the editor etag', () => {
+            const expectedAction = {
+                type: editorActions.UPDATE_EDITOR_ETAG,
+                etag: editorResources.etag,
+            };
+            expect(editorActions.updateEditorEtag(editorResources.etag)).toEqual(expectedAction);
+        });
+    });
 
-    //         };
-    //         expect(editorActions.updateEditorChecksum(editorResources.checksum)).toEqual(expectedAction);
-    //     });
-    // });
+    describe('getNewDatasetEtag', () => {
+        it('Should create an action to request a etag then update editor etag', () => {
+            const rewiredGetNewDatasetEtag = rewiredEditor.__get__('getNewDatasetEtag');
 
-    describe('getNewDatasetChecksum', () => {
-        // it('Should create an action to request a checksum then update editor checksum', () => {
-        //     const rewiredGetNewDatasetChecksum = rewiredEditor.__get__('getNewDatasetChecksum');
-
-        //     const expectedActions = [
-        //         {
-        //             type: editorActions.REQUEST_CHECKSUM,
-        //             file: editorResources.dataset,
-        //         },
-        //         {
-        //             type: editorActions.RECEIVE_CHECKSUM,
-        //             file: editorResources.dataset,
-        //         },
-        //         {
-        //             type: editorActions.UPDATE_EDITOR_CHECKSUM,
-        //             checksum: editorResources.newChecksum,
-        //         },
-        //     ];
-
-
-        //     nock(BASE_URL)
-        //         .get(`/datasets/${editorResources.dataset}/content`)
-        //         .reply(200, { records: editorResources.content, checksum: editorResources.newChecksum });
-
-        //     const store = mockStore(fromJS({
-        //         editor: {
-        //             content: editorResources.content,
-        //             // checksum: editorResources.checksum,
-        //             dataset: editorResources.dataset,
-        //         },
-        //     }));
-
-        //     return store.dispatch(rewiredGetNewDatasetChecksum(editorResources.dataset))
-        //         .then(() => {
-        //             expect(store.getActions()).toEqual(expectedActions);
-        //         });
-        // });
-
-        //     it('Should create an action to request a checksum and then invalide due to api error', () => {
-        //         const rewiredGetNewDatasetChecksum = rewiredEditor.__get__('getNewDatasetChecksum');
-
-        //         const expectedActions = [
-        //             {
-        //                 type: editorActions.REQUEST_CHECKSUM,
-        //                 file: editorResources.dataset,
-        //             },
-        //             {
-        //                 type: editorActions.INVALIDATE_CHECKSUM,
-        //             },
-        //         ];
+            const expectedActions = [
+                {
+                    type: editorActions.REQUEST_ETAG,
+                    file: editorResources.dataset,
+                },
+                {
+                    type: editorActions.RECEIVE_ETAG,
+                    file: editorResources.dataset,
+                },
+                {
+                    type: editorActions.UPDATE_EDITOR_ETAG,
+                    etag: editorResources.newEtag,
+                },
+            ];
 
 
-        //         nock(BASE_URL)
-        //             .get(`/datasets/${editorResources.dataset}/content`)
-        //             .reply(404);
+            nock(BASE_URL)
+                .get(`/datasets/${editorResources.dataset}/content`)
+                .reply(200, { records: editorResources.content }, { etag: editorResources.newEtag });
 
-        //         const store = mockStore(fromJS({
-        //             editor: {
-        //                 content: editorResources.content,
-        //                 // checksum: editorResources.checksum,
-        //                 dataset: editorResources.dataset,
-        //             },
-        //         }));
+            const store = mockStore(fromJS({
+                editor: {
+                    content: editorResources.content,
+                    etag: editorResources.newEtag,
+                    dataset: editorResources.dataset,
+                },
+            }));
 
-        //         return store.dispatch(rewiredGetNewDatasetChecksum(editorResources.dataset))
-        //             .then(() => {
-        //                 expect(store.getActions()).toEqual(expectedActions);
-        //             });
-        //     });
-        // });
+            return store.dispatch(rewiredGetNewDatasetEtag(editorResources.dataset))
+                .then(() => {
+                    expect(store.getActions()).toEqual(expectedActions);
+                });
+        });
 
-        // describe('saveDataset', () => {
-        //     it('Should create an action to request a save and call getNewChecksum causing a checksum request', () => {
-        //         const expectedActions = [
-        //             {
-        //                 type: editorActions.REQUEST_SAVE,
-        //                 file: editorResources.dataset,
-        //             },
-        //             {
-        //                 type: snackbarActions.PUSH_NOTIFICATION_MESSAGE,
-        //                 message: Map({
-        //                     message: `${rewiredSaveMessage} ${editorResources.dataset}`,
-        //                 }),
-        //             },
-        //             {
-        //                 type: editorActions.RECEIVE_SAVE,
-        //                 file: editorResources.dataset,
-        //             },
-        //             {
-        //                 type: editorActions.REQUEST_CHECKSUM,
-        //                 file: editorResources.dataset,
-        //             },
-        //         ];
+        it('Should create an action to request a etag and then invalide due to api error', () => {
+            const rewiredGetNewDatasetEtag = rewiredEditor.__get__('getNewDatasetEtag');
 
-        //         nock(BASE_URL)
-        //             .put(`/datasets/${editorResources.dataset}/content`)
-        //             .reply(200);
-        //         nock(BASE_URL)
-        //             .get(`/datasets/${editorResources.dataset}/content`)
-        //             .reply(200, { records: editorResources.content, checksum: editorResources.newChecksum });
+            const expectedActions = [
+                {
+                    type: editorActions.REQUEST_ETAG,
+                    file: editorResources.dataset,
+                },
+                {
+                    type: editorActions.INVALIDATE_ETAG,
+                },
+            ];
 
-        //         const store = mockStore(fromJS({
-        //             editor: {
-        //                 content: editorResources.content,
-        //                 // checksum: editorResources.checksum,
-        //                 dataset: editorResources.dataset,
-        //             },
-        //         }));
 
-        //         return store.dispatch(editorActions.saveDataset(editorResources.dataset, editorResources.content, editorResources.checksum))
-        //             .then(() => {
-        //                 expect(store.getActions()).toEqual(expectedActions);
-        //             });
-        //     });
+            nock(BASE_URL)
+                .get(`/datasets/${editorResources.dataset}/content`)
+                .reply(404);
 
-        it('Should create an action to request a save but fail and cause invalidate save action', () => {
+            const store = mockStore(fromJS({
+                editor: {
+                    content: editorResources.content,
+                    // etag: editorResources.etag,
+                    dataset: editorResources.dataset,
+                },
+            }));
+
+            return store.dispatch(rewiredGetNewDatasetEtag(editorResources.dataset))
+                .then(() => {
+                    expect(store.getActions()).toEqual(expectedActions);
+                });
+        });
+    });
+
+    describe('saveDataset', () => {
+        it('Should create an action to request a save and call getNewEtag causing a etag request', () => {
             const expectedActions = [
                 {
                     type: editorActions.REQUEST_SAVE,
@@ -299,11 +257,54 @@ describe('Action: editor', () => {
                 {
                     type: snackbarActions.PUSH_NOTIFICATION_MESSAGE,
                     message: Map({
-                        message: `${rewiredSaveFailMessage} ${editorResources.dataset}`,
+                        message: `${rewiredSaveMessage} ${editorResources.dataset}`,
                     }),
                 },
                 {
+                    type: editorActions.RECEIVE_SAVE,
+                    file: editorResources.dataset,
+                },
+                {
+                    type: editorActions.REQUEST_ETAG,
+                    file: editorResources.dataset,
+                },
+            ];
+
+            nock(BASE_URL)
+                .put(`/datasets/${editorResources.dataset}/content`)
+                .reply(200);
+            nock(BASE_URL)
+                .get(`/datasets/${editorResources.dataset}/content`)
+                .reply(200, { records: editorResources.content, etag: editorResources.newEtag });
+
+            const store = mockStore(fromJS({
+                editor: {
+                    content: editorResources.content,
+                    etag: editorResources.etag,
+                    dataset: editorResources.dataset,
+                },
+            }));
+
+            return store.dispatch(editorActions.saveDataset(editorResources.dataset, editorResources.content, editorResources.etag))
+                .then(() => {
+                    expect(store.getActions()).toEqual(expectedActions);
+                });
+        });
+
+        it('Should create an action to request a save but fail and cause invalidate save action', () => {
+            const expectedActions = [
+                {
+                    type: editorActions.REQUEST_SAVE,
+                    file: editorResources.dataset,
+                },
+                {
                     type: editorActions.INVALIDATE_SAVE,
+                },
+                {
+                    type: snackbarActions.PUSH_NOTIFICATION_MESSAGE,
+                    message: Map({
+                        message: `${rewiredSaveFailMessage} ${editorResources.dataset}`,
+                    }),
                 },
             ];
 
@@ -317,12 +318,47 @@ describe('Action: editor', () => {
             const store = mockStore(fromJS({
                 editor: {
                     content: editorResources.content,
-                    // checksum: editorResources.checksum,
+                    etag: editorResources.etag,
                     dataset: editorResources.dataset,
                 },
             }));
 
-            return store.dispatch(editorActions.saveDataset(editorResources.dataset, editorResources.content, editorResources.checksum))
+            return store.dispatch(editorActions.saveDataset(editorResources.dataset, editorResources.content, editorResources.etag))
+                .then(() => {
+                    expect(store.getActions()).toEqual(expectedActions);
+                });
+        });
+
+        it('Should create an action to request a save but fail with a 412. But no invalidate save action in this case', () => {
+            const expectedActions = [
+                {
+                    type: editorActions.REQUEST_SAVE,
+                    file: editorResources.dataset,
+                },
+                {
+                    type: snackbarActions.PUSH_NOTIFICATION_MESSAGE,
+                    message: Map({
+                        message: `${rewiredSaveFailMessage} ${editorResources.dataset}`,
+                    }),
+                },
+            ];
+
+            nock(BASE_URL)
+                .put(`/datasets/${editorResources.dataset}/content`)
+                .reply(412);
+            // TODO:: Nock does not offer the ability to add statusText yet,
+            // So we can't test the response status text gets added to a message (see "Not Found" above)
+            // https://github.com/node-nock/nock/issues/587
+
+            const store = mockStore(fromJS({
+                editor: {
+                    content: editorResources.content,
+                    etag: editorResources.etag,
+                    dataset: editorResources.dataset,
+                },
+            }));
+
+            return store.dispatch(editorActions.saveDataset(editorResources.dataset, editorResources.content, editorResources.etag))
                 .then(() => {
                     expect(store.getActions()).toEqual(expectedActions);
                 });
@@ -366,7 +402,7 @@ describe('Action: editor', () => {
     //                     editorResources.sequentialDataset,
     //                     editorResources.sequentialDatasetNew,
     //                     editorResources.newContent,
-    //                     editorResources.checksum))
+    //                     editorResources.etag))
     //                 .then(() => {
     //                     expect(store.getActions()).toEqual(expectedActions);
     //                     expect(treeDSActions.fetchDatasetTreeChildren.calledOnce).toEqual(true, 'fetchDatasetTreeChildren called once');
@@ -401,7 +437,7 @@ describe('Action: editor', () => {
     //                     editorResources.sequentialDataset,
     //                     editorResources.sequentialDatasetNew,
     //                     editorResources.newContent,
-    //                     editorResources.checksum))
+    //                     editorResources.etag))
     //                 .then(() => {
     //                     expect(store.getActions()).toEqual(expectedActions);
     //                 });

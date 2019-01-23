@@ -12,14 +12,14 @@ import { Map } from 'immutable';
 
 export const baseEditor = Map({
     content: null,
-    checksum: null,
+    etag: null,
     file: '',
     isFetching: false,
 });
 
 export const requestedContent = Map({
     content: null,
-    checksum: null,
+    etag: null,
     file: '',
     isFetching: true,
 });
@@ -28,18 +28,18 @@ export const content = '//TSTJCICS JOB (ADL),ATLAS,MSGCLASS=0,CLASS=A,TIME=1440\
 
 export const dataset = 'JCAIN.TEST.JCL(TSTJCICS)';
 
-export const checksum = '1EAC8542504731CBDBC42BB95008EAA8';
+export const etag = '1EAC8542504731CBDBC42BB95008EAA8';
 
 export const receivedContent = Map({
     content,
-    checksum,
+    etag,
     file: dataset,
     isFetching: false,
 });
 
 export const invalidatedContent = Map({
     content: 'Unable to retrieve content',
-    checksum: null,
+    etag: null,
     file: 'Unable to retrieve content',
     isFetching: false,
 });
@@ -48,30 +48,30 @@ export const newContent = '//THE CONTENT AHS BEEN CHANGED IS NO LONGER VALID JCL
 
 export const newContentEditor = Map({
     content: newContent,
-    checksum,
+    etag,
     file: dataset,
     isFetching: false,
 });
 
-export const newChecksum = 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAA';
+export const newEtag = 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAA';
 
-export const newChecksumEditor = Map({
+export const newEtagEditor = Map({
     content,
-    checksum: newChecksum,
+    etag: newEtag,
     file: dataset,
     isFetching: false,
 });
 
-export const invalidatedChecksumEditor = Map({
+export const invalidatedEtagEditor = Map({
     content,
-    checksum: null,
+    etag: null,
     file: dataset,
     isFetching: false,
 });
 
 export const invalidatedSaveEditor = Map({
     content,
-    checksum: null,
+    etag: null,
     file: dataset,
     isFetching: false,
 });

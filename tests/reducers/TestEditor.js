@@ -30,7 +30,7 @@ describe('Reducer: editor', () => {
             type: editorActions.RECEIVE_CONTENT,
             file: editorResources.receivedContent.get('file'),
             content: editorResources.receivedContent.get('content'),
-            checksum: editorResources.receivedContent.get('checksum'),
+            etag: editorResources.receivedContent.get('etag'),
         };
         expect(editor(editorResources.baseContent, action)).toEqual(editorResources.receivedContent);
     });
@@ -54,17 +54,17 @@ describe('Reducer: editor', () => {
         expect(editor(editorResources.receivedContent, action)).toEqual(editorResources.newContentEditor);
     });
 
-    it('Should handle UPDATE_EDITOR_CHECKSUM', () => {
+    it('Should handle UPDATE_EDITOR_ETAG', () => {
         const action = {
-            type: editorActions.UPDATE_EDITOR_CHECKSUM,
-            checksum: editorResources.newChecksum,
+            type: editorActions.UPDATE_EDITOR_ETAG,
+            etag: editorResources.newEtag,
         };
-        expect(editor(editorResources.receivedContent, action)).toEqual(editorResources.newChecksumEditor);
+        expect(editor(editorResources.receivedContent, action)).toEqual(editorResources.newEtagEditor);
     });
 
-    it('Should handle INVALIDATE_CHECKSUM', () => {
-        const action = { type: editorActions.INVALIDATE_CHECKSUM };
-        expect(editor(editorResources.receivedContent, action)).toEqual(editorResources.invalidatedChecksumEditor);
+    it('Should handle INVALIDATE_ETAG', () => {
+        const action = { type: editorActions.INVALIDATE_ETAG };
+        expect(editor(editorResources.receivedContent, action)).toEqual(editorResources.invalidatedEtagEditor);
     });
 
     it('Should handle INVALIDATE_SAVE', () => {

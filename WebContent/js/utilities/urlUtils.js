@@ -35,7 +35,7 @@ function atlasAction(endpoint, fetchParams) {
 export function atlasGet(endpoint) {
     const fetchParams = {
         method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'Access-Control-Expose-Headers': 'ETag' },
         credentials: 'include' };
     return atlasAction(endpoint, fetchParams);
 }
@@ -57,10 +57,10 @@ export function atlasPost(endpoint, body) {
     return atlasAction(endpoint, fetchParams);
 }
 
-export function atlasPut(endpoint, content, checksum) {
+export function atlasPut(endpoint, content, etag) {
     const header = { 'Content-Type': 'application/json' };
-    if (checksum) {
-        header['If-Match'] = checksum;
+    if (etag) {
+        header['If-Match'] = etag;
     }
     const fetchParams = {
         method: 'PUT',
