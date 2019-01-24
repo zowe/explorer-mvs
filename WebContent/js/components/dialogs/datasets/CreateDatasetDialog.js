@@ -67,10 +67,10 @@ export default class CreateDatasetDialog extends React.Component {
             allocationUnit: PRESETS.get('JCL').allocationUnit,
             primary: PRESETS.get('JCL').primary,
             secondary: PRESETS.get('JCL').secondary,
-            directoryBlocks: PRESETS.get('JCL').dirblk,
-            recordFormat: PRESETS.get('JCL').recfm,
-            blockSize: PRESETS.get('JCL').blksize,
-            recordLength: PRESETS.get('JCL').lrecl,
+            directoryBlocks: PRESETS.get('JCL').directoryBlocks,
+            recordFormat: PRESETS.get('JCL').recordFormat,
+            blockSize: PRESETS.get('JCL').blockSize,
+            recordLength: PRESETS.get('JCL').recordLength,
         };
     }
 
@@ -82,17 +82,17 @@ export default class CreateDatasetDialog extends React.Component {
             allocationUnit: this.state.allocationUnit,
             primary: parseInt(this.state.primary, 10),
             secondary: parseInt(this.state.secondary, 10),
-            directoryBlocks: parseInt(this.state.dirblk, 10),
-            recordFormat: this.state.recfm,
-            blockSize: parseInt(this.state.blksize, 10),
-            recordLength: parseInt(this.state.lrecl, 10),
+            directoryBlocks: parseInt(this.state.directoryBlocks, 10),
+            recordFormat: this.state.recordFormat,
+            blockSize: parseInt(this.state.blockSize, 10),
+            recordLength: parseInt(this.state.recordLength, 10),
         });
         if (properties.get('dataSetOrganization') === SEQUENTIAL.Dsorg) {
             properties = properties.delete('directoryBlocks');
         }
         properties.forEach((value, key) => {
-            if (value === null || value === 'undefined') {
-                properties.delete(key);
+            if (!value) {
+                properties = properties.delete(key);
             }
         });
         return createDataset(properties, DSPath);
@@ -104,10 +104,10 @@ export default class CreateDatasetDialog extends React.Component {
         this.setState({ allocationUnit: PRESETS.get(value).allocationUnit });
         this.setState({ primary: PRESETS.get(value).primary });
         this.setState({ secondary: PRESETS.get(value).secondary });
-        this.setState({ dirblk: PRESETS.get(value).dirblk });
-        this.setState({ recfm: PRESETS.get(value).recfm });
-        this.setState({ blksize: PRESETS.get(value).blksize });
-        this.setState({ lrecl: PRESETS.get(value).lrecl });
+        this.setState({ directoryBlocks: PRESETS.get(value).directoryBlocks });
+        this.setState({ recordFormat: PRESETS.get(value).recordFormat });
+        this.setState({ blockSize: PRESETS.get(value).blockSize });
+        this.setState({ recordLength: PRESETS.get(value).recordLength });
     }
 
     handleTypeChange = (event, index, value) => {
@@ -192,16 +192,16 @@ export default class CreateDatasetDialog extends React.Component {
                 <div style={rowAlignStyle}>
                     <TextField
                         floatingLabelText="Blocks"
-                        name="dirblk"
+                        name="directoryBlocks"
                         disabled={this.state.type === SEQUENTIAL.Name}
-                        value={this.state.type === SEQUENTIAL.Name ? '' : this.state.dirblk}
+                        value={this.state.type === SEQUENTIAL.Name ? '' : this.state.directoryBlocks}
                         onChange={this.handleInputChange}
                     />
                     <div style={floatRightStyle}>
                         <TextField
                             floatingLabelText="Record Format"
-                            name="recfm"
-                            value={this.state.recfm}
+                            name="recordFormat"
+                            value={this.state.recordFormat}
                             onChange={this.handleInputChange}
                         />
                     </div>
@@ -210,17 +210,17 @@ export default class CreateDatasetDialog extends React.Component {
 
                     <TextField
                         floatingLabelText="Block Size"
-                        name="blksize"
-                        hintText="blksize"
-                        value={this.state.blksize}
+                        name="blockSize"
+                        hintText="blockSize"
+                        value={this.state.blockSize}
                         onChange={this.handleInputChange}
                     />
                     <div style={floatRightStyle}>
                         <TextField
                             floatingLabelText="Record Length"
-                            name="lrecl"
-                            hintText="lrecl"
-                            value={this.state.lrecl}
+                            name="recordLength"
+                            hintText="recordLength"
+                            value={this.state.recordLength}
                             onChange={this.handleInputChange}
                         />
                     </div>
