@@ -105,7 +105,7 @@ export class DSTree extends React.Component {
                     </div>
                     <FullHeightTree offset={16}>
                         <ul>
-                            {isToggled ? DSChildren.keySeq().toArray().map(this.renderDSChild) : null}
+                            {isToggled ? DSChildren.keySeq().toArray().sort().map(this.renderDSChild) : null}
                         </ul>
                     </FullHeightTree>
                 </CardText>
