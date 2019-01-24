@@ -58,6 +58,7 @@ export default class AtlasDialog extends React.Component {
                     open={this.state.open}
                     onRequestClose={this.handleClose}
                     contentStyle={this.props.contentStyle}
+                    bodyStyle={this.props.bodyStyle}
                 >
                     <div>
                         <form onSubmit={this.handleSubmit} >
@@ -73,6 +74,9 @@ export default class AtlasDialog extends React.Component {
 AtlasDialog.propTypes = {
     contentStyle: PropTypes.shape({
         width: PropTypes.string,
+    }),
+    bodyStyle: PropTypes.shape({
+        overflowY: PropTypes.string,
     }),
     dialogContent: PropTypes.element,
     dialogReturn: PropTypes.func.isRequired,

@@ -236,6 +236,7 @@ export default class CreateDatasetDialog extends React.Component {
                 dispatch={this.props.dispatch}
                 dialogContent={dialogContent}
                 contentStyle={dialogWidthStyle}
+                bodyStyle={{ overflowY: 'auto' }}
             />
         );
     }
