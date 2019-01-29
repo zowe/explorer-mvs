@@ -13,12 +13,15 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Map } from 'immutable';
 import { Card, CardText } from 'material-ui/Card';
+import ErrorIcon from 'material-ui/svg-icons/alert/error';
 import ConnectedTreeDataset from '../components/explorer/TreeDataset';
 import RefreshIcon from '../components/explorer/RefreshIcon';
 import { setDSPath, fetchDatasetTreeChildren, resetDSChildren } from '../actions/treeDS';
 import { fetchDSMembers } from '../actions/treeDatasets';
 import FullHeightTree from './FullHeightTree';
 import UpperCaseTextField from '../components/dialogs/UpperCaseTextField';
+
+const NO_DATASETS_FOUND_MESSAGE = 'No Datasets found';
 
 export class DSTree extends React.Component {
     constructor(props) {
@@ -37,15 +40,14 @@ export class DSTree extends React.Component {
         const { dispatch, username, DSChildren } = this.props;
         if (DSChildren.isEmpty()) {
             dispatch(setDSPath(username));
+            dispatch(fetchDatasetTreeChildren(username));
         }
     }
 
     componentWillReceiveProps(nextProps) {
-        const { dispatch, validated, DSPath } = this.props;
-        // Once we receive validation update the path with username
-        if (!validated) {
-            dispatch(setDSPath(nextProps.username));
-        } else if (DSPath !== nextProps.DSPath) {
+        const { dispatch, DSPath, username } = this.props;
+        // When qualifier is changed but not in the case of first page load
+        if (DSPath !== nextProps.DSPath && !(DSPath === '' && username === nextProps.DSPath)) {
             clearTimeout(this.state.timeout);
             this.state.timeout = setTimeout(() => {
                 dispatch(resetDSChildren());
@@ -64,7 +66,6 @@ export class DSTree extends React.Component {
 
     handlePathChange(value) {
         const { dispatch } = this.props;
-        dispatch(resetDSChildren());
         dispatch(setDSPath(value));
     }
 
@@ -79,33 +80,56 @@ export class DSTree extends React.Component {
         });
     }
 
+    handleQualifierUpdate = e => {
+        const { dispatch, DSPath } = this.props;
+        e.preventDefault();
+        clearTimeout(this.state.timeout);
+        dispatch(resetDSChildren());
+        dispatch(fetchDatasetTreeChildren(DSPath));
+    }
+
     renderDSChild(childId) {
         const { DSChildren } = this.props;
         return (<ConnectedTreeDataset childId={childId} key={childId} dataSetOrganization={DSChildren.get(childId)} />);
     }
 
+    renderNotFound() {
+        const { isFetching } = this.props;
+        return !isFetching ?
+            <li>
+                <ErrorIcon />
+                <span className="node-label">{NO_DATASETS_FOUND_MESSAGE}</span>
+            </li> :
+            null;
+    }
+
     render() {
-        const { isToggled, isFetching, DSChildren, DSPath, dispatch } = this.props;
-        return (this.props.validated ?
+        const { isFetching, DSChildren, DSPath, dispatch, validated } = this.props;
+        return (validated ?
             <Card class="tree-card" containerStyle={{ paddingBottom: 0 }}>
                 <CardText>
-                    <div className="component-header">
-                        <UpperCaseTextField
-                            className="component-text-field-fill"
-                            id="path"
-                            value={DSPath}
-                            fullWidth={false}
-                            fieldChangedCallback={this.handlePathChange}
-                        />
-                        <RefreshIcon
-                            isFetching={isFetching}
-                            submitAction={this.refreshDSTree}
-                            dispatch={dispatch}
-                        />
-                    </div>
+                    <form onSubmit={this.handleQualifierUpdate}>
+                        <div className="component-header">
+                            <UpperCaseTextField
+                                className="component-text-field-fill"
+                                id="path"
+                                value={DSPath}
+                                fullWidth={false}
+                                fieldChangedCallback={this.handlePathChange}
+                            />
+                            <RefreshIcon
+                                isFetching={isFetching}
+                                submitAction={this.refreshDSTree}
+                                dispatch={dispatch}
+                            />
+                        </div>
+                    </form>
                     <FullHeightTree offset={16}>
                         <ul>
-                            {isToggled ? DSChildren.keySeq().toArray().sort().map(this.renderDSChild) : null}
+                            {!DSChildren.isEmpty() ?
+                                DSChildren.keySeq().toArray().sort().map(this.renderDSChild) :
+                                this.renderNotFound()
+                            }
                         </ul>
                     </FullHeightTree>
                 </CardText>
@@ -117,7 +141,6 @@ export class DSTree extends React.Component {
 
 DSTree.propTypes = {
     dispatch: PropTypes.func.isRequired,
-    isToggled: PropTypes.bool.isRequired,
     isFetching: PropTypes.bool.isRequired,
     DSPath: PropTypes.string.isRequired,
     DSChildren: PropTypes.instanceOf(Map),
@@ -133,7 +156,6 @@ function mapStateToProps(state) {
     return {
         datasets: stateRootDatasets.get('datasets'),
         DSChildren: stateRoot.get('DSChildren'),
-        isToggled: stateRoot.get('isToggled'),
         DSPath: stateRoot.get('DSPath'),
         isFetching: stateRoot.get('isFetching'),
         validated: validationRoot.get('validated'),

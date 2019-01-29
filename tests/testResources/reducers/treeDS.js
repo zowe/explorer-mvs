@@ -16,7 +16,6 @@ export const baseTree = Map({
     id: ROOT_TREE_ID,
     DSChildren: Map({}),
     isFetching: false,
-    isToggled: false,
     DSPath: '',
 });
 
@@ -24,7 +23,6 @@ export const DSPathSetTree = Map({
     id: ROOT_TREE_ID,
     DSChildren: Map({}),
     isFetching: false,
-    isToggled: false,
     DSPath: 'JCAIN',
 });
 
@@ -32,7 +30,6 @@ export const toggledTree = Map({
     id: ROOT_TREE_ID,
     DSChildren: Map({}),
     isFetching: false,
-    isToggled: true,
     DSPath: '',
 });
 
@@ -40,7 +37,6 @@ export const requestedChildrenTree = Map({
     id: ROOT_TREE_ID,
     DSChildren: Map({}),
     isFetching: true,
-    isToggled: false,
     DSPath: 'JCAIN',
 });
 
@@ -48,7 +44,6 @@ export const restDSChildren = Map({
     id: ROOT_TREE_ID,
     DSChildren: Map({}),
     isFetching: false,
-    isToggled: true,
     DSPath: 'JCAIN',
 });
 
@@ -79,7 +74,6 @@ export const receivedDSChildrenTree = Map({
         'JCAIN.SPFLOG1.LIST': 'PS',
     }),
     isFetching: false,
-    isToggled: true,
     DSPath: 'JCAIN',
 });
 
@@ -90,7 +84,6 @@ export const receivedDSChildrenForDelete = Map({
         'ATLAS.JEST.TCL': 'PS',
     }),
     isFetching: false,
-    isToggled: true,
     DSPath: 'ATLAS',
 });
 
@@ -100,6 +93,5 @@ export const receivedDSChildrenAfterDelete = Map({
         'ATLAS.JEST.TCL': 'PS',
     }),
     isFetching: false,
-    isToggled: true,
     DSPath: 'ATLAS',
 });
