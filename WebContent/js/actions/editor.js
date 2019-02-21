@@ -63,8 +63,25 @@ export function fetchDS(file) {
         dispatch(requestDSContent(file));
         const endpoint = `datasets/${encodeURIComponent(file)}/content`;
         let etag;
-        return atlasGet(endpoint, { })
+        return atlasGet(endpoint, {})
             .then(response => {
+                if (!response.ok) {
+                    return response.json().then(e => {
+                        let message;
+                        try {
+                            message = JSON.parse(e.message);
+                        } catch (err) {
+                            message = e.message;
+                        }
+
+                        if (message instanceof Array) {
+                            throw Error(message[0]);
+                        } else {
+                            throw Error(message);
+                        }
+                    });
+                }
+
                 etag = response.headers.get('etag');
                 return response;
             })
@@ -74,8 +91,13 @@ export function fetchDS(file) {
             .then(json => {
                 return dispatch(receiveDSContent(file, json.records, etag));
             })
-            .catch(() => {
-                dispatch(constructAndPushMessage(`${GET_CONTENT_FAIL_MESSAGE} ${file}`));
+            .catch(err => {
+                let { message } = err;
+                if (!message || message === '') {
+                    message = GET_CONTENT_FAIL_MESSAGE;
+                }
+
+                dispatch(constructAndPushMessage(`${message} ${file}`));
                 return dispatch(invalidateContent());
             });
     };
