@@ -66,19 +66,8 @@ export function fetchDS(file) {
         return atlasGet(endpoint, {})
             .then(response => {
                 if (!response.ok) {
-                    return response.json().then(e => {
-                        let message;
-                        try {
-                            message = JSON.parse(e.message);
-                        } catch (err) {
-                            message = e.message;
-                        }
-
-                        if (message instanceof Array) {
-                            throw Error(message[0]);
-                        } else {
-                            throw Error(message);
-                        }
+                    return response.json().then(resp => {
+                        throw Error(resp.message);
                     });
                 }
 
@@ -141,7 +130,7 @@ function getNewDatasetEtag(file) {
     return dispatch => {
         dispatch(requestEtag(file));
         const endpoint = `datasets/${encodeURLComponent(file)}/content`;
-        return atlasGet(endpoint, { }).then(response => {
+        return atlasGet(endpoint, {}).then(response => {
             if (response.ok) {
                 dispatch(receiveEtag(file));
                 return response.headers.get('etag');

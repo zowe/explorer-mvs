@@ -155,38 +155,6 @@ describe('Action: editor', () => {
                 });
         });
 
-        it('Should create actions to request and invalidate content, and display first of array message upon 500 internal server error, ', () => {
-            const dataset = 'NOT.A.DATASET';
-            const firstError = 'First error message';
-            // eslint-disable-next-line no-useless-escape
-            const internalServerArrayMessageString = `[\"${firstError}\",\"Second error message\",\"Third error message\"]`;
-            const expectedActions = [{
-                type: editorActions.REQUEST_CONTENT,
-                file: dataset,
-            },
-            {
-                type: snackbarActions.PUSH_NOTIFICATION_MESSAGE,
-                message: Map({
-                    message: `${firstError} ${dataset}`,
-                }),
-            },
-            {
-                type: editorActions.INVALIDATE_CONTENT,
-            }];
-
-            nock(BASE_URL)
-                .get(`/datasets/${dataset}/content`)
-                .reply(500, { message: internalServerArrayMessageString });
-
-            const store = mockStore();
-
-            return store.dispatch(editorActions.fetchDS(dataset))
-                .then(() => {
-                    expect(store.getActions()).toEqual(expectedActions);
-                });
-        });
-
-
         it('Should create actions to request and invalidate content due to 404 not found response', () => {
             const dataset = 'NOT.A.DATASET';
 
