@@ -126,6 +126,35 @@ describe('Action: editor', () => {
                 });
         });
 
+        it('Should create actions to request and invalidate content due to 500 internal server error', () => {
+            const dataset = 'NOT.A.DATASET';
+            const internalServerErrorMsg = 'internal server error';
+            const expectedActions = [{
+                type: editorActions.REQUEST_CONTENT,
+                file: dataset,
+            },
+            {
+                type: snackbarActions.PUSH_NOTIFICATION_MESSAGE,
+                message: Map({
+                    message: `${internalServerErrorMsg} ${dataset}`,
+                }),
+            },
+            {
+                type: editorActions.INVALIDATE_CONTENT,
+            }];
+
+            nock(BASE_URL)
+                .get(`/datasets/${dataset}/content`)
+                .reply(500, { message: internalServerErrorMsg });
+
+            const store = mockStore();
+
+            return store.dispatch(editorActions.fetchDS(dataset))
+                .then(() => {
+                    expect(store.getActions()).toEqual(expectedActions);
+                });
+        });
+
         it('Should create actions to request and invalidate content due to 404 not found response', () => {
             const dataset = 'NOT.A.DATASET';
 
@@ -144,8 +173,8 @@ describe('Action: editor', () => {
             }];
 
             nock(BASE_URL)
-                .get(`/datasets/${dataset})/content`)
-                .reply(404, '');
+                .get(`/datasets/${dataset}/content`)
+                .reply(404, {});
 
             const store = mockStore();
 
@@ -366,83 +395,83 @@ describe('Action: editor', () => {
     });
 
     describe('saveAsDatasets', () => {
-    //     describe('saveAsDataset', () => {
-    //         it('Should create an action to request a saveAs, receiveSave', () => {
-    //             const expectedActions = [
-    //                 {
-    //                     type: editorActions.REQUEST_SAVE_AS,
-    //                     newName: editorResources.sequentialDatasetNew,
-    //                 },
-    //                 {
-    //                     type: snackbarActions.PUSH_NOTIFICATION_MESSAGE,
-    //                     message: Map({
-    //                         message: `${rewiredSaveMessage} ${editorResources.sequentialDatasetNew}`,
-    //                     }),
-    //                 },
-    //                 {
-    //                     type: editorActions.RECEIVE_SAVE,
-    //                     file: editorResources.sequentialDatasetNew,
-    //                 },
-    //                 {
-    //                     type: editorActions.REQUEST_CONTENT,
-    //                     file: editorResources.sequentialDatasetNew,
-    //                 },
-    //             ];
+        //     describe('saveAsDataset', () => {
+        //         it('Should create an action to request a saveAs, receiveSave', () => {
+        //             const expectedActions = [
+        //                 {
+        //                     type: editorActions.REQUEST_SAVE_AS,
+        //                     newName: editorResources.sequentialDatasetNew,
+        //                 },
+        //                 {
+        //                     type: snackbarActions.PUSH_NOTIFICATION_MESSAGE,
+        //                     message: Map({
+        //                         message: `${rewiredSaveMessage} ${editorResources.sequentialDatasetNew}`,
+        //                     }),
+        //                 },
+        //                 {
+        //                     type: editorActions.RECEIVE_SAVE,
+        //                     file: editorResources.sequentialDatasetNew,
+        //                 },
+        //                 {
+        //                     type: editorActions.REQUEST_CONTENT,
+        //                     file: editorResources.sequentialDatasetNew,
+        //                 },
+        //             ];
 
-    //             nock(BASE_URL)
-    //                 .put(`/datasets/${editorResources.sequentialDatasetNew}`)
-    //                 .reply(204);
+        //             nock(BASE_URL)
+        //                 .put(`/datasets/${editorResources.sequentialDatasetNew}`)
+        //                 .reply(204);
 
-    //             const store = mockStore();
+        //             const store = mockStore();
 
-    //             mockVoidFunction(treeDSActions, 'fetchDatasetTreeChildren');
+        //             mockVoidFunction(treeDSActions, 'fetchDatasetTreeChildren');
 
-    //             return store.dispatch(
-    //                 editorActions.saveAsDataset(
-    //                     editorResources.sequentialDataset,
-    //                     editorResources.sequentialDatasetNew,
-    //                     editorResources.newContent,
-    //                     editorResources.etag))
-    //                 .then(() => {
-    //                     expect(store.getActions()).toEqual(expectedActions);
-    //                     expect(treeDSActions.fetchDatasetTreeChildren.calledOnce).toEqual(true, 'fetchDatasetTreeChildren called once');
-    //                 });
-    //         });
+        //             return store.dispatch(
+        //                 editorActions.saveAsDataset(
+        //                     editorResources.sequentialDataset,
+        //                     editorResources.sequentialDatasetNew,
+        //                     editorResources.newContent,
+        //                     editorResources.etag))
+        //                 .then(() => {
+        //                     expect(store.getActions()).toEqual(expectedActions);
+        //                     expect(treeDSActions.fetchDatasetTreeChildren.calledOnce).toEqual(true, 'fetchDatasetTreeChildren called once');
+        //                 });
+        //         });
 
-    //         it('Should create an action to request a saveAs and invalidate', () => {
-    //             const expectedActions = [
-    //                 {
-    //                     type: editorActions.REQUEST_SAVE_AS,
-    //                     newName: editorResources.sequentialDatasetNew,
-    //                 },
-    //                 {
-    //                     type: snackbarActions.PUSH_NOTIFICATION_MESSAGE,
-    //                     message: Map({
-    //                         message: `${rewiredSaveFailMessage} ${editorResources.sequentialDatasetNew}`,
-    //                     }),
-    //                 },
-    //                 {
-    //                     type: editorActions.INVALIDATE_SAVE_AS,
-    //                 },
-    //             ];
+        //         it('Should create an action to request a saveAs and invalidate', () => {
+        //             const expectedActions = [
+        //                 {
+        //                     type: editorActions.REQUEST_SAVE_AS,
+        //                     newName: editorResources.sequentialDatasetNew,
+        //                 },
+        //                 {
+        //                     type: snackbarActions.PUSH_NOTIFICATION_MESSAGE,
+        //                     message: Map({
+        //                         message: `${rewiredSaveFailMessage} ${editorResources.sequentialDatasetNew}`,
+        //                     }),
+        //                 },
+        //                 {
+        //                     type: editorActions.INVALIDATE_SAVE_AS,
+        //                 },
+        //             ];
 
-    //             nock(BASE_URL)
-    //                 .post(`/datasets/${editorResources.sequentialDatasetNew}`)
-    //                 .reply(500);
+        //             nock(BASE_URL)
+        //                 .post(`/datasets/${editorResources.sequentialDatasetNew}`)
+        //                 .reply(500);
 
-    //             const store = mockStore();
+        //             const store = mockStore();
 
-    //             return store.dispatch(
-    //                 editorActions.saveAsDataset(
-    //                     editorResources.sequentialDataset,
-    //                     editorResources.sequentialDatasetNew,
-    //                     editorResources.newContent,
-    //                     editorResources.etag))
-    //                 .then(() => {
-    //                     expect(store.getActions()).toEqual(expectedActions);
-    //                 });
-    //         });
-    //     });
+        //             return store.dispatch(
+        //                 editorActions.saveAsDataset(
+        //                     editorResources.sequentialDataset,
+        //                     editorResources.sequentialDatasetNew,
+        //                     editorResources.newContent,
+        //                     editorResources.etag))
+        //                 .then(() => {
+        //                     expect(store.getActions()).toEqual(expectedActions);
+        //                 });
+        //         });
+        //     });
 
         describe('saveAsMember', () => {
             it('Should create actions to requestSaveAsMember and receiveSave', () => {
