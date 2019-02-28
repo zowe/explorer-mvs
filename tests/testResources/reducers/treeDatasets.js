@@ -23,7 +23,7 @@ export const requestedTreeDatasets = Map({
 export const treeDatasetsDSName = 'ATLAS.TEST.JCL';
 export const treeDatasetsDSName2 = 'ATLAS.TEST.HIST';
 
-export const treeDatasetsChildData = [
+export const treeDatasetsChildData = { items: [
     'DEMOJOB',
     'TSTJCICS',
     'TSTJDB2',
@@ -32,9 +32,9 @@ export const treeDatasetsChildData = [
     'TSTJ0001',
     'TSTJ0002',
     'TSTJ0003',
-];
+] };
 
-export const treeDatasetsChildData2 = [
+export const treeDatasetsChildData2 = { items: [
     'DEMO',
     'TSTJD',
     'TSTJC',
@@ -43,12 +43,12 @@ export const treeDatasetsChildData2 = [
     'TSTJ1',
     'TSTJ2',
     'TSTJ3',
-];
+] };
 
 export const receivedTreeDatasets = Map({
     datasets: Map({
         'ATLAS.TEST.JCL': Map({
-            childData: treeDatasetsChildData,
+            childData: treeDatasetsChildData.items,
             isToggled: true,
         }),
     }),
@@ -58,11 +58,11 @@ export const receivedTreeDatasets = Map({
 export const received2TreeDatasets = Map({
     datasets: Map({
         'ATLAS.TEST.JCL': Map({
-            childData: treeDatasetsChildData,
+            childData: treeDatasetsChildData.items,
             isToggled: true,
         }),
         'ATLAS.TEST.HIST': Map({
-            childData: treeDatasetsChildData2,
+            childData: treeDatasetsChildData2.items,
             isToggled: true,
         }),
     }),
@@ -82,7 +82,7 @@ export const noChildrenReceivedTreeDatasets = Map({
 export const untoggledReceivedTreeDatasets = Map({
     datasets: Map({
         'ATLAS.TEST.JCL': Map({
-            childData: treeDatasetsChildData,
+            childData: treeDatasetsChildData.items,
             isToggled: false,
         }),
     }),
@@ -92,11 +92,11 @@ export const untoggledReceivedTreeDatasets = Map({
 export const toggledReceived2TreeDatasets = Map({
     datasets: Map({
         'ATLAS.TEST.JCL': Map({
-            childData: treeDatasetsChildData,
+            childData: treeDatasetsChildData.items,
             isToggled: false,
         }),
         'ATLAS.TEST.HIST': Map({
-            childData: treeDatasetsChildData2,
+            childData: treeDatasetsChildData2.items,
             isToggled: true,
         }),
     }),

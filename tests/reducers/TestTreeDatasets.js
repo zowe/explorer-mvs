@@ -37,7 +37,7 @@ describe('Reducer treeDatasets', () => {
     it('Should handle RECEIVE_TREE_DS_CHILD_MEMBERS, set isFetching to false and handle empty child data', () => {
         const action = {
             type: treeDatasetsActions.RECEIVE_TREE_DS_CHILD_MEMBERS,
-            childData: [],
+            childData: { items: [] },
             DSName: treeDatasetsResources.treeDatasetsDSName,
         };
         expect(treeDatasets(treeDatasetsResources.requestedTreeDatasets, action)).toEqual(treeDatasetsResources.noChildrenReceivedTreeDatasets);
