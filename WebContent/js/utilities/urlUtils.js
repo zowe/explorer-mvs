@@ -8,7 +8,7 @@
  * Copyright IBM Corporation 2018, 2019
  */
 // let host = 'winmvs3b.hursley.ibm.com:7288';
-let host = 'localhost:22957';
+let host = 'localhost:8444';
 if (typeof location !== 'undefined') {
     const hostname = location.hostname;
     if (hostname !== 'localhost') {

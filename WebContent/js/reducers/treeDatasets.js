@@ -26,7 +26,7 @@ const INITIAL_TREE_DS_NODE_STATE = Map({
 function getMembersFromJSON(childData, DSName) {
     const datasets = Map({});
     let member = Map({});
-    member = member.set('childData', childData);
+    member = member.set('childData', childData.items);
     member = member.set('isToggled', true);
     return datasets.set(DSName, member);
 }

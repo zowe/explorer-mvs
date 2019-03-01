@@ -47,7 +47,7 @@ export const restDSChildren = Map({
     DSPath: 'JCAIN',
 });
 
-export const DSChildData = [
+export const DSChildData = { items: [
     {
         name: 'JCAIN',
     },
@@ -65,7 +65,7 @@ export const DSChildData = [
         name: 'JCAIN.SPFLOG1.LIST',
         recordFormat: 'VA',
     },
-];
+] };
 
 export const receivedDSChildrenTree = Map({
     id: ROOT_TREE_ID,

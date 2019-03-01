@@ -552,7 +552,7 @@ describe('Action: editor', () => {
     describe('fetchDatasetAttributes', () => {
         it('Should create actions to requestDSAttributes, receiveDSAttributes, before getting new attributes', () => {
             const path = editorResources.dataset;
-            const attributes = treeData.DatasetFetchChildrenData[1];
+            const attributes = treeData.DatasetFetchChildrenData.items[1];
             const expectedActions = [
                 {
                     type: editorActions.REQUEST_ATTRIBUTES,
