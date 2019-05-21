@@ -52,13 +52,19 @@ customParameters.push(credentials(
   name: 'PAX_SERVER_CREDENTIALS_ID',
   description: 'The server credential used to create PAX file',
   credentialType: 'com.cloudbees.plugins.credentials.impl.UsernamePasswordCredentialsImpl',
-  defaultValue: 'TestAdminzOSaaS2',
+  defaultValue: 'ssh-zdt-test-image-guest',
   required: true
 ))
 customParameters.push(string(
   name: 'PAX_SERVER_IP',
   description: 'The server IP used to create PAX file',
-  defaultValue: '172.30.0.1',
+  defaultValue: 'river.zowe.org',
+  trim: true
+))
+customParameters.push(string(
+  name: 'PAX_SERVER_PORT',
+  description: 'The server port used to create PAX file',
+  defaultValue: '2022',
   trim: true
 ))
 customParameters.push(string(
@@ -199,9 +205,9 @@ node ('ibm-jenkins-slave-nvm-jnlp') {
         sh "scripts/prepare-pax-workspace.sh"
 
         echo "creating pax file from workspace..."
-        createPax("${packageName}-packaging", "${packageName}-${versionId}.pax",
-                  params.PAX_SERVER_IP, params.PAX_SERVER_CREDENTIALS_ID,
-                  './pax-workspace', '/zaas1/buildWorkspace', '-x os390')
+        createPaxWithPort("${packageName}-packaging", "${packageName}-${versionId}.pax",
+                  params.PAX_SERVER_IP, params.PAX_SERVER_PORT, params.PAX_SERVER_CREDENTIALS_ID,
+                  './pax-workspace', '/zaas1', '-x os390')
 
         echo 'publishing pax file to artifactory...'
         def releaseIdentifier = getReleaseIdentifier()
