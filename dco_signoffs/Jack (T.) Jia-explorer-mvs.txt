@@ -1,0 +1,5 @@
+I, Jack (T.) Jia hereby sign-off-by all of my past commits to this repo subject to the Developer Certificate of Origin (DCO), Version 1.1. In the past I have used emails: jack-tiefeng.jia@ibm.com
+
+8b9d674d3a0ebba80723cedba64f5c6b966bde7b Revert "replace csp frame ancestors config"
+
+This reverts commit 5a50b3b22406d1bf3428bc49dfa913b7fedc29de.
