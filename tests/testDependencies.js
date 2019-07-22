@@ -32,3 +32,5 @@ global.location = {
     hostname: LOCAL_HOSTNAME,
     origin: `${LOCAL_SERVER}`,
 };
+
+global.window = {};

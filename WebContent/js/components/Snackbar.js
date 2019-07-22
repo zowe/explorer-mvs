@@ -56,10 +56,15 @@ class AtlasSnackbar extends React.Component {
     render() {
         const { snackbarNotificationsMessages } = this.props;
         if (snackbarNotificationsMessages.size > 0) {
-            const messageValue = snackbarNotificationsMessages.first();
+            const message = snackbarNotificationsMessages.first();
+            let messageText = message.get('message');
+            const messageAction = message.get('action');
+            if (messageAction) {
+                messageText = <a onClick={() => { messageAction(); }}>{messageText}</a>;
+            }
             return (
                 <Snackbar
-                    message={messageValue.get('message')}
+                    message={messageText}
                     open={this.state.open}
                     onRequestClose={this.handleRequestClose}
                 />

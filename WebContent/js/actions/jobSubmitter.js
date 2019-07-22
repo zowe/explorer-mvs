@@ -47,6 +47,22 @@ export function resetResponse() {
     };
 }
 
+export function sendAppRequest(jobId) {
+    if (window && window.parent && window.parent.ZoweZLUX) {
+        const ZoweZLUX = window.parent.ZoweZLUX;
+        const dispatcher = ZoweZLUX.dispatcher;
+        const pluginManager = ZoweZLUX.pluginManager;
+        if (pluginManager.getPlugin('org.zowe.explorer-jes')) {
+            const actionTitle = 'Send message to JES explorer';
+            const actionID = 'org.zowe.explorer.mvs.message';
+            const argumentFormatter = { data: { op: 'deref', source: 'event', path: ['data'] } };
+            const action = dispatcher.makeAction(actionID, actionTitle, 2, 3, 'org.zowe.explorer.jes', argumentFormatter);
+            const argumentData = { data: { owner: '*', jobId } };
+            dispatcher.invokeAction(action, argumentData);
+        }
+    }
+}
+
 export function submitJob(job) {
     return dispatch => {
         dispatch(requestSubmit());
@@ -58,7 +74,8 @@ export function submitJob(job) {
                 throw Error(response.statusText);
             })
             .then(response => {
-                dispatch(constructAndPushMessage(`${response.jobName} ${JOB_SUBMIT_SUCCESS_MESSAGE}, id=${response.jobId}`));
+                dispatch(constructAndPushMessage(`${response.jobName} ${JOB_SUBMIT_SUCCESS_MESSAGE}, id=${response.jobId}`,
+                    window.self !== window.top ? () => { sendAppRequest(response.jobId); } : null));
                 dispatch(receiveRC(response));
             })
             .catch(() => {

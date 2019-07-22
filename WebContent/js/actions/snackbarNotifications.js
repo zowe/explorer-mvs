@@ -20,9 +20,15 @@ function pushMessage(message) {
     };
 }
 
-export function constructAndPushMessage(message) {
+export function constructAndPushMessage(message, action) {
+    if (!action) {
+        return pushMessage(Map({
+            message,
+        }));
+    }
     return pushMessage(Map({
         message,
+        action,
     }));
 }
 
