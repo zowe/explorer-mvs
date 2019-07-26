@@ -18,6 +18,7 @@ bin
 .scannerwork
 .DS_Store
 dist/
+web
 
 # pax workspace
 .pax/*
