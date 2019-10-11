@@ -71,7 +71,8 @@ cp -r dist/. "${PAX_WORKSPACE_DIR}/content/app"
 # copy start script to target folder
 echo "[${SCRIPT_NAME}] copying startup script ..."
 mkdir -p "${PAX_WORKSPACE_DIR}/content/scripts"
-cp -r scripts/start-explorer-mvs-ui-server.sh "${PAX_WORKSPACE_DIR}/content/scripts"
+cp -r scripts/mvs-explorer-start.sh "${PAX_WORKSPACE_DIR}/content/scripts"
+cp -r scripts/mvs-explorer-configure.sh "${PAX_WORKSPACE_DIR}/content/scripts"
 
 # pre-configure server config
 echo "[${SCRIPT_NAME}] update default UI server config ..."
