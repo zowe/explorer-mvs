@@ -21,6 +21,7 @@
 # - KEYSTORE_CERTIFICATE
 
 . $ROOT_DIR/scripts/utils/validateNode.sh
+NODE_BIN=${NODE_HOME}/bin/node
 
 cd "$ROOT_DIR/components/mvs-explorer/bin"
 EXPLORER_PLUGIN_BASEURI=$($NODE_BIN -e "process.stdout.write(require('./package.json').config.baseuri)")
