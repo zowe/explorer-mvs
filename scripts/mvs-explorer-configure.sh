@@ -16,6 +16,11 @@
 # - ROOT_DIR
 # - NODE_HOME
 
+. $ROOT_DIR/scripts/utils/validateNode.sh
+
+EXPLORER_CONFIG="$ROOT_DIR/components/jes-explorer/bin/app/package.json"
+EXPLORER_PLUGIN_BASEURI=$($NODE_BIN -e "process.stdout.write(require('${EXPLORER_CONFIG}').config.baseuri)")
+
 # Remove any old config
 if [[ -f ${STATIC_DEF_CONFIG_DIR}/datasets_ui.yml ]]; then
     rm ${STATIC_DEF_CONFIG_DIR}/datasets_ui.yml 
@@ -34,15 +39,8 @@ services:
     homePageRelativeUrl:
     routedServices:
       - gatewayUrl: ui/v1
-        serviceRelativeUrl: ui/v1/explorer-mvs
+        serviceRelativeUrl: $EXPLORER_PLUGIN_BASEURI
 EOF
-
-if [ ! -z "$NODE_HOME" ]; then
-  NODE_BIN=${NODE_HOME}/bin/node
-else
-  echo "Error: cannot find node bin, MVS Explorer UI is not configured."
-  exit 1
-fi
 
 iconv -f IBM-1047 -t IBM-850 ${STATIC_DEF_CONFIG_DIR}/datasets_ui.ebcdic.yml > $STATIC_DEF_CONFIG_DIR/datasets_ui.yml	
 rm ${STATIC_DEF_CONFIG_DIR}/datasets_ui.ebcdic.yml

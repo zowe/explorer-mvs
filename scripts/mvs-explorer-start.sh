@@ -19,15 +19,8 @@
 # - MVS_EXPLORER_UI_PORT
 # - KEYSTORE_KEY
 # - KEYSTORE_CERTIFICATE
-# - KEYSTORE_PASSWORD
 
-# Find node binary
-if [ ! -z "$NODE_HOME" ]; then
-  NODE_BIN=${NODE_HOME}/bin/node
-else
-  echo "Error: cannot find node bin, MVS Explorer UI is not started."
-  exit 1
-fi
+. $ROOT_DIR/scripts/utils/validateNode.sh
 
 cd "$ROOT_DIR/components/mvs-explorer/bin"
 EXPLORER_PLUGIN_BASEURI=$($NODE_BIN -e "process.stdout.write(require('./package.json').config.baseuri)")
@@ -40,8 +33,8 @@ SERVER_DIR="${ROOT_DIR}/components/mvs-explorer/bin/server/"
 $NODE_BIN $SERVER_DIR/src/index.js \
   --service ${EXPLORER_PLUGIN_NAME} \
 	--path ${EXPLORER_PLUGIN_BASEURI} \
-	--port $MVS_EXPLORER_UI_PORT \
-	--key  $KEYSTORE_KEY \
-	--cert $KEYSTORE_CERTIFICATE \
+	--port ${MVS_EXPLORER_UI_PORT} \
+	--key  ${KEYSTORE_KEY} \
+	--cert ${KEYSTORE_CERTIFICATE} \
 	--csp "${ZOWE_EXPLORER_HOST}:*" \
 	-v &

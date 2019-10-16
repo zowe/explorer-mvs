@@ -101,7 +101,6 @@
   "config": {
     "pluginId": "org.zowe.explorer-mvs",
     "pluginName": "MVS Explorer",
-    "baseuri": "/ui/v1/explorer-mvs",
-    "port": 8548
+    "baseuri": "/ui/v1/explorer-mvs"
   }
 }
