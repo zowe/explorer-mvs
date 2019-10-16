@@ -24,8 +24,8 @@
 NODE_BIN=${NODE_HOME}/bin/node
 
 cd "$ROOT_DIR/components/mvs-explorer/bin"
-EXPLORER_PLUGIN_BASEURI=$($NODE_BIN -e "process.stdout.write(require('./package.json').config.baseuri)")
-EXPLORER_PLUGIN_NAME=$($NODE_BIN -e "process.stdout.write(require('./package.json').config.pluginName)")
+EXPLORER_PLUGIN_BASEURI=$($NODE_BIN -e "process.stdout.write(require('./app/package.json').config.baseuri)")
+EXPLORER_PLUGIN_NAME=$($NODE_BIN -e "process.stdout.write(require('./app/package.json').config.pluginName)")
 
 # get current ui server directory
 SERVER_DIR="${ROOT_DIR}/components/mvs-explorer/bin/server/"
