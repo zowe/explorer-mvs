@@ -23,12 +23,12 @@
 . $ROOT_DIR/scripts/utils/validateNode.sh
 NODE_BIN=${NODE_HOME}/bin/node
 
-cd "$ROOT_DIR/components/mvs-explorer/bin"
+cd "$ROOT_DIR/components/explorer-mvs/bin"
 EXPLORER_PLUGIN_BASEURI=$($NODE_BIN -e "process.stdout.write(require('./app/package.json').config.baseuri)")
 EXPLORER_PLUGIN_NAME=$($NODE_BIN -e "process.stdout.write(require('./app/package.json').config.pluginName)")
 
 # get current ui server directory
-SERVER_DIR="${ROOT_DIR}/components/mvs-explorer/bin/server/"
+SERVER_DIR="${ROOT_DIR}/components/explorer-mvs/bin/server/"
 
 # start service
 $NODE_BIN $SERVER_DIR/src/index.js \
