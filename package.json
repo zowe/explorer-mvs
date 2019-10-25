@@ -25,7 +25,7 @@
     "whatwg-fetch": "^2.0.3"
   },
   "peerDependencies": {
-    "explorer-ui-server": "0.2.8"
+    "explorer-ui-server": "0.2.10"
   },
   "devDependencies": {
     "babel-eslint": "^7.2.3",
@@ -101,7 +101,6 @@
   "config": {
     "pluginId": "org.zowe.explorer-mvs",
     "pluginName": "MVS Explorer",
-    "baseuri": "/ui/v1/explorer-mvs",
-    "port": 8548
+    "baseuri": "/ui/v1/explorer-mvs"
   }
 }
