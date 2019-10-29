@@ -1,6 +1,6 @@
 # explorer-mvs
 
-[![Code Quality](https://jayne.zowe.org:9000/api/project_badges/measure?project=zowe%3Aexplorer-mvs&metric=alert_status)](https://jayne.zowe.org:9000/dashboard/index/zowe:explorer-mvs)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=zowe_explorer-mvs&metric=alert_status)](https://sonarcloud.io/dashboard?id=zowe_explorer-mvs)
 
 ## Build
 
