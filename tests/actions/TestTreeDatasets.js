@@ -37,7 +37,7 @@ describe('Action: treeDatasets', () => {
     const fetchMembersFail = rewiredTreeDatasets.__get__('DATASET_FETCH_MEMBERS_FAIL');
 
     describe('toggleDSNode', () => {
-        it('Should create an acction to toggle a DSNode to true', () => {
+        it('Should create an action to toggle a DSNode to true', () => {
             const DSName = 'Atlas.TEST.JCL';
             const isToggled = true;
             const expectedAction = {

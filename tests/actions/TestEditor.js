@@ -123,7 +123,9 @@ describe('Action: editor', () => {
             store.dispatch(editorActions.fetchDS(null))
                 .then(() => {
                     expect(store.getActions()).toEqual(expectedActions);
-                });
+                })
+                // console.log('null file name throw error');
+                .catch(() => { });
         });
 
         it('Should create actions to request and invalidate content due to 500 internal server error', () => {
