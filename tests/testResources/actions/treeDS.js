@@ -12,7 +12,8 @@ import * as treeTyes from '../../../WebContent/js/actions/treeDS';
 
 export const DatasetFetchChildrenData = { items: [{ name: 'JCAIN' },
     { name: 'JCAIN.SPF.ISPPROF', blockSize: '3120', recordLength: '80', recordFormat: 'FB', dataSetOrganization: 'PO' },
-    { name: 'JCAIN.SPFLOG1.LIST', blockSize: '129', recordLength: '125', recordFormat: 'VA', dataSetOrganization: 'PS' }] };
+    { name: 'JCAIN.SPFLOG1.LIST', blockSize: '129', recordLength: '125', recordFormat: 'VA', dataSetOrganization: 'PS' },
+    { name: 'JCAIN.SPFLOG2.LIST', blockSize: '6000', recordLength: '125', recordFormat: 'VB', dataSetOrganization: 'PS-E' }] };
 
 export const receivedDatasetChildrenAction = {
     type: treeTyes.RECEIVE_DS_TREE_CHILDREN,
