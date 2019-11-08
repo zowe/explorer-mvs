@@ -65,6 +65,13 @@ export const DSChildData = { items: [
         name: 'JCAIN.SPFLOG1.LIST',
         recordFormat: 'VA',
     },
+    {
+        blockSize: '6000',
+        dataSetOrganization: 'PS-E',
+        recordLength: '125',
+        name: 'JCAIN.SPFLOG2.LIST',
+        recordFormat: 'VB',
+    },
 ] };
 
 export const receivedDSChildrenTree = Map({
@@ -72,6 +79,7 @@ export const receivedDSChildrenTree = Map({
     DSChildren: Map({
         'JCAIN.SPF.ISPROF': 'PO',
         'JCAIN.SPFLOG1.LIST': 'PS',
+        'JCAIN.SPFLOG2.LIST': 'PS-E',
     }),
     isFetching: false,
     DSPath: 'JCAIN',

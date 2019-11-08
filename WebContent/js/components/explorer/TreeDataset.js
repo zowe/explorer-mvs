@@ -68,7 +68,7 @@ export class TreeDataset extends React.Component {
         return (() => {
             const { childId, dispatch, dataSetOrganization } = this.props;
             if (!this.isDSToggled()) {
-                if (dataSetOrganization === DATASET_ORG_SEQUENTIAL) {
+                if (dataSetOrganization.startsWith(DATASET_ORG_SEQUENTIAL)) {
                     this.handleEdit();
                 } else {
                     dispatch(fetchDSMembers(childId));
@@ -110,7 +110,7 @@ export class TreeDataset extends React.Component {
 
     handleEdit = () => {
         const { childId, dispatch, dataSetOrganization } = this.props;
-        if (dataSetOrganization === DATASET_ORG_SEQUENTIAL) {
+        if (dataSetOrganization.startsWith(DATASET_ORG_SEQUENTIAL)) {
             dispatch(fetchDS(childId));
         }
     }
