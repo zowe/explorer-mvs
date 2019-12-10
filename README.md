@@ -10,12 +10,9 @@
 npm install
 ```
 
-Note: Requires access to npm registry with orion-editor-component
-https://gizaartifactory.jfrog.io/gizaartifactory/webapp/#/artifacts/browse/tree/General/npm-release
-
 Update npm.rc or run
 ```
-npm config set registry https://gizaartifactory.jfrog.io/gizaartifactory/api/npm/npm-release/
+npm config set registry https://zowe.jfrog.io/zowe/api/npm/npm-release/
 npm login
 ```
 
