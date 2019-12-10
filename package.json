@@ -9,7 +9,7 @@
     "file-loader": "^0.11.2",
     "immutable": "^3.8.1",
     "material-ui": "^0.18.2",
-    "orion-editor-component": "0.0.9",
+    "orion-editor-component": "0.0.11",
     "prop-types": "^15.5.10",
     "react": "^15.4.0",
     "react-contextmenu": "^2.6.1",
@@ -25,7 +25,7 @@
     "whatwg-fetch": "^2.0.3"
   },
   "peerDependencies": {
-    "explorer-ui-server": "0.2.10"
+    "explorer-ui-server": "0.2.11"
   },
   "devDependencies": {
     "babel-eslint": "^7.2.3",
@@ -93,7 +93,7 @@
   },
   "repository": "zowe/explorer-mvs",
   "publishConfig": {
-    "registry": "https://gizaartifactory.jfrog.io/gizaartifactory/api/npm/npm-local-release/"
+    "registry": "https://zowe.jfrog.io/zowe/api/npm/npm-local-release/"
   },
   "description": "MVS Explorer",
   "author": "IBM",
