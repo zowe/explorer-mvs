@@ -87,6 +87,7 @@ describe('Action: editor', () => {
                 type: editorActions.RECEIVE_CONTENT,
                 file: dataset,
                 content: editorResources.content,
+                etag: null,
             }];
 
             nock(BASE_URL)
