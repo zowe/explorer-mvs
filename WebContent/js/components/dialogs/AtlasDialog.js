@@ -10,8 +10,11 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import Dialog from 'material-ui/Dialog';
-import FlatButton from 'material-ui/FlatButton';
+import Dialog from '@material-ui/core/Dialog';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogActions from '@material-ui/core/DialogActions';
+import Button from '@material-ui/core/Button';
 
 export default class AtlasDialog extends React.Component {
     constructor(props) {
@@ -39,32 +42,33 @@ export default class AtlasDialog extends React.Component {
     }
 
     render() {
-        const actions = [
-            <FlatButton label="Cancel" primary={true} onTouchTap={this.handleClose} />,
-            <FlatButton
-                label="Ok"
-                primary={true}
-                keyboardFocused={!this.props.dialogContent}
-                onTouchTap={this.handleSubmit}
-            />,
-        ];
-
         return (
             <div>
                 <Dialog
-                    title={this.props.title}
-                    actions={actions}
-                    modal={false}
                     open={this.state.open}
-                    onRequestClose={this.handleClose}
+                    onClose={this.handleClose}
                     contentStyle={this.props.contentStyle}
                     bodyStyle={this.props.bodyStyle}
                 >
-                    <div>
+                    <DialogTitle>{this.props.title}</DialogTitle>
+                    <DialogContent>
                         <form onSubmit={this.handleSubmit} >
                             {this.props.dialogContent}
                         </form>
-                    </div>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button
+                            onClick={this.handleClose}
+                        >
+                            Cancel
+                        </Button>,
+                        <Button
+                            keyboardFocused={!this.props.dialogContent}
+                            onClick={this.handleSubmit}
+                        >
+                            Ok
+                        </Button>,
+                    </DialogActions>
                 </Dialog>
             </div>
         );

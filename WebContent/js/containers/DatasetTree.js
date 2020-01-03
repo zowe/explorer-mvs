@@ -12,8 +12,9 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 import { Map } from 'immutable';
-import { Card, CardText } from 'material-ui/Card';
-import ErrorIcon from 'material-ui/svg-icons/alert/error';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import ErrorIcon from '@material-ui/icons/Error';
 import ConnectedTreeDataset from '../components/explorer/TreeDataset';
 import RefreshIcon from '../components/explorer/RefreshIcon';
 import { setDSPath, fetchDatasetTreeChildren, resetDSChildren } from '../actions/treeDS';
@@ -23,7 +24,7 @@ import UpperCaseTextField from '../components/dialogs/UpperCaseTextField';
 
 const NO_DATASETS_FOUND_MESSAGE = 'No Datasets found';
 
-export class DSTree extends React.Component {
+class DatasetTree extends React.Component {
     constructor(props) {
         super(props);
         this.handlePathChange = this.handlePathChange.bind(this);
@@ -106,8 +107,8 @@ export class DSTree extends React.Component {
     render() {
         const { isFetching, DSChildren, DSPath, dispatch, validated } = this.props;
         return (validated ?
-            <Card class="tree-card" containerStyle={{ paddingBottom: 0 }}>
-                <CardText>
+            <Card class="tree-card">
+                <CardContent>
                     <form onSubmit={this.handleQualifierUpdate}>
                         <div className="component-header">
                             <UpperCaseTextField
@@ -132,14 +133,14 @@ export class DSTree extends React.Component {
                             }
                         </ul>
                     </FullHeightTree>
-                </CardText>
+                </CardContent>
             </Card>
             : null
         );
     }
 }
 
-DSTree.propTypes = {
+DatasetTree.propTypes = {
     dispatch: PropTypes.func.isRequired,
     isFetching: PropTypes.bool.isRequired,
     DSPath: PropTypes.string.isRequired,
@@ -162,5 +163,5 @@ function mapStateToProps(state) {
         username: validationRoot.get('username'),
     };
 }
-const ConnectedTree = connect(mapStateToProps)(DSTree);
-export default ConnectedTree;
+const ConnectedDatasetTree = connect(mapStateToProps)(DatasetTree);
+export default ConnectedDatasetTree;

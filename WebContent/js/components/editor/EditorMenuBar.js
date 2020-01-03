@@ -10,12 +10,12 @@
 
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Link } from 'react-router';
-import RaisedButton from 'material-ui/RaisedButton';
-import IconButton from 'material-ui/IconButton';
-import NewTabIcon from 'material-ui/svg-icons/action/tab';
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
+import RaisedButton from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
+import NewTabIcon from '@material-ui/icons/Tab';
+import Select from '@material-ui/core/Select';
+import FormControl from '@material-ui/core/FormControl';
+import MenuItem from '@material-ui/core/MenuItem';
 
 export default class EditorMenuBar extends React.Component {
     static renderTypesDropdown() {
@@ -26,7 +26,7 @@ export default class EditorMenuBar extends React.Component {
                 types.forEach(type => {
                     if (type.getProperty('contentTypes')) {
                         type.getProperty('contentTypes').forEach(typeElement => {
-                            result.push(<MenuItem value={typeElement.id} primaryText={typeElement.name} key={typeElement.id} />);
+                            result.push(<MenuItem id={typeElement.id} value={typeElement.id} key={typeElement.id}>{typeElement.name}</MenuItem>);
                         });
                     }
                 });
@@ -35,20 +35,16 @@ export default class EditorMenuBar extends React.Component {
         return result.length > 0 ? result : null;
     }
 
-    static getFullScreenLink(file) {
-        return `/editor?dataset=${encodeURIComponent(file)}`;
+    static openDatasetInNewWindow(file) {
+        const newWindow = window.open(`/#/editor?dataset=${encodeURIComponent(file)}`, '_blank');
+        newWindow.focus();
     }
 
     static renderFullScreenButton(file) {
         return (
-            <Link
-                to={EditorMenuBar.getFullScreenLink(file)}
-                target="_blank"
-            >
-                <IconButton style={{ float: 'right' }}>
-                    <NewTabIcon />
-                </IconButton>
-            </Link>
+            <IconButton style={{ float: 'right' }}>
+                <NewTabIcon onClick={() => { EditorMenuBar.openDatasetInNewWindow(file); }} />
+            </IconButton>
         );
     }
 
@@ -68,10 +64,10 @@ export default class EditorMenuBar extends React.Component {
         }
     }
 
-    handleSyntaxChange = (event, index, syntax) => {
+    handleSyntaxChange = event => {
         const { updateEditorSyntax } = this.props;
-        this.setState({ syntax });
-        updateEditorSyntax(syntax);
+        this.setState({ syntax: event.target.value });
+        updateEditorSyntax(event.target.value);
     };
 
     render() {
@@ -79,28 +75,33 @@ export default class EditorMenuBar extends React.Component {
         return (
             <div>
                 <RaisedButton
-                    label="Save"
-                    secondary={true}
                     style={{ margin: '5px' }}
                     disabled={!file}
+                    variant="contained"
+                    color="primary"
                     onClick={handleSave}
-                />
+                >
+                    Save
+                </RaisedButton>
                 <RaisedButton
-                    label="Save as.."
-                    secondary={true}
                     style={{ margin: '5px' }}
                     disabled={!file || !file.includes('(')}
+                    variant="contained"
+                    color="primary"
                     onClick={handleSaveAs}
-                />
+                >
+                    Save as..
+                </RaisedButton>
                 {file}
                 {file ? EditorMenuBar.renderFullScreenButton(file) : null}
-                <SelectField
-                    style={{ float: 'right' }}
-                    value={this.state.syntax}
-                    onChange={this.handleSyntaxChange}
-                >
-                    {EditorMenuBar.renderTypesDropdown()}
-                </SelectField>
+                <FormControl style={{ float: 'right', paddingTop: '5px', width: '100px' }}>
+                    <Select
+                        value={this.state.syntax}
+                        onChange={this.handleSyntaxChange}
+                    >
+                        {EditorMenuBar.renderTypesDropdown()}
+                    </Select>
+                </FormControl>
             </div>
         );
     }

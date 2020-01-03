@@ -10,9 +10,11 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import TextField from 'material-ui/TextField';
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
+import TextField from '@material-ui/core/TextField';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
+import InputLabel from '@material-ui/core/InputLabel';
 import { Map } from 'immutable';
 import { createDataset } from '../../../actions/treeDatasets';
 import PRESETS from './datasetPresets';
@@ -98,16 +100,16 @@ export default class CreateDatasetDialog extends React.Component {
         return createDataset(properties, DSPath);
     }
 
-    handlePresetChange = (event, index, value) => {
-        this.setState({ preset: value });
-        this.setState({ type: CreateDatasetDialog.getTypeFromDsorg(PRESETS.get(value).dataSetOrganization) });
-        this.setState({ allocationUnit: PRESETS.get(value).allocationUnit });
-        this.setState({ primary: PRESETS.get(value).primary });
-        this.setState({ secondary: PRESETS.get(value).secondary });
-        this.setState({ directoryBlocks: PRESETS.get(value).directoryBlocks });
-        this.setState({ recordFormat: PRESETS.get(value).recordFormat });
-        this.setState({ blockSize: PRESETS.get(value).blockSize });
-        this.setState({ recordLength: PRESETS.get(value).recordLength });
+    handlePresetChange = event => {
+        this.setState({ preset: event.target.value });
+        this.setState({ type: CreateDatasetDialog.getTypeFromDsorg(PRESETS.get(event.target.value).dataSetOrganization) });
+        this.setState({ allocationUnit: PRESETS.get(event.target.value).allocationUnit });
+        this.setState({ primary: PRESETS.get(event.target.value).primary });
+        this.setState({ secondary: PRESETS.get(event.target.value).secondary });
+        this.setState({ directoryBlocks: PRESETS.get(event.target.value).directoryBlocks });
+        this.setState({ recordFormat: PRESETS.get(event.target.value).recordFormat });
+        this.setState({ blockSize: PRESETS.get(event.target.value).blockSize });
+        this.setState({ recordLength: PRESETS.get(event.target.value).recordLength });
     }
 
     handleTypeChange = (event, index, value) => {
@@ -136,41 +138,56 @@ export default class CreateDatasetDialog extends React.Component {
         const dialogContent = (
             <div>
                 <div>
-                    <SelectField
-                        floatingLabelText="Preset"
-                        value={this.state.preset}
-                        onChange={this.handlePresetChange}
-                    >
-                        <MenuItem value={PRESET_JCL} primaryText={PRESET_JCL} />
-                        <MenuItem value={PRESET_COBOL} primaryText={PRESET_COBOL} />
-                        <MenuItem value={PRESET_PLX} primaryText={PRESET_PLX} />
-                        <MenuItem value={PRESET_XML} primaryText={PRESET_XML} />
-                    </SelectField>
+                    <FormControl>
+                        <InputLabel>Preset</InputLabel>
+                        <Select
+                            label="Preset"
+                            value={this.state.preset}
+                            onChange={this.handlePresetChange}
+                        >
+                            <MenuItem id={PRESET_JCL} value={PRESET_JCL} key={PRESET_JCL}>{PRESET_JCL}</MenuItem>
+                            <MenuItem id={PRESET_COBOL} value={PRESET_COBOL} key={PRESET_COBOL}>{PRESET_COBOL}</MenuItem>
+                            <MenuItem id={PRESET_PLX} value={PRESET_PLX} key={PRESET_PLX}>{PRESET_PLX}</MenuItem>
+                            <MenuItem id={PRESET_XML} value={PRESET_XML} key={PRESET_XML}>{PRESET_XML}</MenuItem>
+                        </Select>
+                    </FormControl>
                 </div>
                 <div>
                     <DatasetName
+                        label="Dataset Name"
                         updateName={this.updateName}
-                        floatingLabelText="Dataset Name"
                     />
                 </div>
                 <div style={rowAlignStyle}>
-                    <SelectField
-                        floatingLabelText="Type"
-                        value={this.state.type}
-                        onChange={this.handleTypeChange}
-                    >
-                        <MenuItem value={PARTITIONED.Name} primaryText={PARTITIONED.Name} />
-                        <MenuItem value={SEQUENTIAL.Name} primaryText={SEQUENTIAL.Name} />
-                    </SelectField>
-                    <div style={floatRightStyle}>
-                        <SelectField
-                            floatingLabelText="Allocation Unit"
-                            value={this.state.allocationUnit}
-                            onChange={this.handleAlcunitChange}
+                    <FormControl>
+                        <InputLabel>Type</InputLabel>
+                        <Select
+                            value={this.state.type}
+                            onChange={this.handleTypeChange}
                         >
-                            <MenuItem value={ALLOCATION_UNITS.Tracks} primaryText={ALLOCATION_UNITS.Tracks} />
-                            <MenuItem value={ALLOCATION_UNITS.Cylinders} primaryText={ALLOCATION_UNITS.Cylinders} />
-                        </SelectField>
+                            <MenuItem id={PARTITIONED.Name} value={PARTITIONED.Name} key={PARTITIONED.Name}>{PARTITIONED.Name}</MenuItem>
+                            <MenuItem id={SEQUENTIAL.Name} value={SEQUENTIAL.Name} key={SEQUENTIAL.Name}>{SEQUENTIAL.Name}</MenuItem>
+                        </Select>
+                    </FormControl>
+                    <div style={floatRightStyle}>
+                        <FormControl>
+                            <InputLabel>Allocation Unit</InputLabel>
+                            <Select
+                                value={this.state.allocationUnit}
+                                onChange={this.handleAlcunitChange}
+                            >
+                                <MenuItem
+                                    id={ALLOCATION_UNITS.Tracks}
+                                    value={ALLOCATION_UNITS.Tracks}
+                                    key={ALLOCATION_UNITS.Tracks}
+                                >{ALLOCATION_UNITS.Tracks}</MenuItem>
+                                <MenuItem
+                                    id={ALLOCATION_UNITS.Cylinders}
+                                    value={ALLOCATION_UNITS.Cylinders}
+                                    key={ALLOCATION_UNITS.Cylinders}
+                                >{ALLOCATION_UNITS.Cylinders}</MenuItem>
+                            </Select>
+                        </FormControl>
                     </div>
                 </div>
                 <div style={rowAlignStyle}>

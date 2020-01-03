@@ -12,7 +12,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import OrionEditor from 'orion-editor-component';
-import { Card, CardText } from 'material-ui/Card';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
 import EditorMenuBar from './EditorMenuBar';
 
 import { saveDataset, fetchDS } from '../../actions/editor';
@@ -109,7 +110,7 @@ class Editor extends React.Component {
         return (
             <div>
                 <Card class="component-no-vertical-pad">
-                    <CardText
+                    <CardContent
                         class="component-no-vertical-pad"
                         style={{ paddingTop: '2px' }}
                     >
@@ -129,7 +130,7 @@ class Editor extends React.Component {
                             editorTopOffset={56}
                             editorReady={this.editorReady}
                         />
-                    </CardText>
+                    </CardContent>
                 </Card>
                 {this.renderDialog()}
             </div>

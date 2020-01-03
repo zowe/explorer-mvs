@@ -10,8 +10,8 @@
 
 import PropTypes from 'prop-types';
 import React from 'react';
-import ContentIcon from 'material-ui/svg-icons/action/description';
-import ErrorIcon from 'material-ui/svg-icons/alert/error';
+import ContentIcon from '@material-ui/icons/Description';
+import ErrorIcon from '@material-ui/icons/Error';
 import { ContextMenuTrigger } from 'react-contextmenu';
 import { fetchDS } from '../../actions/editor';
 import { submitJob } from '../../actions/jobSubmitter';
