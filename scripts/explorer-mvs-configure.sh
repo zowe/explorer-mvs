@@ -7,7 +7,7 @@
 #
 # SPDX-License-Identifier: EPL-2.0
 #
-# Copyright IBM Corporation 2019
+# Copyright IBM Corporation 2019, 2020
 ################################################################################
 
 ################################################################################
@@ -20,6 +20,20 @@ NODE_BIN=${NODE_HOME}/bin/node
 
 EXPLORER_CONFIG="$ROOT_DIR/components/explorer-mvs/bin/app/package.json"
 EXPLORER_PLUGIN_BASEURI=$($NODE_BIN -e "process.stdout.write(require('${EXPLORER_CONFIG}').config.baseuri)")
+EXPLORER_PLUGIN_ID=$($NODE_BIN -e "process.stdout.write(require('${EXPLORER_CONFIG}').config.pluginId)")
+EXPLORER_PLUGIN_NAME=$($NODE_BIN -e "process.stdout.write(require('${EXPLORER_CONFIG}').config.pluginName)")
+
+if [[ $LAUNCH_COMPONENT_GROUPS == *"DESKTOP"* ]]
+then
+  # Create desktop app plugin
+  EXPLORER_PLUGIN_FULLURL="https://${ZOWE_EXPLORER_HOST}:${GATEWAY_PORT}${EXPLORER_PLUGIN_BASEURI}"
+  ${ROOT_DIR}/bin/utils/zowe-install-iframe-plugin.sh \
+    "${EXPLORER_PLUGIN_ID}" \
+    "${EXPLORER_PLUGIN_NAME}" \
+    ${EXPLORER_PLUGIN_FULLURL} \
+    "${WORKSPACE_DIR}/explorer-mvs" \
+    "${ROOT_DIR}/components/explorer-mvs/bin/app/img/explorer-MVS.png"
+fi
 
 # Remove any old config
 if [[ -f ${STATIC_DEF_CONFIG_DIR}/datasets_ui.yml ]]; then
