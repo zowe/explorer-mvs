@@ -5,17 +5,17 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *
- * Copyright IBM Corporation 2016, 2019
+ * Copyright IBM Corporation 2016, 2020
  */
 
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import OrionEditor from 'orion-editor-component';
+import queryString from 'query-string';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import EditorMenuBar from './EditorMenuBar';
-
 import { saveDataset, fetchDS } from '../../actions/editor';
 import DatasetSaveAsDialog from '../dialogs/datasets/DatasetSaveAsDialog';
 
@@ -84,8 +84,9 @@ class Editor extends React.Component {
 
     editorReady = () => {
         const { location, dispatch } = this.props;
-        if (location) {
-            dispatch(fetchDS(location.query.dataset));
+        if (location && location.search) {
+            const urlQueryParams = queryString.parse(location.search);
+            dispatch(fetchDS(urlQueryParams.dataset));
         }
     }
 
@@ -127,7 +128,7 @@ class Editor extends React.Component {
                             passContentToParent={this.getContent}
                             languageFilesHost={location.host}
                             fullscreen={!!location}
-                            editorTopOffset={56}
+                            editorTopOffset={48}
                             editorReady={this.editorReady}
                         />
                     </CardContent>
@@ -145,9 +146,7 @@ Editor.propTypes = {
     isFetching: PropTypes.bool,
     dispatch: PropTypes.func,
     location: PropTypes.shape({
-        query: PropTypes.shape({
-            dataset: PropTypes.string,
-        }),
+        search: PropTypes.string,
     }),
 };
 

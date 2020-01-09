@@ -5,7 +5,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *
- * Copyright IBM Corporation 2016, 2019
+ * Copyright IBM Corporation 2016, 2020
  */
 
 /* global document */
@@ -30,7 +30,7 @@ const store = applyMiddleware(thunk, createLogger())(createStore)(rootReducer, M
 ReactDOM.render(
     <Provider store={store}>
         <HashRouter>
-            <Route path="/" component={HomeView} />
+            <Route exact={true} path="/" component={HomeView} />
             <Route path="/editor" component={FullScreenEditor} />
         </HashRouter>
     </Provider>

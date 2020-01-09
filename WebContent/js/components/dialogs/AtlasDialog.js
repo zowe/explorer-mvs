@@ -5,7 +5,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *
- * Copyright IBM Corporation 2016, 2019
+ * Copyright IBM Corporation 2016, 2020
  */
 
 import React from 'react';
@@ -47,11 +47,11 @@ export default class AtlasDialog extends React.Component {
                 <Dialog
                     open={this.state.open}
                     onClose={this.handleClose}
-                    contentStyle={this.props.contentStyle}
-                    bodyStyle={this.props.bodyStyle}
                 >
                     <DialogTitle>{this.props.title}</DialogTitle>
-                    <DialogContent>
+                    <DialogContent
+                        style={{ ...this.props.bodyStyle, ...this.props.contentStyle, ...{ width: '550px' } }}
+                    >
                         <form onSubmit={this.handleSubmit} >
                             {this.props.dialogContent}
                         </form>
@@ -63,7 +63,6 @@ export default class AtlasDialog extends React.Component {
                             Cancel
                         </Button>,
                         <Button
-                            keyboardFocused={!this.props.dialogContent}
                             onClick={this.handleSubmit}
                         >
                             Ok

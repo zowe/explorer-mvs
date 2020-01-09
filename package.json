@@ -12,6 +12,7 @@
     "immutable": "^3.8.1",
     "orion-editor-component": "0.0.11",
     "prop-types": "^15.5.10",
+    "query-string": "^6.8.2",
     "react": "^16.4.2",
     "react-contextmenu": "^2.6.1",
     "react-dom": "^16.4.2",
@@ -41,7 +42,6 @@
     "babel-register": "^6.14.0",
     "cross-env": "^5.0.0",
     "css-loader": "^1.0.1",
-    "enzyme": "^2.8.2",
     "es6-promise": "^4.1.0",
     "eslint": "^4.9.0",
     "eslint-config-airbnb": "^15.1.0",
@@ -62,6 +62,7 @@
     "rewire": "^2.5.2 ",
     "sinon": "^4.1.2",
     "style-loader": "^0.18.2",
+    "uglifyjs-webpack-plugin": "1.1.6",
     "webpack": "^3.12.0",
     "webpack-dev-server": "^2.11.5"
   },
@@ -70,7 +71,7 @@
     "lint": "eslint ./WebContent/js/ ./tests/",
     "testWatch": "mocha --watch --compilers js:babel-register tests --recursive",
     "test": "JUNIT_REPORT_PATH=target/report.xml nyc mocha --require babel-core/register tests --recursive --colors --reporter mocha-jenkins-reporter",
-    "prod": "cross-env NODE_ENV='production' webpack -p && cp -r ./WebContent/css ./dist/ && cp -r ./WebContent/img ./dist/ && cp ./WebContent/index.html ./dist/  && cp ./WebContent/favicon.ico ./dist/",
+    "prod": "cross-env NODE_ENV='production' webpack && cp -r ./WebContent/css ./dist/ && cp -r ./WebContent/img ./dist/ && cp ./WebContent/index.html ./dist/  && cp ./WebContent/favicon.ico ./dist/",
     "preCommit": "npm-run-all --aggregate-output --parallel --print-label lint test prod"
   },
   "nyc": {
@@ -85,7 +86,8 @@
     ],
     "all": true,
     "include": [
-      "WebContent/js"
+      "WebContent/js/actions/**",
+      "WebContent/js/reducers/**"
     ],
     "exclude": [
       "tests",

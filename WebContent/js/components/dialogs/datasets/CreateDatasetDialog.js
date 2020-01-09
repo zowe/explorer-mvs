@@ -5,7 +5,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *
- * Copyright IBM Corporation 2016, 2019
+ * Copyright IBM Corporation 2016, 2020
  */
 
 import React from 'react';
@@ -131,14 +131,13 @@ export default class CreateDatasetDialog extends React.Component {
     }
 
     render() {
-        const floatRightStyle = { float: 'Right', display: 'inline' };
-        const rowAlignStyle = { lineHeight: '0px' };
-        const dialogWidthStyle = { width: '584px' };
+        const floatRightStyle = { float: 'Right' };
+        const halfWidthStyle = { width: '48%' };
 
         const dialogContent = (
             <div>
-                <div>
-                    <FormControl>
+                <div style={halfWidthStyle}>
+                    <FormControl style={{ width: '100%' }}>
                         <InputLabel>Preset</InputLabel>
                         <Select
                             label="Preset"
@@ -156,21 +155,25 @@ export default class CreateDatasetDialog extends React.Component {
                     <DatasetName
                         label="Dataset Name"
                         updateName={this.updateName}
+                        fullWidth={true}
                     />
                 </div>
-                <div style={rowAlignStyle}>
-                    <FormControl>
-                        <InputLabel>Type</InputLabel>
-                        <Select
-                            value={this.state.type}
-                            onChange={this.handleTypeChange}
-                        >
-                            <MenuItem id={PARTITIONED.Name} value={PARTITIONED.Name} key={PARTITIONED.Name}>{PARTITIONED.Name}</MenuItem>
-                            <MenuItem id={SEQUENTIAL.Name} value={SEQUENTIAL.Name} key={SEQUENTIAL.Name}>{SEQUENTIAL.Name}</MenuItem>
-                        </Select>
-                    </FormControl>
-                    <div style={floatRightStyle}>
-                        <FormControl>
+                <br />
+                <div>
+                    <div style={{ ...{ float: 'left' }, ...halfWidthStyle }}>
+                        <FormControl style={{ width: '100%' }}>
+                            <InputLabel>Type</InputLabel>
+                            <Select
+                                value={this.state.type}
+                                onChange={this.handleTypeChange}
+                            >
+                                <MenuItem id={PARTITIONED.Name} value={PARTITIONED.Name} key={PARTITIONED.Name}>{PARTITIONED.Name}</MenuItem>
+                                <MenuItem id={SEQUENTIAL.Name} value={SEQUENTIAL.Name} key={SEQUENTIAL.Name}>{SEQUENTIAL.Name}</MenuItem>
+                            </Select>
+                        </FormControl>
+                    </div>
+                    <div style={{ ...floatRightStyle, ...halfWidthStyle }}>
+                        <FormControl style={{ width: '100%' }}>
                             <InputLabel>Allocation Unit</InputLabel>
                             <Select
                                 value={this.state.allocationUnit}
@@ -190,57 +193,54 @@ export default class CreateDatasetDialog extends React.Component {
                         </FormControl>
                     </div>
                 </div>
-                <div style={rowAlignStyle}>
+                <div>
                     <TextField
+                        label="Primary"
                         name="primary"
-                        floatingLabelText="Primary"
                         value={this.state.primary}
                         onChange={this.handleInputChange}
+                        style={halfWidthStyle}
                     />
-                    <div style={floatRightStyle}>
-                        <TextField
-                            floatingLabelText="Secondary"
-                            name="secondary"
-                            value={this.state.secondary}
-                            onChange={this.handleInputChange}
-                        />
-                    </div>
-                </div>
-                <div style={rowAlignStyle}>
                     <TextField
-                        floatingLabelText="Blocks"
+                        label="Secondary"
+                        name="secondary"
+                        value={this.state.secondary}
+                        onChange={this.handleInputChange}
+                        style={{ ...floatRightStyle, ...halfWidthStyle }}
+                    />
+                </div>
+                <div>
+                    <TextField
+                        label="Blocks"
                         name="directoryBlocks"
                         disabled={this.state.type === SEQUENTIAL.Name}
                         value={this.state.type === SEQUENTIAL.Name ? '' : this.state.directoryBlocks}
                         onChange={this.handleInputChange}
+                        style={halfWidthStyle}
                     />
-                    <div style={floatRightStyle}>
-                        <TextField
-                            floatingLabelText="Record Format"
-                            name="recordFormat"
-                            value={this.state.recordFormat}
-                            onChange={this.handleInputChange}
-                        />
-                    </div>
-                </div>
-                <div style={rowAlignStyle}>
-
                     <TextField
-                        floatingLabelText="Block Size"
+                        label="Record Format"
+                        name="recordFormat"
+                        value={this.state.recordFormat}
+                        onChange={this.handleInputChange}
+                        style={{ ...floatRightStyle, ...halfWidthStyle }}
+                    />
+                </div>
+                <div>
+                    <TextField
+                        label="Block Size"
                         name="blockSize"
-                        hintText="blockSize"
                         value={this.state.blockSize}
                         onChange={this.handleInputChange}
+                        style={halfWidthStyle}
                     />
-                    <div style={floatRightStyle}>
-                        <TextField
-                            floatingLabelText="Record Length"
-                            name="recordLength"
-                            hintText="recordLength"
-                            value={this.state.recordLength}
-                            onChange={this.handleInputChange}
-                        />
-                    </div>
+                    <TextField
+                        label="Record Length"
+                        name="recordLength"
+                        value={this.state.recordLength}
+                        onChange={this.handleInputChange}
+                        style={{ ...floatRightStyle, ...halfWidthStyle }}
+                    />
                 </div>
             </div>);
 
@@ -252,7 +252,6 @@ export default class CreateDatasetDialog extends React.Component {
                 dialogReturn={this.props.dialogReturn}
                 dispatch={this.props.dispatch}
                 dialogContent={dialogContent}
-                contentStyle={dialogWidthStyle}
                 bodyStyle={{ overflowY: 'auto' }}
             />
         );

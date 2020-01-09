@@ -5,7 +5,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *
- * Copyright IBM Corporation 2016, 2019
+ * Copyright IBM Corporation 2016, 2020
  */
 
 import React from 'react';
@@ -63,11 +63,19 @@ export default class DatasetSaveAsDialog extends React.Component {
         const dialogWidthStyle = { width: '584px' };
         const dialogContentMember = (
             <div>
-                <DatasetMemberName updateMember={this.updateMember} />
+                <DatasetMemberName
+                    label="New Member Name"
+                    updateMember={this.updateMember}
+                    fullWidth={true}
+                />
             </div>);
         const dialogContentDataset = (
             <div>
-                <DatasetName updateName={this.updateName} />
+                <DatasetName
+                    label="New Dataset Name"
+                    updateName={this.updateName}
+                    fullWidth={true}
+                />
             </div>);
 
         return (

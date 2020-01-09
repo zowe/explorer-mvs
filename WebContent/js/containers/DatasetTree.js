@@ -5,7 +5,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *
- * Copyright IBM Corporation 2016, 2019
+ * Copyright IBM Corporation 2016, 2020
  */
 
 import PropTypes from 'prop-types';
@@ -107,7 +107,7 @@ class DatasetTree extends React.Component {
     render() {
         const { isFetching, DSChildren, DSPath, dispatch, validated } = this.props;
         return (validated ?
-            <Card class="tree-card">
+            <Card class="tree-card" style={{ paddingBottom: '0px' }}>
                 <CardContent>
                     <form onSubmit={this.handleQualifierUpdate}>
                         <div className="component-header">
@@ -125,7 +125,7 @@ class DatasetTree extends React.Component {
                             />
                         </div>
                     </form>
-                    <FullHeightTree offset={16}>
+                    <FullHeightTree offset={26}>
                         <ul>
                             {!DSChildren.isEmpty() ?
                                 DSChildren.keySeq().toArray().sort().map(this.renderDSChild) :
