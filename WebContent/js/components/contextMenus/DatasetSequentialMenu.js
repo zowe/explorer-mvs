@@ -18,7 +18,8 @@ const DatasetSequentialMenu = props => {
         handleCreateDataset,
         handleDeleteDataset,
         handleEdit,
-        handleJobSubmit } = props;
+        handleJobSubmit,
+        handleRename } = props;
     return (
         <ContextMenu id={childId}>
             <MenuItem onClick={handleCreateDataset}>
@@ -33,6 +34,9 @@ const DatasetSequentialMenu = props => {
             <MenuItem data={{ action: childId }} onClick={handleJobSubmit}>
                 Submit as Job
             </MenuItem>
+            <MenuItem data={{ action: childId }} onClick={handleRename}>
+                Rename
+            </MenuItem>
         </ContextMenu>
     );
 };
@@ -45,4 +49,5 @@ DatasetSequentialMenu.propTypes = {
     handleDeleteDataset: PropTypes.func.isRequired,
     handleEdit: PropTypes.func.isRequired,
     handleJobSubmit: PropTypes.func.isRequired,
+    handleRename: PropTypes.func.isRequired,
 };

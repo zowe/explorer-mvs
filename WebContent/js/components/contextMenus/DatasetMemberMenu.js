@@ -13,7 +13,7 @@ import React from 'react';
 import { ContextMenu, MenuItem } from 'react-contextmenu';
 
 const DatasetMenuMember = props => {
-    const { member, handleCreateMember, handleEdit, handleDeleteDataset, handleJobSubmit } = props;
+    const { member, handleCreateMember, handleEdit, handleDeleteDataset, handleJobSubmit, handleRename } = props;
     return (
         <ContextMenu id={member}>
             <MenuItem onClick={handleCreateMember}>
@@ -28,6 +28,9 @@ const DatasetMenuMember = props => {
             <MenuItem onClick={handleJobSubmit}>
             Submit as Job
             </MenuItem>
+            <MenuItem onClick={handleRename}>
+            Rename
+            </MenuItem>
         </ContextMenu>
     );
 };
@@ -40,4 +43,5 @@ DatasetMenuMember.propTypes = {
     handleCreateMember: PropTypes.func.isRequired,
     handleDeleteDataset: PropTypes.func.isRequired,
     handleJobSubmit: PropTypes.func.isRequired,
+    handleRename: PropTypes.func.isRequired,
 };

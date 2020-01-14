@@ -20,7 +20,8 @@ import {
     RECEIVE_ATTRIBUTES,
     INVALIDATE_CONTENT,
     REQUEST_CONTENT,
-    RECEIVE_CONTENT } from '../actions/editor';
+    RECEIVE_CONTENT,
+    UPDATE_EDITOR_FILE_NAME } from '../actions/editor';
 
 const CONTENT_UNABLE_TO_RETRIEVE_MESSAGE = 'Unable to retrieve content';
 
@@ -68,6 +69,10 @@ export default function editor(state = INITIAL_EDITOR_STATE, action) {
         case UPDATE_EDITOR_ETAG:
             return state.merge({
                 etag: action.etag,
+            });
+        case UPDATE_EDITOR_FILE_NAME:
+            return state.merge({
+                file: action.newName,
             });
         case INVALIDATE_ETAG:
             return state.merge({

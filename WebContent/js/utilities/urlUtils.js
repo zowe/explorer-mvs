@@ -48,6 +48,18 @@ export function atlasDelete(endpoint) {
     return atlasAction(endpoint, fetchParams);
 }
 
+export function atlasRename(endpoint, newName) {
+    const header = { 'Content-Type': 'application/json' };
+
+    const fetchParams = {
+        method: 'PUT',
+        body: `{"newName": "${newName}"}`,
+        headers: header,
+        credentials: 'include' };
+    return atlasAction(endpoint, fetchParams);
+}
+
+
 export function atlasPost(endpoint, body) {
     const fetchParams = {
         method: 'POST',

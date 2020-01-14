@@ -15,6 +15,7 @@ import {
     SET_DS_TREE_PATH,
     RESET_DS_TREE_CHILDREN,
     REMOVE_DATASET,
+    RENAME_DATASET,
     INVALIDATE_DS_TREE_CHILDREN } from '../actions/treeDS';
 
 export const ROOT_TREE_ID = 'treeDS';
@@ -54,6 +55,18 @@ export default function treeDS(state = INITIAL_TREE_STATE, action) {
         case REMOVE_DATASET: {
             const newChildren = state.get('DSChildren').remove(action.DSName);
             return state.set('DSChildren', newChildren);
+        }
+        case RENAME_DATASET: {
+            let onRenameChildren;
+            if (action.oldName.includes('(')) {
+                onRenameChildren = state.get('DSChildren').remove(action.oldName);
+                return state.set('DSChildren', onRenameChildren);
+            }
+
+            onRenameChildren = state.get('DSChildren');
+            onRenameChildren = onRenameChildren.set(action.newName, onRenameChildren.get(action.oldName))
+                .delete(action.oldName);
+            return state.set('DSChildren', onRenameChildren);
         }
         case INVALIDATE_DS_TREE_CHILDREN: {
             return state.set('isFetching', false);

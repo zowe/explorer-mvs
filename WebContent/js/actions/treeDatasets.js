@@ -9,9 +9,9 @@
  */
 
 import HTTPStatusCodes from '../constants/HTTPStatusCodeConstants';
-import { fetchDatasetTreeChildren, removeDataset } from './treeDS';
-import { invalidateContent } from './editor';
-import { atlasGet, atlasPost, atlasPut, atlasDelete } from '../utilities/urlUtils';
+import { fetchDatasetTreeChildren, removeDataset, renameDataset as renameDatasetRefresh } from './treeDS';
+import { invalidateContent, updateEditorFileName } from './editor';
+import { atlasGet, atlasPost, atlasPut, atlasDelete, atlasRename } from '../utilities/urlUtils';
 import { constructAndPushMessage } from './snackbarNotifications';
 
 export const REQUEST_TREE_DS_CHILD_MEMBERS = 'REQUEST_TREE_DS_CHILD_MEMBERS';
@@ -30,6 +30,9 @@ export const INVALIDATE_ALLOCATE_LIKE = 'INVALIDATE_ALLOCATE_LIKE';
 export const REQUEST_DELETE_DATASET = 'REQUEST_DELETE_DATASET';
 export const RECEIVE_DELETE_DATASET = 'RECEIVE_DELETE_DATASET';
 export const INVALIDATE_DELETE_DATASET = 'INVALIDATE_DELETE_DATASET';
+export const REQUEST_RENAME_DATASET = 'REQUEST_RENAME_DATASET';
+export const RECEIVE_RENAME_DATASET = 'RECEIVE_RENAME_DATASET';
+export const INVALIDATE_RENAME_DATASET = 'INVALIDATE_RENAME_DATASET';
 
 export const UNAUTHORIZED_MESSAGE = 'UNAUTHORIZED';
 
@@ -37,6 +40,8 @@ const DATASET_CREATE_SUCCESS_MESSAGE = 'Create successful for';
 const DATASET_CREATE_FAIL_MESSAGE = 'Create failed for';
 const DATASET_DELETE_SUCCESS_MESSAGE = 'Delete successful for';
 const DATASET_DELETE_FAIL_MESSAGE = 'Delete failed for';
+const DATASET_RENAME_SUCCESS_MESSAGE = 'Rename successful ';
+const DATASET_RENAME_FAIL_MESSAGE = 'Rename failed for';
 
 const DATASET_FETCH_MEMBERS_FAIL = 'Fetch members failed for';
 
@@ -121,6 +126,13 @@ function requestDeleteDataset(DSName) {
     };
 }
 
+function requestRenameDataset(DSName) {
+    return {
+        type: REQUEST_RENAME_DATASET,
+        DSName,
+    };
+}
+
 function receiveDeleteDataset(DSName) {
     return {
         type: RECEIVE_DELETE_DATASET,
@@ -128,9 +140,23 @@ function receiveDeleteDataset(DSName) {
     };
 }
 
+function receiveRenameDataset(DSName) {
+    return {
+        type: RECEIVE_RENAME_DATASET,
+        DSName,
+    };
+}
+
 function invalidateDeleteDataset(DSName) {
     return {
         type: INVALIDATE_DELETE_DATASET,
+        DSName,
+    };
+}
+
+function invalidateRenameDataset(DSName) {
+    return {
+        type: INVALIDATE_RENAME_DATASET,
         DSName,
     };
 }
@@ -222,6 +248,21 @@ function cleanupStateAfterDelete(DSName, isOpenInViewer) {
     };
 }
 
+function cleanupStateAfterRename(oldName, newName, isOpenInViewer, dataSetOrganization) {
+    return dispatch => {
+        // Now refresh the datasets members
+        if (isDatasetMember(oldName)) {
+            dispatch(fetchDSMembers(oldName.substring(0, oldName.indexOf('('))));
+        }
+        dispatch(renameDatasetRefresh(oldName, newName, dataSetOrganization));
+        // If we're deleting something that's open in the content viewer we need to close it
+        if (isOpenInViewer) {
+            dispatch(updateEditorFileName(newName));
+        }
+    };
+}
+
+
 export function deleteDataset(DSName, isOpenInViewer) {
     return dispatch => {
         dispatch(requestDeleteDataset(DSName));
@@ -242,3 +283,29 @@ export function deleteDataset(DSName, isOpenInViewer) {
             });
     };
 }
+
+export function renameDataset(oldName, newName, isOpenInViewer, dataSetOrganization) {
+    return dispatch => {
+        dispatch(requestRenameDataset(oldName));
+        return atlasRename(`datasets/${encodeURIComponent(oldName)}/rename`, newName)
+            .then(response => {
+                if (response.ok) {
+                    return '';
+                }
+                return response.json();
+            }).then(response => {
+                if (response !== '') {
+                    throw Error(response);
+                }
+                dispatch(constructAndPushMessage(`${DATASET_RENAME_SUCCESS_MESSAGE} from '${oldName}' to '${newName}'`));
+                dispatch(receiveRenameDataset(oldName));
+            }).then(() => {
+                dispatch(cleanupStateAfterRename(oldName, newName, isOpenInViewer, dataSetOrganization));
+            })
+            .catch(() => {
+                dispatch(constructAndPushMessage(`${DATASET_RENAME_FAIL_MESSAGE} '${oldName}'`));
+                dispatch(invalidateRenameDataset(oldName));
+            });
+    };
+}
+

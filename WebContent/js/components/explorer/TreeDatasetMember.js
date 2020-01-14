@@ -21,10 +21,12 @@ import DeleteDatasetMemberDialog from '../dialogs/datasets/DeleteDatasetMemberDi
 import DatasetMemberMenu from '../contextMenus/DatasetMemberMenu';
 import { TreeDataset } from './TreeDataset';
 import { UNAUTHORIZED_MESSAGE } from '../../actions/treeDatasets';
+import RenameDatasetMemberDialog from '../dialogs/datasets/RenameDatasetMemberDialog';
 
 const NO_DIALOG = 'NO_DIALOG';
 const CREATE_MEMBER = 'CREATE_MEMBER';
 const DELETE_MEMBER = 'DELETE_MEMBER';
+const RENAME_MEMBER = 'RENAME_MEMBER';
 
 export default class TreeDatasetMember extends React.Component {
     static renderUnauthorizedNode() {
@@ -72,8 +74,12 @@ export default class TreeDatasetMember extends React.Component {
         dispatch(submitJob(this.getDataSetAndMemberName()));
     }
 
+    handleRename = () => {
+        this.setState({ dialog: RENAME_MEMBER });
+    }
+
     renderDialog() {
-        const { parent, viewerDSName, viewerDSMember, dispatch } = this.props;
+        const { parent, viewerDSName, viewerDSMember, dispatch, dataSetOrganization } = this.props;
         switch (this.state.dialog) {
             case CREATE_MEMBER:
                 return <CreateMemberDialog DSName={parent} dispatch={dispatch} dialogReturn={this.dialogReturn} />;
@@ -85,6 +91,17 @@ export default class TreeDatasetMember extends React.Component {
                         DSPath={parent}
                         dialogReturn={this.dialogReturn}
                         isOpenInViewer={TreeDataset.isOpenInViewer(this.getDataSetAndMemberName(), viewerDSName, viewerDSMember)}
+                    />);
+            }
+            case RENAME_MEMBER: {
+                return (
+                    <RenameDatasetMemberDialog
+                        DSName={this.getDataSetAndMemberName()}
+                        dispatch={dispatch}
+                        DSPath={parent}
+                        dialogReturn={this.dialogReturn}
+                        isOpenInViewer={TreeDataset.isOpenInViewer(this.getDataSetAndMemberName(), viewerDSName, viewerDSMember)}
+                        dataSetOrganization={dataSetOrganization}
                     />);
             }
             default:
@@ -109,6 +126,7 @@ export default class TreeDatasetMember extends React.Component {
                         member={member}
                         handleEdit={() => { this.handleEdit(); }}
                         handleJobSubmit={() => { this.handleJobSubmit(); }}
+                        handleRename={() => { this.handleRename(); }}
                         handleDeleteDataset={() => { this.handleDeleteDataset(); }}
                         handleCreateMember={() => { this.handleCreateMember(); }}
                     />
@@ -124,6 +142,7 @@ TreeDatasetMember.propTypes = {
     member: PropTypes.string.isRequired,
     parent: PropTypes.string.isRequired,
     dispatch: PropTypes.func.isRequired,
+    dataSetOrganization: PropTypes.string.isRequired,
     viewerDSName: PropTypes.string,
     viewerDSMember: PropTypes.string,
 };

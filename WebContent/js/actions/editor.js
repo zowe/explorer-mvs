@@ -17,6 +17,7 @@ export const REQUEST_CONTENT = 'REQUEST_CONTENT';
 export const RECEIVE_CONTENT = 'RECEIVE_CONTENT';
 export const INVALIDATE_CONTENT = 'INVALIDATE_CONTENT';
 export const UPDATE_EDITOR_CONTENT = 'UPDATE_EDITOR_CONTENT';
+export const UPDATE_EDITOR_FILE_NAME = 'UPDATE_EDITOR_FILE_NAME';
 export const UPDATE_EDITOR_ETAG = 'UPDATE_EDITOR_ETAG';
 export const INVALIDATE_ETAG = 'INVALIDATE_ETAG';
 export const INVALIDATE_SAVE = 'INVALIDATE_SAVE';
@@ -117,6 +118,13 @@ export function updateEditorEtag(etag) {
     return {
         type: UPDATE_EDITOR_ETAG,
         etag,
+    };
+}
+
+export function updateEditorFileName(newName) {
+    return {
+        type: UPDATE_EDITOR_FILE_NAME,
+        newName,
     };
 }
 
