@@ -112,8 +112,8 @@ export default class CreateDatasetDialog extends React.Component {
         this.setState({ recordLength: PRESETS.get(event.target.value).recordLength });
     }
 
-    handleTypeChange = (event, index, value) => {
-        this.setState({ type: value });
+    handleTypeChange = event => {
+        this.setState({ type: event.target.value });
     }
 
     updateName(newValue) {
@@ -126,8 +126,8 @@ export default class CreateDatasetDialog extends React.Component {
         this.setState({ [target.name]: target.value });
     }
 
-    handleAlcunitChange = (event, index, value) => {
-        this.setState({ allocationUnit: value });
+    handleAlcunitChange = event => {
+        this.setState({ allocationUnit: event.target.value });
     }
 
     render() {
