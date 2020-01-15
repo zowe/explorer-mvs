@@ -13,10 +13,11 @@ import React from 'react';
 import UpperCaseTextField from '../UpperCaseTextField';
 
 const DatasetMemberName = props => {
-    const { updateMember } = props;
+    const { updateMember, fullWidth, label } = props;
     return (<UpperCaseTextField
         fieldChangedCallback={updateMember}
-        {...props}
+        fullWidth={fullWidth}
+        label={label}
     />);
 };
 
@@ -24,4 +25,6 @@ export default DatasetMemberName;
 
 DatasetMemberName.propTypes = {
     updateMember: PropTypes.func.isRequired,
+    fullWidth: PropTypes.bool,
+    label: PropTypes.string,
 };

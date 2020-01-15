@@ -19,7 +19,7 @@ export default class UpperCaseTextField extends React.Component {
         this.handleFieldChange = this.handleFieldChange.bind(this);
 
         this.state = {
-            field: value,
+            field: value || '',
         };
     }
 
