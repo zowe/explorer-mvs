@@ -5,7 +5,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *
- * Copyright IBM Corporation 2016, 2019
+ * Copyright IBM Corporation 2016, 2020
  */
 
 import PropTypes from 'prop-types';
@@ -13,11 +13,11 @@ import React from 'react';
 import UpperCaseTextField from '../UpperCaseTextField';
 
 const DatasetMemberName = props => {
-    const { updateMember } = props;
+    const { updateMember, fullWidth, label } = props;
     return (<UpperCaseTextField
-        hintText="New Dataset Member Name"
         fieldChangedCallback={updateMember}
-        {...props}
+        fullWidth={fullWidth}
+        label={label}
     />);
 };
 
@@ -25,4 +25,6 @@ export default DatasetMemberName;
 
 DatasetMemberName.propTypes = {
     updateMember: PropTypes.func.isRequired,
+    fullWidth: PropTypes.bool,
+    label: PropTypes.string,
 };

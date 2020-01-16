@@ -5,12 +5,12 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *
- * Copyright IBM Corporation 2016, 2019
+ * Copyright IBM Corporation 2016, 2020
  */
 
 import PropTypes from 'prop-types';
 import React from 'react';
-import TextField from 'material-ui/TextField';
+import TextField from '@material-ui/core/TextField';
 
 export default class UpperCaseTextField extends React.Component {
     constructor(props) {
@@ -19,7 +19,7 @@ export default class UpperCaseTextField extends React.Component {
         this.handleFieldChange = this.handleFieldChange.bind(this);
 
         this.state = {
-            field: value,
+            field: value || '',
         };
     }
 

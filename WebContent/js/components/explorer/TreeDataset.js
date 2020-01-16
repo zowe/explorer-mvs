@@ -5,16 +5,16 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *
- * Copyright IBM Corporation 2016, 2019
+ * Copyright IBM Corporation 2016, 2020
  */
 
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
-import OpenFolderIcon from 'material-ui/svg-icons/file/folder-open';
-import ClosedFolderIcon from 'material-ui/svg-icons/file/folder';
-import ContentIcon from 'material-ui/svg-icons/action/description';
-import UnsupportedIcon from 'material-ui/svg-icons/action/dns';
+import OpenFolderIcon from '@material-ui/icons/FolderOpen';
+import ClosedFolderIcon from '@material-ui/icons/Folder';
+import ContentIcon from '@material-ui/icons/Description';
+import UnsupportedIcon from '@material-ui/icons/Dns';
 import { ContextMenuTrigger } from 'react-contextmenu';
 import { Map } from 'immutable';
 import { fetchDSMembers, toggleDSNode } from '../../actions/treeDatasets';

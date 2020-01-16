@@ -5,7 +5,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *
- * Copyright IBM Corporation 2016, 2019
+ * Copyright IBM Corporation 2016, 2020
  */
 
 import PropTypes from 'prop-types';
@@ -15,7 +15,7 @@ import UpperCaseTextField from '../UpperCaseTextField';
 const DatasetName = ({ updateName, ...props }) => {
     return (<UpperCaseTextField
         {...props}
-        hintText="New Dataset Name"
+        label="New Dataset Name"
         fieldChangedCallback={updateName}
     />);
 };
