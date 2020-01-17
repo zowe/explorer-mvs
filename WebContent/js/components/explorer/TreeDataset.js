@@ -55,14 +55,6 @@ export class TreeDataset extends React.Component {
             viewerDSMember: file.substring(file.indexOf('(') + 1, file.indexOf(')')) };
     }
 
-    static getViewerDSMember(file) {
-        if (file === '') {
-            return '';
-        }
-
-        return file;
-    }
-
     constructor(props) {
         super(props);
         this.handleToggle = this.handleToggle.bind(this);
@@ -313,13 +305,6 @@ function mapStateToProps(state) {
         file: editorRoot.get('file'),
     };
 }
-
-// function mapDispatchToProps(dispatch) {
-//     const { dataSetOrganization, newName, oldName } = dispatch;
-//     return {
-//         dataSetOrganization, newName, oldName,
-//     };
-// }
 
 const ConnectedTreeDataset = connect(mapStateToProps)(TreeDataset);
 export default ConnectedTreeDataset;

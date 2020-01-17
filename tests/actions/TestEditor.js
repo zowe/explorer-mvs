@@ -208,6 +208,16 @@ describe('Action: editor', () => {
         });
     });
 
+    describe('updateEditorFileName', () => {
+        it('Should create an action to update the editor filename', () => {
+            const expectedAction = {
+                type: editorActions.UPDATE_EDITOR_FILE_NAME,
+                newName: editorResources.dataset,
+            };
+            expect(editorActions.updateEditorFileName(editorResources.dataset)).toEqual(expectedAction);
+        });
+    });
+
     describe('getNewDatasetEtag', () => {
         it('Should create an action to request a etag then update editor etag', () => {
             const rewiredGetNewDatasetEtag = rewiredEditor.__get__('getNewDatasetEtag');

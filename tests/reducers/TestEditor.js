@@ -62,6 +62,14 @@ describe('Reducer: editor', () => {
         expect(editor(editorResources.receivedContent, action)).toEqual(editorResources.newEtagEditor);
     });
 
+    it('Should handle UPDATE_EDITOR_FILE_NAME', () => {
+        const action = {
+            type: editorActions.UPDATE_EDITOR_FILE_NAME,
+            newName: editorResources.newDatasetName,
+        };
+        expect(editor(editorResources.receivedContent, action)).toEqual(editorResources.afterRenameContent);
+    });
+
     it('Should handle INVALIDATE_ETAG', () => {
         const action = { type: editorActions.INVALIDATE_ETAG };
         expect(editor(editorResources.receivedContent, action)).toEqual(editorResources.invalidatedEtagEditor);

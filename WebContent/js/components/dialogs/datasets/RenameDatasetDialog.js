@@ -13,12 +13,11 @@ import PropTypes from 'prop-types';
 import RenameDialog from './RenameDialog';
 
 const RenameDatasetDialog = props => {
-    const { DSName, isOpenInViewer, dataSetOrganization } = props;
+    const { DSName, isOpenInViewer } = props;
     return (
         <RenameDialog
             title={`Rename Dataset "${DSName}"?`}
             oldName={DSName}
-            dataSetOrganization={dataSetOrganization}
             isOpenInViewer={isOpenInViewer}
             {...props}
         />);
@@ -29,5 +28,4 @@ export default RenameDatasetDialog;
 RenameDatasetDialog.propTypes = {
     DSName: PropTypes.string.isRequired,
     isOpenInViewer: PropTypes.bool.isRequired,
-    dataSetOrganization: PropTypes.string.isRequired,
 };

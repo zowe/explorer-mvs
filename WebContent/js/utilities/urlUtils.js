@@ -8,7 +8,7 @@
  * Copyright IBM Corporation 2018, 2019
  */
 // let host = 'winmvs3b.hursley.ibm.com:7288';
-let host = 'localhost:8444';
+let host = 'tvt5003.svl.ibm.com:7554';
 if (typeof location !== 'undefined') {
     const hostname = location.hostname;
     if (hostname !== 'localhost') {
@@ -53,7 +53,7 @@ export function atlasRename(endpoint, newName) {
 
     const fetchParams = {
         method: 'PUT',
-        body: `{"newName": "${newName}"}`,
+        body: `{"newName":"${newName}"}`,
         headers: header,
         credentials: 'include' };
     return atlasAction(endpoint, fetchParams);

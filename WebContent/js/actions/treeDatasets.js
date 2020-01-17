@@ -126,10 +126,10 @@ function requestDeleteDataset(DSName) {
     };
 }
 
-function requestRenameDataset(DSName) {
+function requestRenameDataset(oldName) {
     return {
         type: REQUEST_RENAME_DATASET,
-        DSName,
+        oldName,
     };
 }
 
@@ -140,10 +140,10 @@ function receiveDeleteDataset(DSName) {
     };
 }
 
-function receiveRenameDataset(DSName) {
+function receiveRenameDataset(oldName) {
     return {
         type: RECEIVE_RENAME_DATASET,
-        DSName,
+        oldName,
     };
 }
 
@@ -154,10 +154,10 @@ function invalidateDeleteDataset(DSName) {
     };
 }
 
-function invalidateRenameDataset(DSName) {
+function invalidateRenameDataset(oldName) {
     return {
         type: INVALIDATE_RENAME_DATASET,
-        DSName,
+        oldName,
     };
 }
 
@@ -248,13 +248,13 @@ function cleanupStateAfterDelete(DSName, isOpenInViewer) {
     };
 }
 
-function cleanupStateAfterRename(oldName, newName, isOpenInViewer, dataSetOrganization) {
+function cleanupStateAfterRename(oldName, newName, isOpenInViewer) {
     return dispatch => {
         // Now refresh the datasets members
         if (isDatasetMember(oldName)) {
             dispatch(fetchDSMembers(oldName.substring(0, oldName.indexOf('('))));
         }
-        dispatch(renameDatasetRefresh(oldName, newName, dataSetOrganization));
+        dispatch(renameDatasetRefresh(oldName, newName));
         // If we're deleting something that's open in the content viewer we need to close it
         if (isOpenInViewer) {
             dispatch(updateEditorFileName(newName));
@@ -284,7 +284,7 @@ export function deleteDataset(DSName, isOpenInViewer) {
     };
 }
 
-export function renameDataset(oldName, newName, isOpenInViewer, dataSetOrganization) {
+export function renameDataset(oldName, newName, isOpenInViewer) {
     return dispatch => {
         dispatch(requestRenameDataset(oldName));
         return atlasRename(`datasets/${encodeURIComponent(oldName)}/rename`, newName)
@@ -300,9 +300,10 @@ export function renameDataset(oldName, newName, isOpenInViewer, dataSetOrganizat
                 dispatch(constructAndPushMessage(`${DATASET_RENAME_SUCCESS_MESSAGE} from '${oldName}' to '${newName}'`));
                 dispatch(receiveRenameDataset(oldName));
             }).then(() => {
-                dispatch(cleanupStateAfterRename(oldName, newName, isOpenInViewer, dataSetOrganization));
+                dispatch(cleanupStateAfterRename(oldName, newName, isOpenInViewer));
             })
-            .catch(() => {
+            .catch(err => {
+                console.log(err.message);
                 dispatch(constructAndPushMessage(`${DATASET_RENAME_FAIL_MESSAGE} '${oldName}'`));
                 dispatch(invalidateRenameDataset(oldName));
             });

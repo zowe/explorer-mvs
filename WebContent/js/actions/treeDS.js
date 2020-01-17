@@ -71,10 +71,9 @@ export function removeDataset(DSName) {
     };
 }
 
-export function renameDataset(oldName, newName, dataSetOrganization) {
+export function renameDataset(oldName, newName) {
     return {
         type: RENAME_DATASET,
-        dataSetOrganization,
         oldName,
         newName,
     };

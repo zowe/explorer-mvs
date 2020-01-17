@@ -103,3 +103,44 @@ export const receivedDSChildrenAfterDelete = Map({
     isFetching: false,
     DSPath: 'ATLAS',
 });
+
+
+export const receivedDSChildrenForRename = Map({
+    id: ROOT_TREE_ID,
+    DSChildren: Map({
+        'ATLAS.TEST.JCL': 'PO',
+        'ATLAS.JEST.TCL': 'PS',
+    }),
+    isFetching: false,
+    DSPath: 'ATLAS',
+});
+
+export const receivedDSChildrenAfterRename = Map({
+    id: ROOT_TREE_ID,
+    DSChildren: Map({
+        'ATLAS.TEST1.JCL': 'PO',
+        'ATLAS.JEST.TCL': 'PS',
+    }),
+    isFetching: false,
+    DSPath: 'ATLAS',
+});
+
+
+export const receivedDSMemberForRename = Map({
+    id: ROOT_TREE_ID,
+    DSChildren: Map({
+        'ATLAS.TEST(OLD.JCL)': 'PO',
+        'ATLAS.JEST.TCL': 'PS',
+    }),
+    isFetching: false,
+    DSPath: 'ATLAS',
+});
+
+export const receivedDSMemberAfterRename = Map({
+    id: ROOT_TREE_ID,
+    DSChildren: Map({
+        'ATLAS.JEST.TCL': 'PS',
+    }),
+    isFetching: false,
+    DSPath: 'ATLAS',
+});

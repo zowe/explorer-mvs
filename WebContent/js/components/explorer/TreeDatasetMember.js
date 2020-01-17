@@ -79,7 +79,7 @@ export default class TreeDatasetMember extends React.Component {
     }
 
     renderDialog() {
-        const { parent, viewerDSName, viewerDSMember, dispatch, dataSetOrganization } = this.props;
+        const { parent, viewerDSName, viewerDSMember, dispatch } = this.props;
         switch (this.state.dialog) {
             case CREATE_MEMBER:
                 return <CreateMemberDialog DSName={parent} dispatch={dispatch} dialogReturn={this.dialogReturn} />;
@@ -101,7 +101,6 @@ export default class TreeDatasetMember extends React.Component {
                         DSPath={parent}
                         dialogReturn={this.dialogReturn}
                         isOpenInViewer={TreeDataset.isOpenInViewer(this.getDataSetAndMemberName(), viewerDSName, viewerDSMember)}
-                        dataSetOrganization={dataSetOrganization}
                     />);
             }
             default:
@@ -142,7 +141,6 @@ TreeDatasetMember.propTypes = {
     member: PropTypes.string.isRequired,
     parent: PropTypes.string.isRequired,
     dispatch: PropTypes.func.isRequired,
-    dataSetOrganization: PropTypes.string.isRequired,
     viewerDSName: PropTypes.string,
     viewerDSMember: PropTypes.string,
 };

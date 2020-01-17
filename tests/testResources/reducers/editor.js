@@ -27,6 +27,7 @@ export const requestedContent = Map({
 export const content = '//TSTJCICS JOB (ADL),ATLAS,MSGCLASS=0,CLASS=A,TIME=1440\n//*        THIS JOB SIMULATES A CICS REGION FOR 60 SECONDS';
 
 export const dataset = 'JCAIN.TEST.JCL(TSTJCICS)';
+export const newDatasetName = 'JCAIN.TEST.JCL(NEWNAME)';
 
 export const etag = '1EAC8542504731CBDBC42BB95008EAA8';
 
@@ -34,6 +35,13 @@ export const receivedContent = Map({
     content,
     etag,
     file: dataset,
+    isFetching: false,
+});
+
+export const afterRenameContent = Map({
+    content,
+    etag,
+    file: newDatasetName,
     isFetching: false,
 });
 

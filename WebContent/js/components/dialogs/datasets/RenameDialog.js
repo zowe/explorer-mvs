@@ -26,8 +26,8 @@ export default class RenameDialog extends React.Component {
     }
 
     submitAction = () => {
-        const { oldName, isOpenInViewer, dataSetOrganization } = this.props;
-        return renameDataset(oldName, this.state.newName, isOpenInViewer, dataSetOrganization);
+        const { oldName, isOpenInViewer } = this.props;
+        return renameDataset(oldName, this.state.newName, isOpenInViewer);
     }
 
     updateName(newValue) {
@@ -37,10 +37,10 @@ export default class RenameDialog extends React.Component {
     }
 
     render() {
-        const { title, dialogReturn, dispatch, oldName, isOpenInViewer, dataSetOrganization } = this.props;
+        const { title, dialogReturn, dispatch, oldName, isOpenInViewer } = this.props;
 
         const dialogContent = (<UpperCaseTextField
-            hintText="New name"
+            placeholder={"New name"}
             fieldChangedCallback={this.updateName}
             value={this.state.newName}
         />);
@@ -55,7 +55,6 @@ export default class RenameDialog extends React.Component {
                     dialogContent={dialogContent}
                     oldName={oldName}
                     isOpenInViewer={isOpenInViewer}
-                    dataSetOrganization={dataSetOrganization}
                 />
             </div>
         );
@@ -68,5 +67,4 @@ RenameDialog.propTypes = {
     oldName: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
     isOpenInViewer: PropTypes.bool.isRequired,
-    dataSetOrganization: PropTypes.string.isRequired,
 };
