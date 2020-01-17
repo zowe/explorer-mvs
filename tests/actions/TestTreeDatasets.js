@@ -360,10 +360,10 @@ describe('Action: treeDatasets', () => {
     });
 
     describe('renameDataset', () => {
-        it('Should create an action to request and receive rename dataset, openInViewer false', () => {
+        it('Should create an action to request and receive rename dataset, isOpenInViewer false', () => {
             const oldName = 'ATLAS.TEST.JCL';
             const newName = 'ATLAS.NEW.JCL';
-            const openInViewer = false;
+            const isOpenInViewer = false;
             const body = `{"newName":"${newName}"}`;
 
             const expectedActions = [{
@@ -395,16 +395,16 @@ describe('Action: treeDatasets', () => {
 
             const store = mockStore();
 
-            return store.dispatch(treeDatasets.renameDataset(oldName, newName, openInViewer))
+            return store.dispatch(treeDatasets.renameDataset(oldName, newName, isOpenInViewer))
                 .then(() => {
                     expect(store.getActions()).toEqual(expectedActions);
                 });
         });
 
-        it('Should create an action to request, receive rename dataset and update filename in editor, openInViewer true', () => {
+        it('Should create an action to request, receive rename dataset and update filename in editor, isOpenInViewer true', () => {
             const oldName = 'ATLAS.TEST.JCL';
             const newName = 'ATLAS.NEW.JCL';
-            const openInViewer = true;
+            const isOpenInViewer = true;
             const body = `{"newName":"${newName}"}`;
 
             const expectedActions = [{
@@ -440,16 +440,16 @@ describe('Action: treeDatasets', () => {
 
             const store = mockStore();
 
-            return store.dispatch(treeDatasets.renameDataset(oldName, newName, openInViewer))
+            return store.dispatch(treeDatasets.renameDataset(oldName, newName, isOpenInViewer))
                 .then(() => {
                     expect(store.getActions()).toEqual(expectedActions);
                 });
         });
 
-        it('Should create an action to request and receive rename dataset member, openInViewer false', () => {
+        it('Should create an action to request and receive rename dataset member, isOpenInViewer false', () => {
             const oldName = 'ATLAS.TEST(OLD.JCL)';
             const newName = 'ATLAS.NEW(NEW.JCL)';
-            const openInViewer = false;
+            const isOpenInViewer = false;
             const body = `{"newName":"${newName}"}`;
 
             const expectedActions = [{
@@ -485,16 +485,16 @@ describe('Action: treeDatasets', () => {
 
             const store = mockStore();
 
-            return store.dispatch(treeDatasets.renameDataset(oldName, newName, openInViewer))
+            return store.dispatch(treeDatasets.renameDataset(oldName, newName, isOpenInViewer))
                 .then(() => {
                     expect(store.getActions()).toEqual(expectedActions);
                 });
         });
 
-        it('Should create an action to request and receive rename dataset member  and update filename in editor, openInViewer true', () => {
+        it('Should create an action to request and receive rename dataset member  and update filename in editor, isOpenInViewer true', () => {
             const oldName = 'ATLAS.TEST(OLD.JCL)';
             const newName = 'ATLAS.TEST(NEW.JCL)';
-            const openInViewer = true;
+            const isOpenInViewer = true;
             const body = `{"newName":"${newName}"}`;
 
             const expectedActions = [{
@@ -534,7 +534,7 @@ describe('Action: treeDatasets', () => {
 
             const store = mockStore();
 
-            return store.dispatch(treeDatasets.renameDataset(oldName, newName, openInViewer))
+            return store.dispatch(treeDatasets.renameDataset(oldName, newName, isOpenInViewer))
                 .then(() => {
                     expect(store.getActions()).toEqual(expectedActions);
                 });
@@ -543,7 +543,7 @@ describe('Action: treeDatasets', () => {
         it('Should create an action to request and invalidate rename dataset', () => {
             const oldName = 'ATLAS.TEST.JCL';
             const newName = 'ATLAS.NEW12345678.JCL';
-            const openInViewer = false;
+            const isOpenInViewer = false;
             const body = `{"newName":"${newName}"}`;
 
             const expectedActions = [{
@@ -570,7 +570,7 @@ describe('Action: treeDatasets', () => {
 
             const store = mockStore();
 
-            return store.dispatch(treeDatasets.renameDataset(oldName, newName, openInViewer))
+            return store.dispatch(treeDatasets.renameDataset(oldName, newName, isOpenInViewer))
                 .then(() => {
                     expect(store.getActions()).toEqual(expectedActions);
                 });

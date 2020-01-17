@@ -79,7 +79,7 @@ export default class TreeDatasetMember extends React.Component {
     }
 
     renderDialog() {
-        const { parent, viewerDSName, viewerDSMember, dispatch } = this.props;
+        const { parent, viewerFile, dispatch } = this.props;
         switch (this.state.dialog) {
             case CREATE_MEMBER:
                 return <CreateMemberDialog DSName={parent} dispatch={dispatch} dialogReturn={this.dialogReturn} />;
@@ -90,7 +90,7 @@ export default class TreeDatasetMember extends React.Component {
                         dispatch={dispatch}
                         DSPath={parent}
                         dialogReturn={this.dialogReturn}
-                        isOpenInViewer={TreeDataset.isOpenInViewer(this.getDataSetAndMemberName(), viewerDSName, viewerDSMember)}
+                        isOpenInViewer={TreeDataset.isOpenInViewer(this.getDataSetAndMemberName(), viewerFile)}
                     />);
             }
             case RENAME_MEMBER: {
@@ -100,7 +100,7 @@ export default class TreeDatasetMember extends React.Component {
                         dispatch={dispatch}
                         DSPath={parent}
                         dialogReturn={this.dialogReturn}
-                        isOpenInViewer={TreeDataset.isOpenInViewer(this.getDataSetAndMemberName(), viewerDSName, viewerDSMember)}
+                        isOpenInViewer={TreeDataset.isOpenInViewer(this.getDataSetAndMemberName(), viewerFile)}
                     />);
             }
             default:
@@ -141,6 +141,5 @@ TreeDatasetMember.propTypes = {
     member: PropTypes.string.isRequired,
     parent: PropTypes.string.isRequired,
     dispatch: PropTypes.func.isRequired,
-    viewerDSName: PropTypes.string,
-    viewerDSMember: PropTypes.string,
+    viewerFile: PropTypes.string,
 };

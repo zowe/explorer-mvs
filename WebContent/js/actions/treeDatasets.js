@@ -302,8 +302,7 @@ export function renameDataset(oldName, newName, isOpenInViewer) {
             }).then(() => {
                 dispatch(cleanupStateAfterRename(oldName, newName, isOpenInViewer));
             })
-            .catch(err => {
-                console.log(err.message);
+            .catch(() => {
                 dispatch(constructAndPushMessage(`${DATASET_RENAME_FAIL_MESSAGE} '${oldName}'`));
                 dispatch(invalidateRenameDataset(oldName));
             });

@@ -29,6 +29,7 @@ import DatasetSequentialMenu from '../contextMenus/DatasetSequentialMenu';
 import DatasetUnsupportedMenu from '../contextMenus/DatasetUnsupportedMenu';
 import TreeDatasetMember from './TreeDatasetMember';
 import { DATASET_ORG_PARTITIONED, DATASET_ORG_SEQUENTIAL, DATASET_ORG_VSAM } from '../../constants/DataSetConstants';
+import { parseFileName } from '../../utilities/fileHelper';
 
 const NO_DIALOG = 'NO_DIALOG';
 const CREATE_MEMBER = 'CREATE_MEMBER';
@@ -38,22 +39,10 @@ const DELETE_DATASET = 'DELETE_DATASET';
 const RENAME_DATASET = 'RENAME_DATASET';
 
 export class TreeDataset extends React.Component {
-    static isOpenInViewer = (childId, contentDSName, contentDSMember) => {
-        return childId === contentDSName || childId === `${contentDSName}(${contentDSMember})`;
+    static isOpenInViewer = (childId, file) => {
+        return childId === file || parseFileName(file).DSName === childId;
     }
 
-    static parseViewerFile(file) {
-        if (file === '') {
-            return { viewerDSName: '', viewerDSMember: '' };
-        }
-
-        let end = file.indexOf('(');
-        if (end === -1) {
-            end = file.length;
-        }
-        return { viewerDSName: file.substring(0, end),
-            viewerDSMember: file.substring(file.indexOf('(') + 1, file.indexOf(')')) };
-    }
 
     constructor(props) {
         super(props);
@@ -217,7 +206,6 @@ export class TreeDataset extends React.Component {
 
     renderDSMembers() {
         const { childId, datasets, dispatch, dataSetOrganization, file } = this.props;
-        const { viewerDSName, viewerDSMember } = TreeDataset.parseViewerFile(file);
 
         return (datasets.get(childId).get('childData').map(child => {
             return (<TreeDatasetMember
@@ -225,16 +213,14 @@ export class TreeDataset extends React.Component {
                 key={child}
                 parent={childId}
                 dispatch={dispatch}
-                viewerDSName={viewerDSName}
-                viewerDSMember={viewerDSMember}
+                viewerFile={file}
                 dataSetOrganization={dataSetOrganization}
             />);
         }));
     }
 
     renderDialog() {
-        const { childId, DSPath, file, dispatch, dataSetOrganization } = this.props;
-        const { viewerDSName, viewerDSMember } = TreeDataset.parseViewerFile(file);
+        const { childId, DSPath, file, dispatch } = this.props;
         switch (this.state.dialog) {
             case CREATE_MEMBER:
                 return <CreateMemberDialog DSName={childId} dispatch={dispatch} dialogReturn={this.dialogReturn} />;
@@ -247,17 +233,15 @@ export class TreeDataset extends React.Component {
                         dispatch={dispatch}
                         DSPath={DSPath}
                         dialogReturn={this.dialogReturn}
-                        isOpenInViewer={TreeDataset.isOpenInViewer(childId, viewerDSName, viewerDSMember)}
+                        isOpenInViewer={TreeDataset.isOpenInViewer(childId, file)}
                     />);
             case RENAME_DATASET:
                 return (
                     <RenameDatasetDialog
                         DSName={childId}
                         dispatch={dispatch}
-                        DSPath={DSPath}
-                        dataSetOrganization={dataSetOrganization}
                         dialogReturn={this.dialogReturn}
-                        isOpenInViewer={TreeDataset.isOpenInViewer(childId, viewerDSName, viewerDSMember)}
+                        isOpenInViewer={TreeDataset.isOpenInViewer(childId, file)}
                     />);
             default:
                 return null;

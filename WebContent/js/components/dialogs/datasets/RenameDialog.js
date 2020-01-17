@@ -40,7 +40,7 @@ export default class RenameDialog extends React.Component {
         const { title, dialogReturn, dispatch, oldName, isOpenInViewer } = this.props;
 
         const dialogContent = (<UpperCaseTextField
-            placeholder={"New name"}
+            placeholder={'New name'}
             fieldChangedCallback={this.updateName}
             value={this.state.newName}
         />);

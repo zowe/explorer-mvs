@@ -23,6 +23,8 @@ import {
     RECEIVE_CONTENT,
     UPDATE_EDITOR_FILE_NAME } from '../actions/editor';
 
+import { hasMember, updateDSName } from '../utilities/fileHelper';
+
 const CONTENT_UNABLE_TO_RETRIEVE_MESSAGE = 'Unable to retrieve content';
 
 const INITIAL_EDITOR_STATE = Map({
@@ -70,10 +72,17 @@ export default function editor(state = INITIAL_EDITOR_STATE, action) {
             return state.merge({
                 etag: action.etag,
             });
-        case UPDATE_EDITOR_FILE_NAME:
+        case UPDATE_EDITOR_FILE_NAME: {
+            let newName = action.newName;
+            const file = state.get('file');
+            // Only DSName Updated
+            if (hasMember(state.get('file')) && !hasMember(newName)) {
+                newName = updateDSName(file, newName);
+            }
             return state.merge({
-                file: action.newName,
+                file: newName,
             });
+        }
         case INVALIDATE_ETAG:
             return state.merge({
                 etag: null,

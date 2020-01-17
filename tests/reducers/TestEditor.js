@@ -62,12 +62,28 @@ describe('Reducer: editor', () => {
         expect(editor(editorResources.receivedContent, action)).toEqual(editorResources.newEtagEditor);
     });
 
-    it('Should handle UPDATE_EDITOR_FILE_NAME', () => {
+    it('Should handle UPDATE_EDITOR_FILE_NAME DSMember', () => {
         const action = {
             type: editorActions.UPDATE_EDITOR_FILE_NAME,
-            newName: editorResources.newDatasetName,
+            newName: editorResources.renameDSMember,
         };
-        expect(editor(editorResources.receivedContent, action)).toEqual(editorResources.afterRenameContent);
+        expect(editor(editorResources.receivedContent, action)).toEqual(editorResources.afterRenameDSMember);
+    });
+
+    it('Should handle UPDATE_EDITOR_FILE_NAME DSName Only', () => {
+        const action = {
+            type: editorActions.UPDATE_EDITOR_FILE_NAME,
+            newName: editorResources.renameDS,
+        };
+        expect(editor(editorResources.receivedContent, action)).toEqual(editorResources.afterRenameDSName);
+    });
+
+    it('Should handle UPDATE_EDITOR_FILE_NAME DSName Seq', () => {
+        const action = {
+            type: editorActions.UPDATE_EDITOR_FILE_NAME,
+            newName: editorResources.renameDSSeq,
+        };
+        expect(editor(editorResources.receivedSeqContent, action)).toEqual(editorResources.renameSeqContent);
     });
 
     it('Should handle INVALIDATE_ETAG', () => {
