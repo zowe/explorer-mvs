@@ -23,7 +23,7 @@ import {
     RECEIVE_CONTENT,
     UPDATE_EDITOR_FILE_NAME } from '../actions/editor';
 
-import { hasMember, updateDSName } from '../utilities/fileHelper';
+import { hasMember, parseFileName } from '../utilities/fileHelper';
 
 const CONTENT_UNABLE_TO_RETRIEVE_MESSAGE = 'Unable to retrieve content';
 
@@ -34,6 +34,9 @@ const INITIAL_EDITOR_STATE = Map({
     isFetching: false,
 });
 
+function updateDSName(file, newDSName) {
+    return `${newDSName}(${parseFileName(file).DSMember})`;
+}
 
 export default function editor(state = INITIAL_EDITOR_STATE, action) {
     switch (action.type) {

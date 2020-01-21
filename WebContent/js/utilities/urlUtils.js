@@ -48,18 +48,6 @@ export function atlasDelete(endpoint) {
     return atlasAction(endpoint, fetchParams);
 }
 
-export function atlasRename(endpoint, newName) {
-    const header = { 'Content-Type': 'application/json' };
-
-    const fetchParams = {
-        method: 'PUT',
-        body: `{"newName":"${newName}"}`,
-        headers: header,
-        credentials: 'include' };
-    return atlasAction(endpoint, fetchParams);
-}
-
-
 export function atlasPost(endpoint, body) {
     const fetchParams = {
         method: 'POST',
@@ -69,14 +57,14 @@ export function atlasPost(endpoint, body) {
     return atlasAction(endpoint, fetchParams);
 }
 
-export function atlasPut(endpoint, content, etag) {
+export function atlasPut(endpoint, body, etag) {
     const header = { 'Content-Type': 'application/json' };
     if (etag) {
         header['If-Match'] = etag;
     }
     const fetchParams = {
         method: 'PUT',
-        body: `{"records": "${content}"}`,
+        body,
         headers: header,
         credentials: 'include' };
     return atlasAction(endpoint, fetchParams);

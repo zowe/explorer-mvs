@@ -238,7 +238,7 @@ export class TreeDataset extends React.Component {
             case RENAME_DATASET:
                 return (
                     <RenameDatasetDialog
-                        DSName={childId}
+                        oldName={childId}
                         dispatch={dispatch}
                         dialogReturn={this.dialogReturn}
                         isOpenInViewer={TreeDataset.isOpenInViewer(childId, file)}

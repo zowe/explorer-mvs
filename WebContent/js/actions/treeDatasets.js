@@ -10,7 +10,7 @@
 
 import HTTPStatusCodes from '../constants/HTTPStatusCodeConstants';
 import { fetchDatasetTreeChildren, removeDataset, renameDataset as renameDatasetRefresh } from './treeDS';
-import { invalidateContent, updateEditorFileName } from './editor';
+import { invalidateContent, updateEditorFileName, makeRecordsFromContent } from './editor';
 import { atlasGet, atlasPost, atlasPut, atlasDelete, atlasRename } from '../utilities/urlUtils';
 import { constructAndPushMessage } from './snackbarNotifications';
 
@@ -207,10 +207,11 @@ export function fetchDSMembers(DSName) {
     };
 }
 
+
 export function createMember(DSName, member) {
     return dispatch => {
         dispatch(requestNewMember(DSName, member));
-        return atlasPut(`datasets/${encodeURIComponent(DSName)}(${encodeURIComponent(member)})/content`, '')
+        return atlasPut(`datasets/${encodeURIComponent(DSName)}(${encodeURIComponent(member)})/content`, makeRecordsFromContent(''))
             .then(response => {
                 if (response.ok) {
                     return response.text();
@@ -234,12 +235,18 @@ function isDatasetMember(DSName) {
     return DSName.includes('(');
 }
 
+function refreshDatasetMembers(dispatch, name) {
+    // Now refresh the datasets members
+    if (isDatasetMember(name)) {
+        dispatch(fetchDSMembers(name.substring(0, name.indexOf('('))));
+    }
+}
+
 function cleanupStateAfterDelete(DSName, isOpenInViewer) {
     return dispatch => {
         // Now refresh the datasets members
-        if (isDatasetMember(DSName)) {
-            dispatch(fetchDSMembers(DSName.substring(0, DSName.indexOf('('))));
-        }
+        refreshDatasetMembers(dispatch, DSName);
+
         dispatch(removeDataset(DSName));
         // If we're deleting something that's open in the content viewer we need to close it
         if (isOpenInViewer) {
@@ -248,14 +255,14 @@ function cleanupStateAfterDelete(DSName, isOpenInViewer) {
     };
 }
 
+
 function cleanupStateAfterRename(oldName, newName, isOpenInViewer) {
     return dispatch => {
         // Now refresh the datasets members
-        if (isDatasetMember(oldName)) {
-            dispatch(fetchDSMembers(oldName.substring(0, oldName.indexOf('('))));
-        }
+        refreshDatasetMembers(dispatch, oldName);
+
         dispatch(renameDatasetRefresh(oldName, newName));
-        // If we're deleting something that's open in the content viewer we need to close it
+        // If we're renaming something that's open in the content viewer we need to close it
         if (isOpenInViewer) {
             dispatch(updateEditorFileName(newName));
         }
@@ -287,7 +294,8 @@ export function deleteDataset(DSName, isOpenInViewer) {
 export function renameDataset(oldName, newName, isOpenInViewer) {
     return dispatch => {
         dispatch(requestRenameDataset(oldName));
-        return atlasRename(`datasets/${encodeURIComponent(oldName)}/rename`, newName)
+        const renameBody = `{"newName":"${newName}"}`;
+        return atlasPut(`datasets/${encodeURIComponent(oldName)}/rename`, renameBody)
             .then(response => {
                 if (response.ok) {
                     return '';

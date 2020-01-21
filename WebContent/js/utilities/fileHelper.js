@@ -16,6 +16,3 @@ export function hasMember(file) {
     return file !== undefined && file.indexOf('(') > 1;
 }
 
-export function updateDSName(file, newDSName) {
-    return `${newDSName}(${parseFileName(file).DSMember})`;
-}

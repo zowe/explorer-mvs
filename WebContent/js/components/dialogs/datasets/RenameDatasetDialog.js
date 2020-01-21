@@ -11,13 +11,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import RenameDialog from './RenameDialog';
+import { hasMember } from '../../../utilities/fileHelper';
+
+function getTitle(name) {
+    return `Rename Dataset ${hasMember(name) ? 'Member ' : ''}"${name}"?`;
+}
 
 const RenameDatasetDialog = props => {
-    const { DSName, isOpenInViewer } = props;
+    const { oldName, isOpenInViewer } = props;
+
     return (
         <RenameDialog
-            title={`Rename Dataset "${DSName}"?`}
-            oldName={DSName}
+            title={getTitle(oldName)}
+            oldName={oldName}
             isOpenInViewer={isOpenInViewer}
             {...props}
         />);
@@ -26,6 +32,6 @@ const RenameDatasetDialog = props => {
 export default RenameDatasetDialog;
 
 RenameDatasetDialog.propTypes = {
-    DSName: PropTypes.string.isRequired,
+    oldName: PropTypes.string.isRequired,
     isOpenInViewer: PropTypes.bool.isRequired,
 };

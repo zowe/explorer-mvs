@@ -21,7 +21,7 @@ import DeleteDatasetMemberDialog from '../dialogs/datasets/DeleteDatasetMemberDi
 import DatasetMemberMenu from '../contextMenus/DatasetMemberMenu';
 import { TreeDataset } from './TreeDataset';
 import { UNAUTHORIZED_MESSAGE } from '../../actions/treeDatasets';
-import RenameDatasetMemberDialog from '../dialogs/datasets/RenameDatasetMemberDialog';
+import RenameDatasetDialog from '../dialogs/datasets/RenameDatasetDialog';
 
 const NO_DIALOG = 'NO_DIALOG';
 const CREATE_MEMBER = 'CREATE_MEMBER';
@@ -95,8 +95,8 @@ export default class TreeDatasetMember extends React.Component {
             }
             case RENAME_MEMBER: {
                 return (
-                    <RenameDatasetMemberDialog
-                        DSName={this.getDataSetAndMemberName()}
+                    <RenameDatasetDialog
+                        oldName={this.getDataSetAndMemberName()}
                         dispatch={dispatch}
                         DSPath={parent}
                         dialogReturn={this.dialogReturn}
