@@ -5,7 +5,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *
- * Copyright IBM Corporation 2016, 2019
+ * Copyright IBM Corporation 2016, 2020
  */
 
 import { fetchDatasetTreeChildren } from './treeDS';
@@ -37,6 +37,10 @@ const SAVE_FAIL_MESSAGE = 'Save failed for';
 const SAVE_SUCCESS_MESSAGE = 'Save success for';
 const GET_CONTENT_FAIL_MESSAGE = 'Get content failed for';
 
+
+function replaceAll(str, find, replace) {
+    return str.replace(new RegExp(find, 'g'), replace);
+}
 
 function encodeContentString(content) {
     let newContent = replaceAll(content, /\\/, '\\\\'); // Escape backslashes
@@ -185,10 +189,6 @@ function invalidateSave() {
     return {
         type: INVALIDATE_SAVE,
     };
-}
-
-function replaceAll(str, find, replace) {
-    return str.replace(new RegExp(find, 'g'), replace);
 }
 
 export function saveDataset(file, content, etag) {

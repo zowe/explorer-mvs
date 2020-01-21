@@ -5,13 +5,13 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *
- * Copyright IBM Corporation 2016, 2019
+ * Copyright IBM Corporation 2016, 2020
  */
 
 import HTTPStatusCodes from '../constants/HTTPStatusCodeConstants';
 import { fetchDatasetTreeChildren, removeDataset, renameDataset as renameDatasetRefresh } from './treeDS';
 import { invalidateContent, updateEditorFileName, makeRecordsFromContent } from './editor';
-import { atlasGet, atlasPost, atlasPut, atlasDelete, atlasRename } from '../utilities/urlUtils';
+import { atlasGet, atlasPost, atlasPut, atlasDelete } from '../utilities/urlUtils';
 import { constructAndPushMessage } from './snackbarNotifications';
 
 export const REQUEST_TREE_DS_CHILD_MEMBERS = 'REQUEST_TREE_DS_CHILD_MEMBERS';
