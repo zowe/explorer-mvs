@@ -43,6 +43,7 @@ export default class RenameDialog extends React.Component {
             placeholder={'New name'}
             fieldChangedCallback={this.updateName}
             value={this.state.newName}
+            fullWidth={true}
         />);
 
         return (
