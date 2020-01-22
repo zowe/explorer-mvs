@@ -5,7 +5,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *
- * Copyright IBM Corporation 2018, 2019
+ * Copyright IBM Corporation 2018, 2020
  */
 
 import configureMockStore from 'redux-mock-store';
@@ -35,6 +35,8 @@ describe('Action: treeDatasets', () => {
     const deleteSuccess = rewiredTreeDatasets.__get__('DATASET_DELETE_SUCCESS_MESSAGE');
     const deleteFail = rewiredTreeDatasets.__get__('DATASET_DELETE_FAIL_MESSAGE');
     const fetchMembersFail = rewiredTreeDatasets.__get__('DATASET_FETCH_MEMBERS_FAIL');
+    const renameSuccess = rewiredTreeDatasets.__get__('DATASET_RENAME_SUCCESS_MESSAGE');
+    const renameFail = rewiredTreeDatasets.__get__('DATASET_RENAME_FAIL_MESSAGE');
 
     describe('toggleDSNode', () => {
         it('Should create an action to toggle a DSNode to true', () => {
@@ -345,12 +347,230 @@ describe('Action: treeDatasets', () => {
             }];
 
             nock(BASE_URL)
-                .delete(`/datasets/${DSName}`)
+                .delete(`/datasets/${DSName}`, {})
                 .reply(404, '');
 
             const store = mockStore();
 
             return store.dispatch(treeDatasets.deleteDataset(DSName))
+                .then(() => {
+                    expect(store.getActions()).toEqual(expectedActions);
+                });
+        });
+    });
+
+    describe('renameDataset', () => {
+        it('Should create an action to request and receive rename dataset, isOpenInViewer false', () => {
+            const oldName = 'ATLAS.TEST.JCL';
+            const newName = 'ATLAS.NEW.JCL';
+            const isOpenInViewer = false;
+            const body = `{"newName":"${newName}"}`;
+
+            const expectedActions = [{
+                type: treeDatasets.REQUEST_RENAME_DATASET,
+                oldName,
+            },
+            {
+                type: snackbarActions.PUSH_NOTIFICATION_MESSAGE,
+                message: new Map({
+                    message: `${renameSuccess} from '${oldName}' to '${newName}'`,
+                }),
+            },
+            {
+                type: treeDatasets.RECEIVE_RENAME_DATASET,
+                oldName,
+            },
+            {
+                type: tree.RENAME_DATASET,
+                oldName,
+                newName,
+            },
+            ];
+
+            nock(BASE_URL)
+                // .persist()
+                // .log(console.log)
+                .put(`/datasets/${oldName}/rename`, body)
+                .reply(204, '');
+
+            const store = mockStore();
+
+            return store.dispatch(treeDatasets.renameDataset(oldName, newName, isOpenInViewer))
+                .then(() => {
+                    expect(store.getActions()).toEqual(expectedActions);
+                });
+        });
+
+        it('Should create an action to request, receive rename dataset and update filename in editor, isOpenInViewer true', () => {
+            const oldName = 'ATLAS.TEST.JCL';
+            const newName = 'ATLAS.NEW.JCL';
+            const isOpenInViewer = true;
+            const body = `{"newName":"${newName}"}`;
+
+            const expectedActions = [{
+                type: treeDatasets.REQUEST_RENAME_DATASET,
+                oldName,
+            },
+            {
+                type: snackbarActions.PUSH_NOTIFICATION_MESSAGE,
+                message: new Map({
+                    message: `${renameSuccess} from '${oldName}' to '${newName}'`,
+                }),
+            },
+            {
+                type: treeDatasets.RECEIVE_RENAME_DATASET,
+                oldName,
+            },
+            {
+                type: tree.RENAME_DATASET,
+                oldName,
+                newName,
+            },
+            {
+                newName: 'ATLAS.NEW.JCL',
+                type: 'UPDATE_EDITOR_FILE_NAME',
+            },
+            ];
+
+            nock(BASE_URL)
+                // .persist()
+                // .log(console.log)
+                .put(`/datasets/${oldName}/rename`, body)
+                .reply(204, '');
+
+            const store = mockStore();
+
+            return store.dispatch(treeDatasets.renameDataset(oldName, newName, isOpenInViewer))
+                .then(() => {
+                    expect(store.getActions()).toEqual(expectedActions);
+                });
+        });
+
+        it('Should create an action to request and receive rename dataset member, isOpenInViewer false', () => {
+            const oldName = 'ATLAS.TEST(OLD.JCL)';
+            const newName = 'ATLAS.NEW(NEW.JCL)';
+            const isOpenInViewer = false;
+            const body = `{"newName":"${newName}"}`;
+
+            const expectedActions = [{
+                type: treeDatasets.REQUEST_RENAME_DATASET,
+                oldName,
+            },
+            {
+                type: snackbarActions.PUSH_NOTIFICATION_MESSAGE,
+                message: new Map({
+                    message: `${renameSuccess} from '${oldName}' to '${newName}'`,
+                }),
+            },
+            {
+                type: treeDatasets.RECEIVE_RENAME_DATASET,
+                oldName,
+            },
+            {
+                DSName: 'ATLAS.TEST',
+                type: 'REQUEST_TREE_DS_CHILD_MEMBERS',
+            },
+            {
+                type: tree.RENAME_DATASET,
+                oldName,
+                newName,
+            },
+            ];
+
+            nock(BASE_URL)
+                // .persist()
+                // .log(console.log)
+                .put(`/datasets/${oldName}/rename`, body)
+                .reply(204, '');
+
+            const store = mockStore();
+
+            return store.dispatch(treeDatasets.renameDataset(oldName, newName, isOpenInViewer))
+                .then(() => {
+                    expect(store.getActions()).toEqual(expectedActions);
+                });
+        });
+
+        it('Should create an action to request and receive rename dataset member  and update filename in editor, isOpenInViewer true', () => {
+            const oldName = 'ATLAS.TEST(OLD.JCL)';
+            const newName = 'ATLAS.TEST(NEW.JCL)';
+            const isOpenInViewer = true;
+            const body = `{"newName":"${newName}"}`;
+
+            const expectedActions = [{
+                type: treeDatasets.REQUEST_RENAME_DATASET,
+                oldName,
+            },
+            {
+                type: snackbarActions.PUSH_NOTIFICATION_MESSAGE,
+                message: new Map({
+                    message: `${renameSuccess} from '${oldName}' to '${newName}'`,
+                }),
+            },
+            {
+                type: treeDatasets.RECEIVE_RENAME_DATASET,
+                oldName,
+            },
+            {
+                DSName: 'ATLAS.TEST',
+                type: 'REQUEST_TREE_DS_CHILD_MEMBERS',
+            },
+            {
+                type: tree.RENAME_DATASET,
+                oldName,
+                newName,
+            },
+            {
+                newName: 'ATLAS.TEST(NEW.JCL)',
+                type: 'UPDATE_EDITOR_FILE_NAME',
+            },
+            ];
+
+            nock(BASE_URL)
+                // .persist()
+                // .log(console.log)
+                .put(`/datasets/${oldName}/rename`, body)
+                .reply(204, '');
+
+            const store = mockStore();
+
+            return store.dispatch(treeDatasets.renameDataset(oldName, newName, isOpenInViewer))
+                .then(() => {
+                    expect(store.getActions()).toEqual(expectedActions);
+                });
+        });
+
+        it('Should create an action to request and invalidate rename dataset', () => {
+            const oldName = 'ATLAS.TEST.JCL';
+            const newName = 'ATLAS.NEW12345678.JCL';
+            const isOpenInViewer = false;
+            const body = `{"newName":"${newName}"}`;
+
+            const expectedActions = [{
+                type: treeDatasets.REQUEST_RENAME_DATASET,
+                oldName,
+            },
+            {
+                type: snackbarActions.PUSH_NOTIFICATION_MESSAGE,
+                message: new Map({
+                    message: `${renameFail} '${oldName}'`,
+                }),
+            },
+            {
+                type: treeDatasets.INVALIDATE_RENAME_DATASET,
+                oldName,
+            }];
+
+            nock(BASE_URL)
+                .put(`/datasets/${oldName}/rename`, body)
+                .reply(400, JSON.stringify({
+                    status: 'BAD_REQUEST',
+                    message: 'EDC5051I An error occurred when renaming a file. (errno2=0xC013006A)',
+                }));
+
+            const store = mockStore();
+
+            return store.dispatch(treeDatasets.renameDataset(oldName, newName, isOpenInViewer))
                 .then(() => {
                     expect(store.getActions()).toEqual(expectedActions);
                 });

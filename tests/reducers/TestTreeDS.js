@@ -5,7 +5,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *
- * Copyright IBM Corporation 2018, 2019
+ * Copyright IBM Corporation 2018, 2020
  */
 
 import expect from 'expect';
@@ -88,5 +88,29 @@ describe('Reducer: treeDS', () => {
             DSName,
         };
         expect(tree(treeResources.receivedDSChildrenForDelete, action)).toEqual(treeResources.receivedDSChildrenForDelete);
+    });
+
+    it('Should handle RENAME_DATASET of dataset', () => {
+        const oldName = 'ATLAS.TEST.JCL';
+        const newName = 'ATLAS.TEST1.JCL';
+
+        const action = {
+            type: treeActions.RENAME_DATASET,
+            oldName,
+            newName,
+        };
+        expect(tree(treeResources.receivedDSChildrenForRename, action)).toEqual(treeResources.receivedDSChildrenAfterRename);
+    });
+
+    it('Should handle RENAME_DATASET of dataset member', () => {
+        const oldName = 'ATLAS.TEST(OLD.JCL)';
+        const newName = 'ATLAS.TEST(NEW.JCL)';
+
+        const action = {
+            type: treeActions.RENAME_DATASET,
+            oldName,
+            newName,
+        };
+        expect(tree(treeResources.receivedDSMemberForRename, action)).toEqual(treeResources.receivedDSMemberAfterRename);
     });
 });

@@ -5,10 +5,10 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *
- * Copyright IBM Corporation 2018, 2019
+ * Copyright IBM Corporation 2018, 2020
  */
 // let host = 'winmvs3b.hursley.ibm.com:7288';
-let host = 'localhost:8444';
+let host = 'tvt5003.svl.ibm.com:7554';
 if (typeof location !== 'undefined') {
     const hostname = location.hostname;
     if (hostname !== 'localhost') {
@@ -57,14 +57,14 @@ export function atlasPost(endpoint, body) {
     return atlasAction(endpoint, fetchParams);
 }
 
-export function atlasPut(endpoint, content, etag) {
+export function atlasPut(endpoint, body, etag) {
     const header = { 'Content-Type': 'application/json' };
     if (etag) {
         header['If-Match'] = etag;
     }
     const fetchParams = {
         method: 'PUT',
-        body: `{"records": "${content}"}`,
+        body,
         headers: header,
         credentials: 'include' };
     return atlasAction(endpoint, fetchParams);

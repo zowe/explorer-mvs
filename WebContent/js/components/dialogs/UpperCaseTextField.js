@@ -15,11 +15,12 @@ import TextField from '@material-ui/core/TextField';
 export default class UpperCaseTextField extends React.Component {
     constructor(props) {
         super(props);
-        const { value } = props;
+        const { value, placeholder } = props;
         this.handleFieldChange = this.handleFieldChange.bind(this);
 
         this.state = {
             field: value || '',
+            placeholder: placeholder || '',
         };
     }
 
@@ -46,6 +47,7 @@ export default class UpperCaseTextField extends React.Component {
         const { fieldChangedCallback, ...props } = this.props;
         return (<TextField
             {...props}
+            placeholder={this.state.placeholder}
             value={this.state.field}
             onChange={this.handleFieldChange}
         />);
@@ -55,5 +57,6 @@ export default class UpperCaseTextField extends React.Component {
 UpperCaseTextField.propTypes = {
     fieldChangedCallback: PropTypes.func,
     value: PropTypes.string,
+    placeholder: PropTypes.string,
 };
 

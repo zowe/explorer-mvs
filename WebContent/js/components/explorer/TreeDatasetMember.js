@@ -21,10 +21,12 @@ import DeleteDatasetMemberDialog from '../dialogs/datasets/DeleteDatasetMemberDi
 import DatasetMemberMenu from '../contextMenus/DatasetMemberMenu';
 import { TreeDataset } from './TreeDataset';
 import { UNAUTHORIZED_MESSAGE } from '../../actions/treeDatasets';
+import RenameDatasetDialog from '../dialogs/datasets/RenameDatasetDialog';
 
 const NO_DIALOG = 'NO_DIALOG';
 const CREATE_MEMBER = 'CREATE_MEMBER';
 const DELETE_MEMBER = 'DELETE_MEMBER';
+const RENAME_MEMBER = 'RENAME_MEMBER';
 
 export default class TreeDatasetMember extends React.Component {
     static renderUnauthorizedNode() {
@@ -72,8 +74,12 @@ export default class TreeDatasetMember extends React.Component {
         dispatch(submitJob(this.getDataSetAndMemberName()));
     }
 
+    handleRename = () => {
+        this.setState({ dialog: RENAME_MEMBER });
+    }
+
     renderDialog() {
-        const { parent, viewerDSName, viewerDSMember, dispatch } = this.props;
+        const { parent, viewerFile, dispatch } = this.props;
         switch (this.state.dialog) {
             case CREATE_MEMBER:
                 return <CreateMemberDialog DSName={parent} dispatch={dispatch} dialogReturn={this.dialogReturn} />;
@@ -84,7 +90,17 @@ export default class TreeDatasetMember extends React.Component {
                         dispatch={dispatch}
                         DSPath={parent}
                         dialogReturn={this.dialogReturn}
-                        isOpenInViewer={TreeDataset.isOpenInViewer(this.getDataSetAndMemberName(), viewerDSName, viewerDSMember)}
+                        isOpenInViewer={TreeDataset.isOpenInViewer(this.getDataSetAndMemberName(), viewerFile)}
+                    />);
+            }
+            case RENAME_MEMBER: {
+                return (
+                    <RenameDatasetDialog
+                        oldName={this.getDataSetAndMemberName()}
+                        dispatch={dispatch}
+                        DSPath={parent}
+                        dialogReturn={this.dialogReturn}
+                        isOpenInViewer={TreeDataset.isOpenInViewer(this.getDataSetAndMemberName(), viewerFile)}
                     />);
             }
             default:
@@ -109,6 +125,7 @@ export default class TreeDatasetMember extends React.Component {
                         member={member}
                         handleEdit={() => { this.handleEdit(); }}
                         handleJobSubmit={() => { this.handleJobSubmit(); }}
+                        handleRename={() => { this.handleRename(); }}
                         handleDeleteDataset={() => { this.handleDeleteDataset(); }}
                         handleCreateMember={() => { this.handleCreateMember(); }}
                     />
@@ -124,6 +141,5 @@ TreeDatasetMember.propTypes = {
     member: PropTypes.string.isRequired,
     parent: PropTypes.string.isRequired,
     dispatch: PropTypes.func.isRequired,
-    viewerDSName: PropTypes.string,
-    viewerDSMember: PropTypes.string,
+    viewerFile: PropTypes.string,
 };
