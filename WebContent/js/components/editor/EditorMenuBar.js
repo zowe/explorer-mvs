@@ -36,7 +36,8 @@ export default class EditorMenuBar extends React.Component {
     }
 
     static openDatasetInNewWindow(file) {
-        const newWindow = window.open(`/#/editor?dataset=${encodeURIComponent(file)}`, '_blank');
+        const newWindow = window.open(`${window.location.origin}${window.location.pathname}`
+            + `/#/editor?dataset=${encodeURIComponent(file)}`, '_blank');
         newWindow.focus();
     }
 
