@@ -1,6 +1,6 @@
 {
   "name": "explorer-mvs",
-  "version": "0.0.18",
+  "version": "0.0.19",
   "directories": {
     "test": "tests"
   },
