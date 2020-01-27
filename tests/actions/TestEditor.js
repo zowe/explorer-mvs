@@ -5,7 +5,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *
- * Copyright IBM Corporation 2018, 2019
+ * Copyright IBM Corporation 2018, 2020
  */
 
 import configureMockStore from 'redux-mock-store';
@@ -87,6 +87,7 @@ describe('Action: editor', () => {
                 type: editorActions.RECEIVE_CONTENT,
                 file: dataset,
                 content: editorResources.content,
+                etag: null,
             }];
 
             nock(BASE_URL)
@@ -204,6 +205,16 @@ describe('Action: editor', () => {
                 etag: editorResources.etag,
             };
             expect(editorActions.updateEditorEtag(editorResources.etag)).toEqual(expectedAction);
+        });
+    });
+
+    describe('updateEditorFileName', () => {
+        it('Should create an action to update the editor filename', () => {
+            const expectedAction = {
+                type: editorActions.UPDATE_EDITOR_FILE_NAME,
+                newName: editorResources.dataset,
+            };
+            expect(editorActions.updateEditorFileName(editorResources.dataset)).toEqual(expectedAction);
         });
     });
 

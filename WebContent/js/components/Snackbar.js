@@ -5,13 +5,13 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *
- * Copyright IBM Corporation 2016, 2019
+ * Copyright IBM Corporation 2016, 2020
  */
 
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
-import Snackbar from 'material-ui/Snackbar';
+import Snackbar from '@material-ui/core/Snackbar';
 import { List } from 'immutable';
 import { popMessage } from '../actions/snackbarNotifications';
 
@@ -61,7 +61,7 @@ class AtlasSnackbar extends React.Component {
                 <Snackbar
                     message={messageValue.get('message')}
                     open={this.state.open}
-                    onRequestClose={this.handleRequestClose}
+                    onClose={this.handleRequestClose}
                 />
             );
         }

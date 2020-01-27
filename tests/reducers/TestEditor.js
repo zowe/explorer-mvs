@@ -5,7 +5,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *
- * Copyright IBM Corporation 2018, 2019
+ * Copyright IBM Corporation 2018, 2020
  */
 
 import expect from 'expect';
@@ -60,6 +60,30 @@ describe('Reducer: editor', () => {
             etag: editorResources.newEtag,
         };
         expect(editor(editorResources.receivedContent, action)).toEqual(editorResources.newEtagEditor);
+    });
+
+    it('Should handle UPDATE_EDITOR_FILE_NAME DSMember', () => {
+        const action = {
+            type: editorActions.UPDATE_EDITOR_FILE_NAME,
+            newName: editorResources.renameDSMember,
+        };
+        expect(editor(editorResources.receivedContent, action)).toEqual(editorResources.afterRenameDSMember);
+    });
+
+    it('Should handle UPDATE_EDITOR_FILE_NAME DSName Only', () => {
+        const action = {
+            type: editorActions.UPDATE_EDITOR_FILE_NAME,
+            newName: editorResources.renameDS,
+        };
+        expect(editor(editorResources.receivedContent, action)).toEqual(editorResources.afterRenameDSName);
+    });
+
+    it('Should handle UPDATE_EDITOR_FILE_NAME DSName Seq', () => {
+        const action = {
+            type: editorActions.UPDATE_EDITOR_FILE_NAME,
+            newName: editorResources.renameDSSeq,
+        };
+        expect(editor(editorResources.receivedSeqContent, action)).toEqual(editorResources.renameSeqContent);
     });
 
     it('Should handle INVALIDATE_ETAG', () => {

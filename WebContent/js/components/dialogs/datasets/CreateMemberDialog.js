@@ -5,7 +5,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *
- * Copyright IBM Corporation 2016, 2019
+ * Copyright IBM Corporation 2016, 2020
  */
 
 import React from 'react';
@@ -37,8 +37,9 @@ export default class CreateMemberDialog extends React.Component {
 
     render() {
         const dialogContent = (<UpperCaseTextField
-            hintText="Member name"
+            label="New Member Name"
             fieldChangedCallback={this.updateName}
+            fullWidth={true}
         />);
 
         return (

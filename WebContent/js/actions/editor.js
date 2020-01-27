@@ -5,7 +5,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *
- * Copyright IBM Corporation 2016, 2019
+ * Copyright IBM Corporation 2016, 2020
  */
 
 import { fetchDatasetTreeChildren } from './treeDS';
@@ -17,6 +17,7 @@ export const REQUEST_CONTENT = 'REQUEST_CONTENT';
 export const RECEIVE_CONTENT = 'RECEIVE_CONTENT';
 export const INVALIDATE_CONTENT = 'INVALIDATE_CONTENT';
 export const UPDATE_EDITOR_CONTENT = 'UPDATE_EDITOR_CONTENT';
+export const UPDATE_EDITOR_FILE_NAME = 'UPDATE_EDITOR_FILE_NAME';
 export const UPDATE_EDITOR_ETAG = 'UPDATE_EDITOR_ETAG';
 export const INVALIDATE_ETAG = 'INVALIDATE_ETAG';
 export const INVALIDATE_SAVE = 'INVALIDATE_SAVE';
@@ -35,6 +36,25 @@ export const RECEIVE_ATTRIBUTES = 'RECEIVE_ATTRIBUTES';
 const SAVE_FAIL_MESSAGE = 'Save failed for';
 const SAVE_SUCCESS_MESSAGE = 'Save success for';
 const GET_CONTENT_FAIL_MESSAGE = 'Get content failed for';
+
+
+function replaceAll(str, find, replace) {
+    return str.replace(new RegExp(find, 'g'), replace);
+}
+
+function encodeContentString(content) {
+    let newContent = replaceAll(content, /\\/, '\\\\'); // Escape backslashes
+    newContent = replaceAll(newContent, /"/, '\\"'); // Escape double quotes
+    // The new server interface is unable to accept setings with hex values
+    newContent = replaceAll(newContent, '\x0a', '\\n'); // Escape line feed
+    newContent = replaceAll(newContent, '\x0d', '\\r'); // Escape return
+    newContent = replaceAll(newContent, '\x09', '\\t'); // Escape tab
+    return newContent;
+}
+
+export function makeRecordsFromContent(content) {
+    return `{"records": "${encodeContentString(content)}"}`;
+}
 
 function requestDSContent(file) {
     return {
@@ -120,6 +140,13 @@ export function updateEditorEtag(etag) {
     };
 }
 
+export function updateEditorFileName(newName) {
+    return {
+        type: UPDATE_EDITOR_FILE_NAME,
+        newName,
+    };
+}
+
 function invalidateEtagChange() {
     return {
         type: INVALIDATE_ETAG,
@@ -164,25 +191,11 @@ function invalidateSave() {
     };
 }
 
-function replaceAll(str, find, replace) {
-    return str.replace(new RegExp(find, 'g'), replace);
-}
-
-function encodeContentString(content) {
-    let newContent = replaceAll(content, /\\/, '\\\\'); // Escape backslashes
-    newContent = replaceAll(newContent, /"/, '\\"'); // Escape double quotes
-    // The new server interface is unable to accept setings with hex values
-    newContent = replaceAll(newContent, '\x0a', '\\n'); // Escape line feed
-    newContent = replaceAll(newContent, '\x0d', '\\r'); // Escape return
-    newContent = replaceAll(newContent, '\x09', '\\t'); // Escape tab
-    return newContent;
-}
-
 export function saveDataset(file, content, etag) {
     return dispatch => {
         dispatch(requestSave(file));
         const endpoint = `datasets/${encodeURLComponent(file)}/content`;
-        return atlasPut(endpoint, `${encodeContentString(content)}`, etag).then(response => {
+        return atlasPut(endpoint, makeRecordsFromContent(content), etag).then(response => {
             if (response.ok) {
                 dispatch(constructAndPushMessage(`${SAVE_SUCCESS_MESSAGE} ${file}`));
                 return dispatch(receiveSave(file));
@@ -240,7 +253,7 @@ export function saveAsDatasetMember(DSName, newDSMember, newContent) {
     return dispatch => {
         const newDS = `${DSName}(${newDSMember})`;
         dispatch(requestSaveAs(newDS));
-        return atlasPut(`datasets/${newDS}/content`, encodeContentString(newContent), null).then(response => {
+        return atlasPut(`datasets/${newDS}/content`, makeRecordsFromContent(newContent), null).then(response => {
             if (response.ok) {
                 dispatch(constructAndPushMessage(`${SAVE_SUCCESS_MESSAGE} ${newDS}`));
                 return dispatch(receiveSave(newDS));

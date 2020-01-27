@@ -5,7 +5,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *
- * Copyright IBM Corporation 2018, 2019
+ * Copyright IBM Corporation 2018, 2020
  */
 
 import { Map } from 'immutable';
@@ -27,13 +27,50 @@ export const requestedContent = Map({
 export const content = '//TSTJCICS JOB (ADL),ATLAS,MSGCLASS=0,CLASS=A,TIME=1440\n//*        THIS JOB SIMULATES A CICS REGION FOR 60 SECONDS';
 
 export const dataset = 'JCAIN.TEST.JCL(TSTJCICS)';
+export const datasetSeq = 'JCAIN.TEST.TXT';
+
+/* depends on 'dataset' name above */
+export const renameDSMember = 'JCAIN.TEST.JCL(NEWNAME)';
+export const renameDSName = 'JCAIN.TEST1.JCL(TSTJCICS)';
+export const renameDS = 'JCAIN.TEST1.JCL';
+
+/* depends on 'datasetSeq' name above */
+export const renameDSSeq = 'JCAIN.TEST1.TXT';
+
 
 export const etag = '1EAC8542504731CBDBC42BB95008EAA8';
-
 export const receivedContent = Map({
     content,
     etag,
     file: dataset,
+    isFetching: false,
+});
+
+export const receivedSeqContent = Map({
+    content,
+    etag,
+    file: datasetSeq,
+    isFetching: false,
+});
+
+export const renameSeqContent = Map({
+    content,
+    etag,
+    file: renameDSSeq,
+    isFetching: false,
+});
+
+export const afterRenameDSMember = Map({
+    content,
+    etag,
+    file: renameDSMember,
+    isFetching: false,
+});
+
+export const afterRenameDSName = Map({
+    content,
+    etag,
+    file: renameDSName,
     isFetching: false,
 });
 

@@ -5,15 +5,15 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *
- * Copyright IBM Corporation 2016, 2019
+ * Copyright IBM Corporation 2016, 2020
  */
 
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import CircularProgress from 'material-ui/CircularProgress';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import Editor from '../../components/editor/Editor';
-import DatasetTree from '../DatasetTree';
+import ConnectedDatasetTree from '../DatasetTree';
 import ConnectedSnackbar from '../../components/Snackbar';
 import { validateUser } from '../../actions/validation';
 
@@ -31,7 +31,7 @@ class HomeView extends React.Component {
             return (
                 <div className="row group">
                     <div className="component col col-3">
-                        <DatasetTree id="datasetTree" title="Dataset Explorer" subtitle="Browse Datasets and members" type="datasets" />
+                        <ConnectedDatasetTree id="datasetTree" title="Dataset Explorer" subtitle="Browse Datasets and members" type="datasets" />
                     </div>
                     <div className="component col col-9">
                         <Editor />

@@ -5,7 +5,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *
- * Copyright IBM Corporation 2016, 2019
+ * Copyright IBM Corporation 2016, 2020
  */
 
 import { atlasGet } from '../utilities/urlUtils';
@@ -18,6 +18,7 @@ export const SET_DS_TREE_PATH = 'SET_DS_TREE_PATH';
 export const TOGGLE_DS_TREE = 'TOGGLE_DS_TREE';
 export const RESET_DS_TREE_CHILDREN = 'RESET_DS_CHILDREN';
 export const REMOVE_DATASET = 'REMOVE_DATASET';
+export const RENAME_DATASET = 'RENAME_DATASET';
 
 export const DATASET_FETCH_FAIL = 'Fetch Datasets failed for';
 
@@ -67,6 +68,14 @@ export function removeDataset(DSName) {
     return {
         type: REMOVE_DATASET,
         DSName,
+    };
+}
+
+export function renameDataset(oldName, newName) {
+    return {
+        type: RENAME_DATASET,
+        oldName,
+        newName,
     };
 }
 
