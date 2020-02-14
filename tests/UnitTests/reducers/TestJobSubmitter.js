@@ -10,8 +10,8 @@
 
 import expect from 'expect';
 import { Map } from 'immutable';
-import jobSubmitter from '../../WebContent/js/reducers/jobSubmitter';
-import * as jobSubmitterActions from '../../WebContent/js/actions/jobSubmitter';
+import jobSubmitter from '../../../WebContent/js/reducers/jobSubmitter';
+import * as jobSubmitterActions from '../../../WebContent/js/actions/jobSubmitter';
 import * as jobSubmitterResources from '../testResources/reducers/jobSubmitter';
 
 describe('Reducer: jobSubmitter', () => {

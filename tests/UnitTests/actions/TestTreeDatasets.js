@@ -14,11 +14,11 @@ import nock from 'nock';
 import expect from 'expect';
 import rewire from 'rewire';
 import { Map } from 'immutable';
-import * as treeDatasets from '../../WebContent/js/actions/treeDatasets';
-import * as tree from '../../WebContent/js/actions/treeDS';
+import * as treeDatasets from '../../../WebContent/js/actions/treeDatasets';
+import * as tree from '../../../WebContent/js/actions/treeDS';
 import * as treeDatasetsData from '../testResources/actions/treeDatasets';
 import * as treeData from '../testResources/actions/treeDS';
-import * as snackbarActions from '../../WebContent/js/actions/snackbarNotifications';
+import * as snackbarActions from '../../../WebContent/js/actions/snackbarNotifications';
 import { LOCAL_HOST_ENDPOINT as BASE_URL } from '../testResources/hostConstants';
 
 describe('Action: treeDatasets', () => {
@@ -29,7 +29,7 @@ describe('Action: treeDatasets', () => {
     const middlewares = [thunk];
     const mockStore = configureMockStore(middlewares);
 
-    const rewiredTreeDatasets = rewire('../../WebContent/js/actions/treeDatasets');
+    const rewiredTreeDatasets = rewire('../../../WebContent/js/actions/treeDatasets');
     const createSuccess = rewiredTreeDatasets.__get__('DATASET_CREATE_SUCCESS_MESSAGE');
     const createFail = rewiredTreeDatasets.__get__('DATASET_CREATE_FAIL_MESSAGE');
     const deleteSuccess = rewiredTreeDatasets.__get__('DATASET_DELETE_SUCCESS_MESSAGE');

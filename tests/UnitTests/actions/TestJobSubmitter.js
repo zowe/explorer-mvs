@@ -14,9 +14,9 @@ import nock from 'nock';
 import expect from 'expect';
 import rewire from 'rewire';
 import { Map } from 'immutable';
-import * as jobSubmitter from '../../WebContent/js/actions/jobSubmitter';
+import * as jobSubmitter from '../../../WebContent/js/actions/jobSubmitter';
 import * as jobSubmitterData from '../testResources/actions/jobSubmitter';
-import * as snackbarActions from '../../WebContent/js/actions/snackbarNotifications';
+import * as snackbarActions from '../../../WebContent/js/actions/snackbarNotifications';
 import { LOCAL_HOST_ENDPOINT as BASE_URL } from '../testResources/hostConstants';
 
 describe('Action: jobSubmitter', () => {
@@ -26,7 +26,7 @@ describe('Action: jobSubmitter', () => {
 
     const middlewares = [thunk];
     const mockStore = configureMockStore(middlewares);
-    const rewiredJobSubmitter = rewire('../../WebContent/js/actions/jobSubmitter');
+    const rewiredJobSubmitter = rewire('../../../WebContent/js/actions/jobSubmitter');
 
     describe('resetResponse', () => {
         it('Should create an action to reset the response and requested', () => {
