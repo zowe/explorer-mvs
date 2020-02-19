@@ -83,7 +83,7 @@ echo
 
 # convert encoding of startup script
 # FIXME: we are not using the statup script
-ls -al ${FVT_WORKSPACE}/${API_INSTALL_FOLDER}/
+ls -al ${FVT_WORKSPACE}/${API_INSTALL_FOLDER}/scripts
 STARTUP=${FVT_WORKSPACE}/${API_INSTALL_FOLDER}/${API_STARTUP_SCRIPT}
 if [ ! -f "${STARTUP}" ]; then
   echo "[${SCRIPT_NAME}][error] API startup script is missing."
