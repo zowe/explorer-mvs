@@ -31,7 +31,7 @@ class HomeView extends React.Component {
             return (
                 <div className="row group">
                     <div className="component col col-3">
-                        <ConnectedDatasetTree id="datasetTree" title="Dataset Explorer" subtitle="Browse Datasets and members" type="datasets" />
+                        <ConnectedDatasetTree title="Dataset Explorer" subtitle="Browse Datasets and members" type="datasets" />
                     </div>
                     <div className="component col col-9">
                         <Editor />
