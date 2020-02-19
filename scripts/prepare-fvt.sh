@@ -23,7 +23,7 @@ FVT_ZOSMF_PORT=$3
 FVT_WORKSPACE=./.fvt
 PLUGIN_INSTALL_FOLDER=mvs_explorer
 API_INSTALL_FOLDER=explorer-data-sets-api
-API_STARTUP_SCRIPT=scripts/files-api-server-start.sh
+API_STARTUP_SCRIPT=scripts/data-sets-api-server-start.sh
 DOCKER_IMAGE=jackjiaibm/ibm-nvm-jre-proxy
 DOCKER_APP_FOLDER=/app
 FVT_PROXY_PORT=7554
@@ -83,7 +83,6 @@ echo
 
 # convert encoding of startup script
 # FIXME: we are not using the statup script
-ls -al ${FVT_WORKSPACE}/${API_INSTALL_FOLDER}/scripts
 STARTUP=${FVT_WORKSPACE}/${API_INSTALL_FOLDER}/${API_STARTUP_SCRIPT}
 if [ ! -f "${STARTUP}" ]; then
   echo "[${SCRIPT_NAME}][error] API startup script is missing."
