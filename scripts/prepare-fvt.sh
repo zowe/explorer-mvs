@@ -32,7 +32,7 @@ OLD_PWD=$(pwd)
 # validate parameters
 # set default values
 if [ -z "$FVT_API_ARTIFACT" ]; then
-  FVT_API_ARTIFACT="libs-release-local/org/zowe/explorer/jobs/jobs-zowe-server-package/*/jobs-zowe-server-package-*.zip"
+  FVT_API_ARTIFACT="libs-release-local/org/zowe/explorer/datasets/data-sets-zowe-server-package/*/data-sets-zowe-server-package-*.zip"
   echo "[${SCRIPT_NAME}][warn] API artifact is not defined, using default value."
 fi
 if [ -z "$FVT_ZOSMF_HOST" ]; then

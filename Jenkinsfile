@@ -7,7 +7,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *
- * Copyright IBM Corporation 2018, 2019
+ * Copyright IBM Corporation 2018, 2020
  */
 
 
@@ -157,7 +157,7 @@ npm run test:fvt
     },
     junit         : "target/*.xml",
   )
-  
+
   // we need sonar scan
   pipeline.sonarScan(
     scannerTool     : lib.Constants.DEFAULT_LFJ_SONARCLOUD_SCANNER_TOOL,
