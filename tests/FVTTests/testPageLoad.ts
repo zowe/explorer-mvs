@@ -42,7 +42,7 @@ describe('MVS explorer page load', function () {
     });
 
     describe('MVS Explorer home page', () => {
-        it('Should render datasetTreeCard and editorCard', async () => {
+        it('Should render dataset-tree-card and editor-card', async () => {
             expect(await testElementAppearsXTimesById(driver, 'dataset-tree-card', 1)).to.be.true;
             expect(await testElementAppearsXTimesById(driver, 'editor-card', 1)).to.be.true;
         });
