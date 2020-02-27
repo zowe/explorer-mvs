@@ -108,7 +108,7 @@ class DatasetTree extends React.Component {
         const { isFetching, DSChildren, DSPath, dispatch, validated } = this.props;
         return (validated ?
             <Card
-                id="datasetTreeCard"
+                id="dataset-tree-card"
                 class="tree-card"
                 style={{ paddingBottom: '0px' }}
             >
