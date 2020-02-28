@@ -9,8 +9,8 @@
  */
 
 import expect from 'expect';
-import tree from '../../WebContent/js/reducers/treeDS';
-import * as treeActions from '../../WebContent/js/actions/treeDS';
+import tree from '../../../WebContent/js/reducers/treeDS';
+import * as treeActions from '../../../WebContent/js/actions/treeDS';
 import * as treeResources from '../testResources/reducers/treeDS';
 
 describe('Reducer: treeDS', () => {

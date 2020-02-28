@@ -9,8 +9,8 @@
  */
 
 import expect from 'expect';
-import treeDatasets from '../../WebContent/js/reducers/treeDatasets';
-import * as treeDatasetsActions from '../../WebContent/js/actions/treeDatasets';
+import treeDatasets from '../../../WebContent/js/reducers/treeDatasets';
+import * as treeDatasetsActions from '../../../WebContent/js/actions/treeDatasets';
 import * as treeDatasetsResources from '../testResources/reducers/treeDatasets';
 
 describe('Reducer treeDatasets', () => {

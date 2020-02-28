@@ -8,7 +8,7 @@
  * Copyright IBM Corporation 2018, 2019
  */
 
-import * as treeTyes from '../../../WebContent/js/actions/treeDS';
+import * as treeTyes from '../../../../WebContent/js/actions/treeDS';
 
 export const DatasetFetchChildrenData = { items: [{ name: 'JCAIN' },
     { name: 'JCAIN.SPF.ISPPROF', blockSize: '3120', recordLength: '80', recordFormat: 'FB', dataSetOrganization: 'PO' },
