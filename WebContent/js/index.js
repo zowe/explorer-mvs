@@ -22,16 +22,16 @@ import thunk from 'redux-thunk';
 import { createLogger } from 'redux-logger';
 import rootReducer from './reducers';
 
-import ConnectedHomeView from './containers/pages/Home';
-import ConnectedFullScreenEditor from './containers/pages/FullScreenEditor';
+import HomeView from './containers/pages/Home';
+import FullScreenEditor from './containers/pages/FullScreenEditor';
 
 const store = applyMiddleware(thunk, createLogger())(createStore)(rootReducer, Map({}));
 
 ReactDOM.render(
     <Provider store={store}>
         <HashRouter>
-            <Route exact={true} path="/" component={ConnectedHomeView} />
-            <Route path="/editor" component={ConnectedFullScreenEditor} />
+            <Route exact={true} path="/" component={HomeView} />
+            <Route path="/editor" component={FullScreenEditor} />
         </HashRouter>
     </Provider>
     , document.getElementById('menuapp'));

@@ -10,7 +10,6 @@
 
 import { atlasGet } from '../utilities/urlUtils';
 import { constructAndPushMessage } from './snackbarNotifications';
-import { checkForValidationFailure } from './validation';
 
 export const REQUEST_DS_TREE_CHILDREN = 'REQUEST_DS_TREE_CHILDREN';
 export const RECEIVE_DS_TREE_CHILDREN = 'RECEIVE_DS_TREE_CHILDREN';
@@ -86,19 +85,13 @@ export function fetchDatasetTreeChildren(path) {
         const endpoint = `datasets/${path}`;
         return atlasGet(endpoint)
             .then(response => {
-                return dispatch(checkForValidationFailure(response));
-            })
-            .then(response => {
                 if (response.ok) {
                     return response.json();
                 }
                 throw Error(response.statusText);
-            })
-            .then(json => {
+            }).then(json => {
                 dispatch(receiveDSChildren(path, json));
-            })
-            .catch(e => {
-                console.log(e);
+            }).catch(() => {
                 dispatch(constructAndPushMessage(`${DATASET_FETCH_FAIL} ${path}`));
                 dispatch(invalidateDSChildren(path));
             });
