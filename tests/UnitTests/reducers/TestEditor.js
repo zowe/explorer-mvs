@@ -10,8 +10,8 @@
 
 import expect from 'expect';
 import { Map } from 'immutable';
-import editor from '../../WebContent/js/reducers/editor';
-import * as editorActions from '../../WebContent/js/actions/editor';
+import editor from '../../../WebContent/js/reducers/editor';
+import * as editorActions from '../../../WebContent/js/actions/editor';
 import * as editorResources from '../testResources/reducers/editor';
 import * as treeResources from '../testResources/reducers/treeDS';
 

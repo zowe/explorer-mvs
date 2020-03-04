@@ -16,11 +16,11 @@ import rewire from 'rewire';
 import sinon from 'sinon';
 import { fromJS, Map } from 'immutable';
 import { LOCAL_HOST_ENDPOINT as BASE_URL } from '../testResources/hostConstants';
-import * as editorActions from '../../WebContent/js/actions/editor';
+import * as editorActions from '../../../WebContent/js/actions/editor';
 import * as editorResources from '../testResources/actions/editor';
 import * as treeData from '../testResources/actions/treeDS';
-import * as treeDatasetActions from '../../WebContent/js/actions/treeDatasets';
-import * as snackbarActions from '../../WebContent/js/actions/snackbarNotifications';
+import * as treeDatasetActions from '../../../WebContent/js/actions/treeDatasets';
+import * as snackbarActions from '../../../WebContent/js/actions/snackbarNotifications';
 
 
 describe('Action: editor', () => {
@@ -44,7 +44,7 @@ describe('Action: editor', () => {
     const middlewares = [thunk];
     const mockStore = configureMockStore(middlewares);
 
-    const rewiredEditor = rewire('../../WebContent/js/actions/editor');
+    const rewiredEditor = rewire('../../../WebContent/js/actions/editor');
     const rewiredSaveMessage = rewiredEditor.__get__('SAVE_SUCCESS_MESSAGE');
     const rewiredSaveFailMessage = rewiredEditor.__get__('SAVE_FAIL_MESSAGE');
 
