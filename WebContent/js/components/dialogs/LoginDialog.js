@@ -20,6 +20,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 import { validateUser, loginUser } from '../../actions/validation';
+import ZoweIcon from '../../../img/zowe-icon-color.svg';
 
 class LoginDialog extends React.Component {
     constructor(props) {
@@ -84,12 +85,25 @@ class LoginDialog extends React.Component {
 
         const dialogAction = !isValidating ? (<Button onClick={this.handleLogin} >Login</Button>) : null;
 
+        const dialogTitle = !isValidating ?
+            (
+                <DialogTitle style={{ 'text-align': 'center' }}>
+                    <img
+                        style={{ width: '100px', display: 'block', marginLeft: 'auto', marginRight: 'auto' }}
+                        src={ZoweIcon}
+                        alt="logo"
+                    />
+                    Zowe Login
+                </DialogTitle>
+            )
+            : null;
+
         return (
             <Dialog
                 open={true}
                 type={'primary'}
             >
-                {!isValidating ? <DialogTitle>Zowe Login</DialogTitle> : null}
+                {dialogTitle}
                 <DialogContent>
                     {dialogContent}
                 </DialogContent>
