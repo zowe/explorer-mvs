@@ -59,26 +59,22 @@ class LoginDialog extends React.Component {
     render() {
         const { isValidating, validationMessage } = this.props;
         const dialogContent = isValidating ? <CircularProgress /> :
-            (<form onSubmit={this.handleLogin}>
+            (<form onSubmit={this.handleLogin} style={{ width: '500px' }}>
                 <TextField
                     id="username"
-                    label="username"
-                    placeholder="Username"
-                    error={this.state.username === ''}
-                    helperText={this.state.username === '' ? <div>*Required</div> : null}
+                    label="Username*"
                     value={this.state.username}
                     onChange={this.handleUsernameChange}
                     style={{ display: 'block' }}
+                    fullWidth={true}
                 />
                 <TextField
                     id="password"
-                    label="password"
-                    placeholder="Password"
-                    error={this.state.password === ''}
-                    helperText={this.state.password === '' ? <div>*Required</div> : null}
+                    label="Password*"
                     type="password"
                     value={this.state.password}
                     onChange={this.handlePasswordChange}
+                    fullWidth={true}
                 />
                 <input type="submit" style={{ display: 'none' }} />
                 <div style={{ color: 'red' }}>
@@ -93,8 +89,8 @@ class LoginDialog extends React.Component {
                 open={true}
                 type={'primary'}
             >
-                <DialogTitle>Zowe Login</DialogTitle>
-                <DialogContent >
+                {!isValidating ? <DialogTitle>Zowe Login</DialogTitle> : null}
+                <DialogContent>
                     {dialogContent}
                 </DialogContent>
                 <DialogActions >
