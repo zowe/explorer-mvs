@@ -54,7 +54,7 @@ node('ibm-jenkins-slave-dind') {
       credentialType: 'com.cloudbees.plugins.credentials.impl.UsernamePasswordCredentialsImpl',
       defaultValue: 'ssh-zdt-test-image-guest',
       required: true
-    )
+    ),
     string(
       name: 'FVT_SERVER_HOSTNAME',
       description: 'Server hostname for integration test',
