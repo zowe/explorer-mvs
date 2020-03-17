@@ -24,7 +24,7 @@ FVT_UTILITIES_SCRIPTS_DIR=node_modules/explorer-fvt-utilities/scripts
 FVT_WORKSPACE="${ROOT_DIR}/.fvt"
 FVT_APIML_DIR=api-layer
 FVT_DATASETS_API_DIR=jobs-api
-FVT_PLUGIN_DIR=jes_explorer
+FVT_PLUGIN_DIR=mvs_explorer
 FVT_KEYSTORE_DIR=keystore
 FVT_CONFIG_DIR=configs
 FVT_LOGS_DIR=logs
@@ -163,8 +163,8 @@ catalogUiTiles:
     title: z/OS Datasets and Unix Files services
     description: IBM z/OS Datasets and Unix Files REST services
 EOF
-echo "[${SCRIPT_NAME}] writing Explorer Jes UI config for APIML ..."
-cat > "${FVT_WORKSPACE}/${FVT_CONFIG_DIR}/jobs-ui.yml" << EOF
+echo "[${SCRIPT_NAME}] writing Explorer MVS UI config for APIML ..."
+cat > "${FVT_WORKSPACE}/${FVT_CONFIG_DIR}/files-ui.yml" << EOF
 services:
 - serviceId: explorer-mvs
   title: IBM z/OS Datasets UI
