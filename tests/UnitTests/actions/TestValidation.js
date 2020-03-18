@@ -13,7 +13,7 @@ import thunk from 'redux-thunk';
 import nock from 'nock';
 import expect from 'expect';
 import * as validation from '../../../WebContent/js/actions/validation';
-import * as validationResources from '../../testResources/actions/validation';
+import * as validationResources from '../testResources/actions/validation';
 import {
     LOCAL_HOST_ENDPOINT,
 } from '../testResources/hostConstants';
