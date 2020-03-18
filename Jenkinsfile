@@ -21,9 +21,16 @@ node('ibm-jenkins-slave-dind') {
   // build parameters for FVT test
   pipeline.addBuildParameters(
     string(
+      name: 'FVT_APIML_ARTIFACT',
+      description: 'APIML build for integration test',
+      defaultValue: 'libs-release-local/org/zowe/apiml/sdk/zowe-install/*/zowe-install-*.zip',
+      trim: true,
+      required: true
+    ),
+    string(
       name: 'FVT_API_ARTIFACT',
       description: 'Datasets API artifact download pattern',
-      defaultValue: 'libs-release-local/org/zowe/explorer/datasets/data-sets-zowe-server-package/*/data-sets-zowe-server-package-*.zip',
+      defaultValue: 'libs-release-local/org/zowe/explorer/data/sets/*/data-sets-server-zowe-package-*.zip',
       trim: true,
       required: true
     ),
@@ -122,19 +129,18 @@ node('ibm-jenkins-slave-dind') {
 
 pipeline.test(
     name          : 'Integration',
+    timeout       : [ time: 20, unit: 'MINUTES' ],
     operation     : {
       echo "Preparing server for integration test ..."
       ansiColor('xterm') {
         // prepare environtment for integration test
-        sh "./scripts/prepare-fvt.sh \"${params.FVT_API_ARTIFACT}\" \"${params.FVT_ZOSMF_HOST}\" \"${params.FVT_ZOSMF_PORT}\""
+        sh "./scripts/prepare-fvt.sh \"${params.FVT_APIML_ARTIFACT}\" \"${params.FVT_API_ARTIFACT}\" \"${params.FVT_ZOSMF_HOST}\" \"${params.FVT_ZOSMF_PORT}\""
       }
-      // run tests
-      sh 'docker ps'
       // wait a while to give time for service to be started
-      sleep time: 1, unit: 'MINUTES'
+      sleep time: 2, unit: 'MINUTES'
 
       echo "Starting integration test ..."
-      timeout(time: 60, unit: 'MINUTES') {
+      try {
         withCredentials([
           usernamePassword(
             credentialsId: params.FVT_ZOSMF_CREDENTIAL,
@@ -146,13 +152,18 @@ pipeline.test(
             sh """
 ZOWE_USERNAME=${USERNAME} \
 ZOWE_PASSWORD=${PASSWORD} \
-ZOWE_JOB_NAME=${params.FVT_JOBNAME} \
 SERVER_HOST_NAME=${params.FVT_SERVER_HOSTNAME} \
 SERVER_HTTPS_PORT=7554 \
 npm run test:fvt
 """
-          }
+         }
         }
+      } catch (e) {
+        echo "Error with integration test: ${e}"
+        throw e
+      } finally {
+        // show logs (the folder should match the folder defined in prepare-fvt.sh)
+        sh "find .fvt/logs -type f | xargs -i sh -c 'echo \">>>>>>>>>>>>>>>>>>>>>>>> {} >>>>>>>>>>>>>>>>>>>>>>>\" && cat {}'"
       }
     },
     junit         : "target/*.xml",

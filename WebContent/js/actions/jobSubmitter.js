@@ -5,12 +5,11 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *
- * Copyright IBM Corporation 2016, 2020
+ * Copyright IBM Corporation 2016, 2019
  */
 
 import { constructAndPushMessage } from './snackbarNotifications';
 import { atlasPost } from '../utilities/urlUtils';
-import { checkForValidationFailure } from './validation';
 
 export const REQUEST_JOB_SUBMIT = 'REQUEST_JOB_SUBMIT';
 export const RECEIVE_JOB_SUBMIT_RESPONSE = 'RECEIVE_JOB_SUBMIT_RESPONSE';
@@ -52,9 +51,6 @@ export function submitJob(job) {
     return dispatch => {
         dispatch(requestSubmit());
         return atlasPost('jobs/dataset', JSON.stringify({ file: `'${job}'` }))
-            .then(response => {
-                return dispatch(checkForValidationFailure(response));
-            })
             .then(response => {
                 if (response.ok) {
                     return response.json();

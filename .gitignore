@@ -25,3 +25,7 @@ dist/
 !.pax/pre-packaging.sh
 !.pax/post-packaging.sh
 !.pax/prepare-workspace.sh
+
+# apiml cache
+.ehcache*
+*.data

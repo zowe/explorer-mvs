@@ -5,7 +5,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *
- * Copyright IBM Corporation 2018, 2020
+ * Copyright IBM Corporation 2018, 2019
  */
 
 import expect from 'expect';
@@ -35,7 +35,7 @@ describe('Reducer: validation', () => {
 
     it('Should handle INVALIDATE_VALIDATION and set validated to false after already validating', () => {
         const action = { type: validationActions.INVALIDATE_VALIDATION };
-        expect(validation(validationResources.receivedValidation, action)).toEqual(validationResources.invalidatedValidation);
+        expect(validation(validationResources.receivedValidation, action)).toEqual(validationResources.baseValidation);
     });
 
     it('Should handle INVALIDATE_VALIDATION and set validated to false after requested', () => {
