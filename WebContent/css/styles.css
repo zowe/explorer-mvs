@@ -38,7 +38,7 @@ body {
 }
 
 /* Override inline width style */
-.component-text-field-fill{
+.dataset-qualifier-field{
     padding-left: 8px;
     width: 100% !important;
 }

@@ -49,6 +49,7 @@ export default class FulleHeightTree extends React.Component {
         };
         return (
             <div
+                id="full-height-tree"
                 className="node"
                 ref={this.onDivRef}
                 style={treeStyle}

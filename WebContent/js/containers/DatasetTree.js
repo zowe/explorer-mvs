@@ -116,8 +116,7 @@ class DatasetTree extends React.Component {
                     <form onSubmit={this.handleQualifierUpdate}>
                         <div className="component-header">
                             <UpperCaseTextField
-                                className="component-text-field-fill"
-                                id="path"
+                                id="datasets-qualifier-field"
                                 value={DSPath}
                                 fullWidth={false}
                                 fieldChangedCallback={this.handlePathChange}
