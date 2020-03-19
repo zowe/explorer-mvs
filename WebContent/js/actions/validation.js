@@ -66,12 +66,6 @@ export function validateUser() {
             .then(response => {
                 return checkResponse(response);
             })
-            .then(response => {
-                if (response.ok) {
-                    return response.json();
-                }
-                throw Error(response.statusText);
-            })
             .then(json => {
                 return dispatch(receiveValidation(json.userId));
             })
@@ -95,8 +89,8 @@ export function loginUser(username, password) {
                 }
                 return checkResponse(response);
             })
-            .catch(() => {
-                return dispatch(invalidateValidation());
+            .catch(error => {
+                return dispatch(invalidateValidation(error.message));
             });
     };
 }
