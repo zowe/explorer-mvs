@@ -31,6 +31,8 @@ FVT_LOGS_DIR=logs
 
 FVT_API_PORT=10491
 FVT_EXPLORER_UI_PORT=10071
+FVT_DEFAULT_API_GATEWAY_PORT=7554
+FVT_GATEWAY_HOST=localhost
 
 ################################################################################
 # variables
@@ -62,6 +64,9 @@ if [ -z "$FVT_ZOSMF_HOST" ]; then
 fi
 if [ -z "$FVT_ZOSMF_PORT" ]; then
   FVT_ZOSMF_PORT=10443
+fi
+if [ -z "${FVT_GATEWAY_PORT}" ]; then
+  FVT_GATEWAY_PORT="${FVT_DEFAULT_API_GATEWAY_PORT}"
 fi
 
 ################################################################################
@@ -131,7 +136,7 @@ services:
   description: IBM z/OS Datasets REST API service
   catalogUiTileId: datasetsAndUnixFiles
   instanceBaseUrls:
-    - https://localhost:${FVT_API_PORT}/
+    - https://${FVT_GATEWAY_HOST}:${FVT_API_PORT}/
   homePageRelativeUrl:  # Home page is at the same URL
   routedServices:
     - gatewayUrl: api/v1  # [api/ui/ws]/v{majorVersion}
@@ -140,14 +145,14 @@ services:
     - apiId: org.zowe.data.sets
       gatewayUrl: api/v1
       version: 1.0.0
-      swaggerUrl: https://localhost:${FVT_API_PORT}/v2/api-docs
-      documentationUrl: https://localhost:${FVT_API_PORT}/swagger-ui.html
+      swaggerUrl: https://${FVT_GATEWAY_HOST}:${FVT_API_PORT}/v2/api-docs
+      documentationUrl: https://${FVT_GATEWAY_HOST}:${FVT_API_PORT}/swagger-ui.html
 - serviceId: unixfiles
   title: IBM z/OS Unix Files
   description: IBM z/OS Unix Files REST API service
   catalogUiTileId: datasetsAndUnixFiles
   instanceBaseUrls:
-    - https://localhost:${FVT_API_PORT}/
+    - https://${FVT_GATEWAY_HOST}:${FVT_API_PORT}/
   homePageRelativeUrl:  # Home page is at the same URL
   routedServices:
     - gatewayUrl: api/v1  # [api/ui/ws]/v{majorVersion}
@@ -156,8 +161,8 @@ services:
     - apiId: org.zowe.unix.files
       gatewayUrl: api/v1
       version: 1.0.0
-      swaggerUrl: https://localhost:${FVT_API_PORT}/v2/api-docs
-      documentationUrl: https://localhost:${FVT_API_PORT}/swagger-ui.html
+      swaggerUrl: https://${FVT_GATEWAY_HOST}:${FVT_API_PORT}/v2/api-docs
+      documentationUrl: https://${FVT_GATEWAY_HOST}:${FVT_API_PORT}/swagger-ui.html
 catalogUiTiles:
   datasetsAndUnixFiles:
     title: z/OS Datasets and Unix Files services
@@ -171,7 +176,7 @@ services:
   description: IBM z/OS Datasets UI service
   catalogUiTileId:
   instanceBaseUrls:
-  - https://localhost:${FVT_EXPLORER_UI_PORT}/
+  - https://${FVT_GATEWAY_HOST}:${FVT_EXPLORER_UI_PORT}/
   homePageRelativeUrl:
   routedServices:
   - gatewayUrl: ui/v1
@@ -212,8 +217,8 @@ java -Xms16m -Xmx512m \
   -Dserver.ssl.keyStorePassword=password \
   -Dserver.ssl.keyStoreType=PKCS12 \
   -Dserver.compression.enabled=true \
-  -Dzosmf.httpsPort=${FVT_ZOSMF_PORT} \
-  -Dzosmf.ipAddress="${FVT_ZOSMF_HOST}" \
+  -Dgateway.httpsPort=${FVT_GATEWAY_PORT} \
+  -Dgateway.ipAddress=${FVT_GATEWAY_HOST} \
   -Dspring.main.banner-mode=off \
   -jar "$(find "${FVT_WORKSPACE}/${FVT_DATASETS_API_DIR}" -name '*-boot.jar')" \
   > "${FVT_WORKSPACE}/${FVT_LOGS_DIR}/files-api.log" &
