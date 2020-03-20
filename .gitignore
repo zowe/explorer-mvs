@@ -15,9 +15,12 @@ WebContent/app.min.js
 .factorypath
 *.war
 bin
+dist
+web
 .scannerwork
 .DS_Store
-dist/
+.history
+.env
 
 # pax workspace
 .pax/*
@@ -25,6 +28,9 @@ dist/
 !.pax/pre-packaging.sh
 !.pax/post-packaging.sh
 !.pax/prepare-workspace.sh
+
+# fvt tmp folder
+.fvt
 
 # apiml cache
 .ehcache*
