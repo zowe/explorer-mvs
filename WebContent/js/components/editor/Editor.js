@@ -110,7 +110,7 @@ class Editor extends React.Component {
         const { content, file } = this.props;
         return (
             <div>
-                <Card class="component-no-vertical-pad">
+                <Card id="editor-card" class="component-no-vertical-pad">
                     <CardContent
                         class="component-no-vertical-pad"
                         style={{ paddingTop: '2px' }}

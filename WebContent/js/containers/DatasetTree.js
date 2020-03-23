@@ -107,7 +107,11 @@ class DatasetTree extends React.Component {
     render() {
         const { isFetching, DSChildren, DSPath, dispatch, validated } = this.props;
         return (validated ?
-            <Card class="tree-card" style={{ paddingBottom: '0px' }}>
+            <Card
+                id="dataset-tree-card"
+                class="tree-card"
+                style={{ paddingBottom: '0px' }}
+            >
                 <CardContent>
                     <form onSubmit={this.handleQualifierUpdate}>
                         <div className="component-header">

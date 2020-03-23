@@ -11,53 +11,37 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import Editor from '../../components/editor/Editor';
 import ConnectedDatasetTree from '../DatasetTree';
+import LoginDialog from '../../components/dialogs/LoginDialog';
 import ConnectedSnackbar from '../../components/Snackbar';
-import { validateUser } from '../../actions/validation';
 
-class HomeView extends React.Component {
-    componentWillMount() {
-        const { dispatch, validated } = this.props;
-        if (!validated) {
-            dispatch(validateUser());
-        }
-    }
-
-    render() {
-        const { validated, isValidating } = this.props;
-        if (validated) {
-            return (
-                <div className="row group">
-                    <div className="component col col-3">
-                        <ConnectedDatasetTree id="datasetTree" title="Dataset Explorer" subtitle="Browse Datasets and members" type="datasets" />
-                    </div>
-                    <div className="component col col-9">
-                        <Editor />
-                    </div>
-                    <ConnectedSnackbar />
+const HomeView = props => {
+    const { validated } = props;
+    if (validated) {
+        return (
+            <div className="row group">
+                <div className="component col col-3">
+                    <ConnectedDatasetTree id="datasetTree" title="Dataset Explorer" subtitle="Browse Datasets and members" type="datasets" />
                 </div>
-            );
-        }
-        if (isValidating) {
-            return (<CircularProgress className="vertical-horizontal-center-new" />);
-        }
-        return (<div className="vertical-horizontal-center">Unable to Authenticate</div>);
+                <div className="component col col-9">
+                    <Editor />
+                </div>
+                <ConnectedSnackbar />
+            </div>
+        );
     }
-}
+    return <LoginDialog />;
+};
 
 HomeView.propTypes = {
-    dispatch: PropTypes.func.isRequired,
     validated: PropTypes.bool.isRequired,
-    isValidating: PropTypes.bool.isRequired,
 };
 
 function mapStateToProps(state) {
     const validationRoot = state.get('validation');
     return {
         validated: validationRoot.get('validated'),
-        isValidating: validationRoot.get('isValidating'),
     };
 }
 

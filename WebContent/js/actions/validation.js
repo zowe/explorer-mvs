@@ -5,10 +5,10 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *
- * Copyright IBM Corporation 2016, 2019
+ * Copyright IBM Corporation 2016, 2020
  */
 
-import { atlasGet } from '../utilities/urlUtils';
+import { whichServer } from '../utilities/urlUtils';
 
 export const REQUEST_VALIDATION = 'REQUEST_VALIDATION';
 export const RECEIVE_VALIDATION = 'RECEIVE_VALIDATION';
@@ -28,30 +28,69 @@ function receiveValidation(username) {
     };
 }
 
-function invalidateValidation() {
+function invalidateValidation(message) {
     return {
         type: INVALIDATE_VALIDATION,
+        message,
     };
+}
+
+export function checkForValidationFailure(response) {
+    return dispatch => {
+        if (response.status === 401) {
+            return dispatch(invalidateValidation());
+        }
+        return response;
+    };
+}
+
+export function constructValidationErrorMessage(errorMessageObject) {
+    return `${errorMessageObject.messageNumber} : ${errorMessageObject.messageContent}`;
+}
+
+function checkResponse(response) {
+    if (response.ok) {
+        return response.json();
+    }
+    return response.json()
+        .then(error => {
+            throw Error(constructValidationErrorMessage(error.messages[0]));
+        });
 }
 
 export function validateUser() {
     return dispatch => {
         dispatch(requestValidation());
-        return atlasGet('datasets/username')
+        return fetch(`https://${whichServer()}/gateway/auth/query`,
+            { credentials: 'include', 'Access-Control-Allow-Credentials': 'true' })
             .then(response => {
-                if (response.ok) {
-                    return response.json();
-                }
-                throw Error(response.statusText);
+                return checkResponse(response);
             })
             .then(json => {
-                if (json.username) {
-                    return dispatch(receiveValidation(json.username));
-                }
-                return dispatch(invalidateValidation());
+                return dispatch(receiveValidation(json.userId));
             })
-            .catch(() => {
-                return dispatch(invalidateValidation());
+            .catch(error => {
+                return dispatch(invalidateValidation(error.message));
+            });
+    };
+}
+
+export function loginUser(username, password) {
+    return dispatch => {
+        dispatch(requestValidation());
+        return fetch(`https://${whichServer()}/gateway/auth/login`,
+            { method: 'POST',
+                credentials: 'include',
+                'Access-Control-Allow-Credentials': 'true',
+                body: JSON.stringify({ username, password }) })
+            .then(response => {
+                if (response.ok) {
+                    return dispatch(receiveValidation(username));
+                }
+                return checkResponse(response);
+            })
+            .catch(error => {
+                return dispatch(invalidateValidation(error.message));
             });
     };
 }
