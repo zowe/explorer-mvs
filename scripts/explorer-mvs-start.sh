@@ -7,7 +7,7 @@
 #
 # SPDX-License-Identifier: EPL-2.0
 #
-# Copyright IBM Corporation 2018, 2019
+# Copyright IBM Corporation 2018, 2020
 ################################################################################
 
 ################################################################################
@@ -15,10 +15,10 @@
 # - NODE_HOME
 # - ROOT_DIR
 # - ZOWE_EXPLORER_HOST
-# - GATEWAY_PORT
 # - MVS_EXPLORER_UI_PORT
 # - KEYSTORE_KEY
 # - KEYSTORE_CERTIFICATE
+# - ZOWE_PREFIX
 
 NODE_BIN=${NODE_HOME}/bin/node
 
@@ -29,9 +29,11 @@ EXPLORER_PLUGIN_NAME=$($NODE_BIN -e "process.stdout.write(require('./app/package
 # get current ui server directory
 SERVER_DIR="${ROOT_DIR}/components/explorer-mvs/bin/server/"
 
+JOB_NAME="${ZOWE_PREFIX}UD"
+
 # start service
-$NODE_BIN $SERVER_DIR/src/index.js \
-  --service ${EXPLORER_PLUGIN_NAME} \
+_BPX_JOBNAME=${JOB_NAME} $NODE_BIN $SERVER_DIR/src/index.js \
+  	--service ${EXPLORER_PLUGIN_NAME} \
 	--path ${EXPLORER_PLUGIN_BASEURI} \
 	--port ${MVS_EXPLORER_UI_PORT} \
 	--key  ${KEYSTORE_KEY} \
