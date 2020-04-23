@@ -13,8 +13,8 @@ java -Xms16m -Xmx512m \
     -Dserver.ssl.keyStore=/app/certs/server.p12 \
     -Dserver.ssl.keyStorePassword=password \
     -Dserver.ssl.keyStoreType=PKCS12 \
-    -Dzosmf.httpsPort=$ZOSMF_PORT \
-    -Dzosmf.ipAddress=$ZOSMF_HOST \
+    -Dconnection.httpsPort=$FVT_API_PORT \
+    -Dconnection.ipAddress=$ZOSMF_HOST \
     -jar /app/$API_BOOT_JAR &
 
 EXPLORER_PLUGIN_BASEURI=$(node -e "process.stdout.write(require('./mvs_explorer/app/package.json').config.baseuri)")
