@@ -141,26 +141,17 @@ services:
   routedServices:
     - gatewayUrl: api/v1  # [api/ui/ws]/v{majorVersion}
       serviceRelativeUrl: api/v1/datasets
+    - gatewayUrl: api/v2  # [api/ui/ws]/v{majorVersion}
+      serviceRelativeUrl: api/v2/datasets
   apiInfo:
     - apiId: org.zowe.data.sets
       gatewayUrl: api/v1
       version: 1.0.0
       swaggerUrl: https://${FVT_GATEWAY_HOST}:${FVT_API_PORT}/v2/api-docs
       documentationUrl: https://${FVT_GATEWAY_HOST}:${FVT_API_PORT}/swagger-ui.html
-- serviceId: unixfiles
-  title: IBM z/OS Unix Files
-  description: IBM z/OS Unix Files REST API service
-  catalogUiTileId: datasetsAndUnixFiles
-  instanceBaseUrls:
-    - https://${FVT_GATEWAY_HOST}:${FVT_API_PORT}/
-  homePageRelativeUrl:  # Home page is at the same URL
-  routedServices:
-    - gatewayUrl: api/v1  # [api/ui/ws]/v{majorVersion}
-      serviceRelativeUrl: api/v1/unixfiles 
-  apiInfo:
-    - apiId: org.zowe.unix.files
-      gatewayUrl: api/v1
-      version: 1.0.0
+    - apiId: org.zowe.data.sets
+      gatewayUrl: api/v2
+      version: 2.0.0
       swaggerUrl: https://${FVT_GATEWAY_HOST}:${FVT_API_PORT}/v2/api-docs
       documentationUrl: https://${FVT_GATEWAY_HOST}:${FVT_API_PORT}/swagger-ui.html
 catalogUiTiles:
