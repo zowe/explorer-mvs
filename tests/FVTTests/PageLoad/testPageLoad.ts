@@ -15,15 +15,14 @@ import {
     setApimlAuthTokenCookie,
     testElementAppearsXTimesById,
 } from 'explorer-fvt-utilities';
+import {
+    USERNAME,
+    PASSWORD,
+    BASE_URL,
+    BASE_URL_WITH_PATH,
+} from '../constants';
 
 require('geckodriver');
-
-const {
-    ZOWE_USERNAME: USERNAME, ZOWE_PASSWORD: PASSWORD, SERVER_HOST_NAME, SERVER_HTTPS_PORT,
-} = process.env;
-
-const BASE_URL :string = `https://${SERVER_HOST_NAME}:${SERVER_HTTPS_PORT}`;
-const BASE_URL_WITH_PATH :string =`${BASE_URL}/ui/v1/explorer-mvs`;
 
 // Need to use unnamed function so we can specify the retries
 // eslint-disable-next-line

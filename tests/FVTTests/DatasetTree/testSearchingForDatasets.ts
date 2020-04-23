@@ -8,14 +8,13 @@
  * Copyright IBM Corporation 2020
  */
 import { WebDriver } from "selenium-webdriver";
-import { getDriver, checkDriver } from "explorer-fvt-utilities";
-
-
-const {
-    ZOWE_USERNAME: USERNAME, ZOWE_PASSWORD: PASSWORD, SERVER_HOST_NAME, SERVER_HTTPS_PORT,
-} = process.env;
-
-const BASE_URL :string = `https://${SERVER_HOST_NAME}:${SERVER_HTTPS_PORT}/ui/v1/explorer-mvs`;
+import { getDriver, setApimlAuthTokenCookie } from "explorer-fvt-utilities";
+import {
+    USERNAME,
+    PASSWORD,
+    BASE_URL,
+    BASE_URL_WITH_PATH,
+} from '../constants';
 
 describe('Test searching for datasets', function () {
     let driver: WebDriver;
@@ -23,7 +22,7 @@ describe('Test searching for datasets', function () {
     
     before('Initialise', async () => {
         driver = await getDriver();
-        await checkDriver(driver, BASE_URL, USERNAME, PASSWORD, SERVER_HOST_NAME, parseInt(SERVER_HTTPS_PORT), "/api/v1/datasets/username");
+        await setApimlAuthTokenCookie(driver, USERNAME, PASSWORD, `${BASE_URL}/api/v1/gateway/auth/login`, BASE_URL_WITH_PATH);
     });
 
     after('Close out', async () => {

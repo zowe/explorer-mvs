@@ -12,18 +12,18 @@ import { WebDriver, By, WebElement, until } from "selenium-webdriver"
 
 import {
     getDriver,
-    checkDriver,
+    setApimlAuthTokenCookie,
     loadPage,
 } from 'explorer-fvt-utilities';
 import { testElementAppearsXTimesById } from 'explorer-fvt-utilities/lib/ElementTestUtilities';
+import {
+    USERNAME,
+    PASSWORD,
+    BASE_URL,
+    BASE_URL_WITH_PATH,
+} from '../constants';
 
 require('geckodriver');
-
-const {
-    ZOWE_USERNAME: USERNAME, ZOWE_PASSWORD: PASSWORD, SERVER_HOST_NAME, SERVER_HTTPS_PORT,
-} = process.env;
-
-const BASE_URL :string = `https://${SERVER_HOST_NAME}:${SERVER_HTTPS_PORT}/ui/v1/explorer-mvs`;
 
 // Need to use unnamed function so we can specify the retries
 // eslint-disable-next-line
@@ -33,7 +33,7 @@ describe('Test initialisation of dataset tree', function () {
 
     before('Initialise', async () => {
         driver = await getDriver();
-        await checkDriver(driver, BASE_URL, USERNAME, PASSWORD, SERVER_HOST_NAME, parseInt(SERVER_HTTPS_PORT), "/api/v1/datasets/username");
+        await setApimlAuthTokenCookie(driver, USERNAME, PASSWORD, `${BASE_URL}/api/v1/gateway/auth/login`, BASE_URL_WITH_PATH);
     });
 
     after('Close out', async () => {
