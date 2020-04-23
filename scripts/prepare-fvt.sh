@@ -139,16 +139,9 @@ services:
     - https://${FVT_GATEWAY_HOST}:${FVT_API_PORT}/
   homePageRelativeUrl:  # Home page is at the same URL
   routedServices:
-    - gatewayUrl: api/v1  # [api/ui/ws]/v{majorVersion}
-      serviceRelativeUrl: api/v1/datasets
     - gatewayUrl: api/v2  # [api/ui/ws]/v{majorVersion}
       serviceRelativeUrl: api/v2/datasets
   apiInfo:
-    - apiId: org.zowe.data.sets
-      gatewayUrl: api/v1
-      version: 1.0.0
-      swaggerUrl: https://${FVT_GATEWAY_HOST}:${FVT_API_PORT}/v2/api-docs
-      documentationUrl: https://${FVT_GATEWAY_HOST}:${FVT_API_PORT}/swagger-ui.html
     - apiId: org.zowe.data.sets
       gatewayUrl: api/v2
       version: 2.0.0
@@ -208,8 +201,8 @@ java -Xms16m -Xmx512m \
   -Dserver.ssl.keyStorePassword=password \
   -Dserver.ssl.keyStoreType=PKCS12 \
   -Dserver.compression.enabled=true \
-  -Dgateway.httpsPort=${FVT_GATEWAY_PORT} \
-  -Dgateway.ipAddress=${FVT_GATEWAY_HOST} \
+  -Dconnection.httpsPort=${FVT_GATEWAY_PORT} \
+  -Dconnection.ipAddress=${FVT_GATEWAY_HOST} \
   -Dspring.main.banner-mode=off \
   -jar "$(find "${FVT_WORKSPACE}/${FVT_DATASETS_API_DIR}" -name '*-boot.jar')" \
   > "${FVT_WORKSPACE}/${FVT_LOGS_DIR}/files-api.log" &
