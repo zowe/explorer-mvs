@@ -8,10 +8,10 @@
  * Copyright IBM Corporation 2018, 2020
  */
 // let host = 'winmvs3b.hursley.ibm.com:7288';
-let host = 'tvt5003.svl.ibm.com:7554';
+let host = 'tvt5003.svl.ibm.com:9554';
 if (typeof location !== 'undefined') {
     const hostname = location.hostname;
-    if (hostname !== 'localhost') {
+    if (hostname !== 'localhost' || process.env.NODE_ENV === 'production') {
         host = location.host;
     }
 }
@@ -21,15 +21,15 @@ export function encodeURLComponent(URL) {
     return encodeURIComponent(URL);
 }
 
-function whichServer() {
+export function whichServer() {
     let server = LOCAL_DEV_SERVER;
     if (location.hostname === 'tester.test.com') {
         server = 'tester.test.com:7443';
     }
-    return `${server}/api/v1`;
+    return `${server}`;
 }
 function atlasAction(endpoint, fetchParams) {
-    return fetch(`https://${whichServer()}/${endpoint}`, fetchParams);
+    return fetch(`https://${whichServer()}/api/v2/${endpoint}`, fetchParams);
 }
 
 export function atlasGet(endpoint) {

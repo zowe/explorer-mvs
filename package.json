@@ -1,6 +1,6 @@
 {
   "name": "explorer-mvs",
-  "version": "0.0.19",
+  "version": "1.0.0",
   "directories": {
     "test": "tests"
   },
@@ -55,12 +55,13 @@
     "eslint-plugin-node": "^5.1.1",
     "eslint-plugin-react": "^7.3.0",
     "expect": "^1.20.2",
-    "explorer-fvt-utilities": "1.0.0",
+    "explorer-fvt-utilities": "^1.0.2",
     "geckodriver": "^1.19.1",
     "isomorphic-fetch": "^2.2.1",
     "mocha": "^6.1.4",
     "mocha-jenkins-reporter": "^0.4.1",
     "nock": "^9.6.1",
+    "node-fetch": "^2.6.0",
     "npm-run-all": "^4.1.2",
     "nyc": "^14.1.1",
     "react-addons-test-utils": "^15.1.0",
@@ -78,7 +79,7 @@
   "scripts": {
     "dev": "webpack-dev-server --content-base WebContent --inline --hot",
     "lint": "eslint ./WebContent/js/ ./tests/",
-    "testWatch": "mocha --watch --compilers js:babel-register tests/UnitTests --recursive",
+    "testWatch": "mocha --watch --require babel-core/register tests/UnitTests --recursive",
     "test": "cross-env JUNIT_REPORT_PATH=target/report.xml nyc mocha --require babel-core/register tests/UnitTests --recursive --colors --reporter mocha-jenkins-reporter",
     "test:fvt": "cross-env JUNIT_REPORT_PATH=target/report-fvt.xml mocha --timeout 999999 --require ts-node/register tests/FVTTests/**/*.ts --recursive --colors --reporter mocha-jenkins-reporter",
     "prod": "cross-env NODE_ENV='production' webpack && cp -r ./WebContent/css ./dist/ && cp -r ./WebContent/img ./dist/ && cp ./WebContent/index.html ./dist/  && cp ./WebContent/favicon.ico ./dist/",

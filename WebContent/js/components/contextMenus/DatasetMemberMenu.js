@@ -17,19 +17,19 @@ const DatasetMenuMember = props => {
     return (
         <ContextMenu id={member}>
             <MenuItem onClick={handleCreateMember}>
-            New Dataset Member...
+                New Dataset Member...
             </MenuItem>
             <MenuItem onClick={handleEdit}>
-            Open
+                Open
             </MenuItem>
             <MenuItem onClick={handleDeleteDataset}>
-            Delete Member
+                Delete Member
             </MenuItem>
             <MenuItem onClick={handleJobSubmit}>
-            Submit as Job
+                Submit as Job
             </MenuItem>
             <MenuItem onClick={handleRename}>
-            Rename
+                Rename
             </MenuItem>
         </ContextMenu>
     );
