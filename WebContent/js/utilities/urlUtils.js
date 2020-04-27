@@ -26,10 +26,10 @@ export function whichServer() {
     if (location.hostname === 'tester.test.com') {
         server = 'tester.test.com:7443';
     }
-    return `${server}/api/v1`;
+    return `${server}`;
 }
 function atlasAction(endpoint, fetchParams) {
-    return fetch(`https://${whichServer()}/${endpoint}`, fetchParams);
+    return fetch(`https://${whichServer()}/api/v2/${endpoint}`, fetchParams);
 }
 
 export function atlasGet(endpoint) {
