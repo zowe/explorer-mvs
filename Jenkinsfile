@@ -64,7 +64,7 @@ node('ibm-jenkins-slave-dind') {
     ),
     string(
       name: 'API_ML_DEBUG_PROFILES',
-      description: 'Debug profiles for API Gateway (Switch to debug for verbose logging)',
+      description: 'Debug profiles for API Gateway',
       defaultValue: 'default',
       trim: true,
       required: true
