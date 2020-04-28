@@ -162,7 +162,7 @@ function mapStateToProps(state) {
         datasets: stateRootDatasets.get('datasets'),
         DSChildren: stateRoot.get('DSChildren'),
         DSPath: stateRoot.get('DSPath'),
-        isFetching: stateRoot.get('isFetching'),
+        isFetching: stateRoot.get('isFetching') || stateRootDatasets.get('isFetching'),
         validated: validationRoot.get('validated'),
         username: validationRoot.get('username'),
     };

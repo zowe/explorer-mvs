@@ -40,7 +40,7 @@ body {
 /* Override inline width style */
 .component-text-field-fill{
     padding-left: 8px;
-    width: 100% !important;
+    flex-grow: 1;
 }
 
 .tree-card {
