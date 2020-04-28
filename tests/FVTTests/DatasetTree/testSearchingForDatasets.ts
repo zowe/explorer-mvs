@@ -46,6 +46,18 @@ describe('Test searching for datasets', function () {
             expect(modifiedText).to.equal(initialText + newText);
         });
 
+        it('Should return datasets matching new qualifier', async () => {
+            expect(await testQualifierSearch(driver, 'USER.**', 'USER')).to.be.true;;
+        });
+
+        it('Should return datasets matching new multiple levels of qualifiers', async () => {
+            expect(await testQualifierSearch(driver, 'USER.PARMLIB.**', 'USER.PARMLIB')).to.be.true;;
+        });
+
+        it('Should return no datasets found message when using crazy qualifier', async () => {
+            expect(await testQualifierSearch(driver, 'ABCZYX12', 'No Datasets found')).to.be.true;;
+        });
+
         async function testQualifierSearch(driver: WebDriver, searchQualifier: string, matchQualifier: string) {
             const qualifierField: WebElement = await driver.findElement(By.id("datasets-qualifier-field"));
             await qualifierField.clear();
@@ -66,33 +78,32 @@ describe('Test searching for datasets', function () {
             return allQualifiersMatch;
         }
 
-        it('Should return datasets matching new qualifier', async () => {
-            expect(await testQualifierSearch(driver, 'USER.**', 'USER')).to.be.true;;
-        });
-
-        it('Should return datasets matching new multiple levels of qualifiers', async () => {
-            expect(await testQualifierSearch(driver, 'USER.PARMLIB.**', 'USER.PARMLIB')).to.be.true;;
-        });
-
-        it('Should return no datasets found message when using crazy qualifier', async () => {
-            expect(await testQualifierSearch(driver, 'ABCZYX12', 'No Datasets found')).to.be.true;;
-        });
-
         it('Should show loading icon after changing qualifier field then go back to refresh icon', async () => {
             const qualifierField: WebElement = await driver.findElement(By.id('datasets-qualifier-field'));
             await qualifierField.sendKeys('abc');
-            await driver.wait(until.elementLocated(By.id('loading-icon')), 10000);
-            const loadingIcon: WebElement = await driver.findElement(By.id('loading-icon'));
-            expect(loadingIcon).to.not.be.null;
+            expect(await testRefreshIconTransition(driver)).to.be.true;
         });
 
         it('Should change refresh icon to loading and then back to refresh when clicking refresh icon', async () => {
             const refreshIcon: WebElement = await driver.findElement(By.id('refresh-icon'));
             await refreshIcon.click();
-            await driver.wait(until.elementLocated(By.id('loading-icon')), 10000);
-            await driver.wait(until.elementLocated(By.id('refresh-icon')), 30000);
-            const newRefreshIcon: WebElement = await driver.findElement(By.id('refresh-icon'));
-            expect(newRefreshIcon).to.not.be.null;
+            expect(await testRefreshIconTransition(driver)).to.be.true;
         });
+
+        async function testRefreshIconTransition(driver) {
+            await driver.wait(until.elementLocated(By.id('loading-icon')), 10000);
+            const loadingIcon: WebElement[] = await driver.findElements(By.id('loading-icon'));
+            if (loadingIcon.length !== 1) {
+                console.log('loading-icon never found');
+                return false;
+            }
+            await driver.wait(until.elementLocated(By.id('refresh-icon')), 30000);
+            const newRefreshIcon: WebElement[] = await driver.findElements(By.id('refresh-icon'));
+            if (newRefreshIcon.length !== 1) {
+                console.log('refresh-icon never found');
+                return false;
+            }
+            return true;
+        }
     });
 });
