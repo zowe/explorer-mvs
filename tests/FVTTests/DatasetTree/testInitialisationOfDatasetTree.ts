@@ -42,7 +42,7 @@ describe('Test initialisation of dataset tree', function () {
 
     describe('Initial Tree Load', () => {
         before('Prepare page for test', async () => {
-            await loadPage(driver, BASE_URL);
+            await loadPage(driver, BASE_URL_WITH_PATH);
             await driver.wait(until.elementLocated(By.id('refresh-icon')));
         });
 
