@@ -16,7 +16,6 @@ import {
     BASE_URL,
     BASE_URL_WITH_PATH,
 } from '../constants';
-import { isExportDeclaration } from "typescript";
 
 describe('Test searching for datasets', function () {
     let driver: WebDriver;
@@ -39,32 +38,61 @@ describe('Test searching for datasets', function () {
 
         it('Should have editable qualifier field', async () => {
             const qualifierField: WebElement = await driver.findElement(By.id("datasets-qualifier-field"));
-            const initialText: string = await qualifierField.getText();
-            const newText: string = 'abc123!#';
+            const initialText: string = await qualifierField.getAttribute('value');
+            const newText: string = 'ABC123!#';
             await qualifierField.sendKeys(newText);
             const qualifierFieldModified: WebElement = await driver.findElement(By.id("datasets-qualifier-field"));
-            const modifiedText: string = await qualifierFieldModified.getText();
+            const modifiedText: string = await qualifierFieldModified.getAttribute('value');
             expect(modifiedText).to.equal(initialText + newText);
         });
 
-        it('Should return datasets matching new qualifier', async () => {
+        async function testQualifierSearch(driver: WebDriver, searchQualifier: string, matchQualifier: string) {
             const qualifierField: WebElement = await driver.findElement(By.id("datasets-qualifier-field"));
             await qualifierField.clear();
-            await qualifierField.sendKeys('SYS1.**');
+            await qualifierField.sendKeys(searchQualifier);
+
+            await driver.wait(until.elementLocated(By.id('loading-icon')), 20000);
+            await driver.wait(until.elementLocated(By.id('refresh-icon')), 20000);
 
             const datasets: WebElement[] = await driver.findElements(By.className('node-label'));
+            let allQualifiersMatch: boolean = true;
             datasets.forEach(async (nodeLabel: WebElement) => {
                 const nodeLabelText: string = await nodeLabel.getText();
-                console.log(nodeLabelText);
-                expect(nodeLabelText).to.include('SYS1');
-            })
+                if (!nodeLabelText.includes(matchQualifier)) {
+                    console.log('Unexpected dataset label: ' + nodeLabelText + ' should have included: ' + matchQualifier);
+                    allQualifiersMatch = false;
+                }
+            });
+            return allQualifiersMatch;
+        }
 
+        it('Should return datasets matching new qualifier', async () => {
+            expect(await testQualifierSearch(driver, 'USER.**', 'USER')).to.be.true;;
         });
 
-        it('Should return datasets matching new multiple levels of qualifiers');
-        it('Should return no datasets found message when using crazy qualifier');
+        it('Should return datasets matching new multiple levels of qualifiers', async () => {
+            expect(await testQualifierSearch(driver, 'USER.PARMLIB.**', 'USER.PARMLIB')).to.be.true;;
+        });
 
-        it('Should show loading icon after changing qualifier field then go back to refresh icon');
-        it('Should change refresh icon to loading and then back to refresh when clicking refresh icon');
+        it('Should return no datasets found message when using crazy qualifier', async () => {
+            expect(await testQualifierSearch(driver, 'ABCZYX12', 'No Datasets found')).to.be.true;;
+        });
+
+        it('Should show loading icon after changing qualifier field then go back to refresh icon', async () => {
+            const qualifierField: WebElement = await driver.findElement(By.id('datasets-qualifier-field'));
+            await qualifierField.sendKeys('abc');
+            await driver.wait(until.elementLocated(By.id('loading-icon')), 10000);
+            const loadingIcon: WebElement = await driver.findElement(By.id('loading-icon'));
+            expect(loadingIcon).to.not.be.null;
+        });
+
+        it('Should change refresh icon to loading and then back to refresh when clicking refresh icon', async () => {
+            const refreshIcon: WebElement = await driver.findElement(By.id('refresh-icon'));
+            await refreshIcon.click();
+            await driver.wait(until.elementLocated(By.id('loading-icon')), 10000);
+            await driver.wait(until.elementLocated(By.id('refresh-icon')), 30000);
+            const newRefreshIcon: WebElement = await driver.findElement(By.id('refresh-icon'));
+            expect(newRefreshIcon).to.not.be.null;
+        });
     });
 });
