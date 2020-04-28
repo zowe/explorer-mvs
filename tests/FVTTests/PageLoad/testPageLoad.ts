@@ -8,12 +8,13 @@
  * Copyright IBM Corporation 2020
  */
 import { expect } from 'chai';
-import { WebDriver } from "selenium-webdriver"
+import { WebDriver, until, By } from "selenium-webdriver"
 
 import {
     getDriver,
     setApimlAuthTokenCookie,
     testElementAppearsXTimesById,
+    loadPage,
 } from 'explorer-fvt-utilities';
 import {
     USERNAME,
@@ -42,6 +43,11 @@ describe('MVS explorer page load', function () {
     });
 
     describe('MVS Explorer home page', () => {
+        before('Initialise', async () => {
+            await loadPage(driver, BASE_URL_WITH_PATH);
+            await driver.wait(until.elementLocated(By.id('refresh-icon')));
+        })
+        
         it('Should render dataset-tree-card and editor-card', async () => {
             expect(await testElementAppearsXTimesById(driver, 'dataset-tree-card', 1)).to.be.true;
             expect(await testElementAppearsXTimesById(driver, 'editor-card', 1)).to.be.true;

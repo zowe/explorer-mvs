@@ -7,14 +7,16 @@
  *
  * Copyright IBM Corporation 2020
  */
-import { WebDriver } from "selenium-webdriver";
-import { getDriver, setApimlAuthTokenCookie } from "explorer-fvt-utilities";
+import { expect } from 'chai';
+import { WebDriver, By, WebElement, until } from "selenium-webdriver";
+import { getDriver, setApimlAuthTokenCookie, loadPage } from "explorer-fvt-utilities";
 import {
     USERNAME,
     PASSWORD,
     BASE_URL,
     BASE_URL_WITH_PATH,
 } from '../constants';
+import { isExportDeclaration } from "typescript";
 
 describe('Test searching for datasets', function () {
     let driver: WebDriver;
@@ -30,11 +32,35 @@ describe('Test searching for datasets', function () {
     });
 
     describe('Tree searching for datasets', () => {
+        beforeEach('', async () => {
+            await loadPage(driver, BASE_URL_WITH_PATH);
+            await driver.wait(until.elementLocated(By.id('refresh-icon')));
+        });
+
         it('Should have editable qualifier field', async () => {
+            const qualifierField: WebElement = await driver.findElement(By.id("datasets-qualifier-field"));
+            const initialText: string = await qualifierField.getText();
+            const newText: string = 'abc123!#';
+            await qualifierField.sendKeys(newText);
+            const qualifierFieldModified: WebElement = await driver.findElement(By.id("datasets-qualifier-field"));
+            const modifiedText: string = await qualifierFieldModified.getText();
+            expect(modifiedText).to.equal(initialText + newText);
+        });
+
+        it('Should return datasets matching new qualifier', async () => {
+            const qualifierField: WebElement = await driver.findElement(By.id("datasets-qualifier-field"));
+            await qualifierField.clear();
+            await qualifierField.sendKeys('SYS1.**');
+
+            const datasets: WebElement[] = await driver.findElements(By.className('node-label'));
+            datasets.forEach(async (nodeLabel: WebElement) => {
+                const nodeLabelText: string = await nodeLabel.getText();
+                console.log(nodeLabelText);
+                expect(nodeLabelText).to.include('SYS1');
+            })
 
         });
 
-        it('Should return datasets matching new qualifier');
         it('Should return datasets matching new multiple levels of qualifiers');
         it('Should return no datasets found message when using crazy qualifier');
 
