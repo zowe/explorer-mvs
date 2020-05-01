@@ -22,13 +22,15 @@ class AtlasSnackbar extends React.Component {
             timeout: 0,
             open: false,
         };
+        this.registerMessageWithSnackbar = this.registerMessageWithSnackbar.bind(this);
     }
 
     componentWillReceiveProps(nextProps) {
         const { snackbarNotificationsMessages } = this.props;
-        this.registerMessageWithSnackbar = this.registerMessageWithSnackbar.bind(this);
         if (nextProps.snackbarNotificationsMessages.first() &&
             snackbarNotificationsMessages.first() !== nextProps.snackbarNotificationsMessages.first()) {
+            const messageValue = nextProps.snackbarNotificationsMessages.first();
+            window.sendMvsNotificationsToZlux(messageValue.get('message'));
             this.registerMessageWithSnackbar();
         }
     }
