@@ -19,5 +19,6 @@ Get Started Contributing
 - Complete development
 - Ensure ready fr PR by running `npm run preCommit`
 - Create PR against staging branch (Ensure you include update to CHANGELOG.md if required)
+- Ensure PR checklist completed (Checklist appears when creating PR)
 - Await review
 
