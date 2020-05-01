@@ -15,7 +15,7 @@ import {
     PASSWORD,
     BASE_URL,
     BASE_URL_WITH_PATH,
-} from '../constants';
+} from '../environment';
 
 describe('Test searching for datasets', function () {
     let driver: WebDriver;
