@@ -4,27 +4,45 @@
 
 The issues for the MVS explorer are tracked under the Zowe Zlux repository, https://github.com/zowe/zlux and tagged accordingly with the 'explorer-mvs' label. Open issues tagged with 'explorer-mvs' can be found [here](https://github.com/zowe/zlux/issues?q=is%3Aissue+is%3Aopen+label%3Aexplorer-mvs).
 
-## Build
+
+## App Development Workflow 
+
+### Configure NPM Registry
+
+This is required for explorer-ui-server, orion-editor-component and explorer-fvt-utilities. These modules are only published on Zowe Artifactory.
+
+```
+npm config set registry https://zowe.jfrog.io/zowe/api/npm/npm-release
+```
 
 ### Install Dependencies
 
-```
-npm install
-```
-
-Update npm.rc or run
+Configure your npm registry to pickup Zowe dependencies
 ```
 npm config set registry https://zowe.jfrog.io/zowe/api/npm/npm-release/
-npm login
+npm install
 ```
 
 ### Build for Development
 
+Modify the host variable in WebContent/js/utilities/urlUtils.js to a host and port that has the Zowe API Gateway and Jobs service.
+
 ```
-npm run dev
+npm run dev 
 ```
 
 Then you can visit http://localhost:8080 to test.
+When testing you may see errors with API calls do to CORS (Cross origin resource sharing), to work around this you may disable CORS checking in your browser for local development or setup a proxy.
+
+### Run unit tests
+
+```
+npm run test
+```
+
+### Run fvt/selenium tests
+
+See [README](/tests/FVTTests/README.md)
 
 
 ### Build for Production
