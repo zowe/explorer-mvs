@@ -117,6 +117,7 @@ class DatasetTree extends React.Component {
                         <div className="component-header">
                             <UpperCaseTextField
                                 id="datasets-qualifier-field"
+                                style={{ width: '100%', paddingLeft: '8px' }}
                                 value={DSPath}
                                 fullWidth={false}
                                 fieldChangedCallback={this.handlePathChange}
