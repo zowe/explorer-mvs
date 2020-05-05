@@ -12,6 +12,8 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 import Snackbar from '@material-ui/core/Snackbar';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
 import { List } from 'immutable';
 import { popMessage } from '../actions/snackbarNotifications';
 
@@ -19,7 +21,6 @@ class AtlasSnackbar extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            timeout: 0,
             open: false,
         };
         this.registerMessageWithSnackbar = this.registerMessageWithSnackbar.bind(this);
@@ -35,24 +36,17 @@ class AtlasSnackbar extends React.Component {
         }
     }
 
-    componentWillUnmount() {
-        this.state.timeout = clearTimeout(this.state.timeout);
-    }
-
     registerMessageWithSnackbar() {
-        const { dispatch } = this.props;
         this.setState({ open: true });
-        this.state.timeout = setTimeout(() => {
-            dispatch(popMessage());
-            this.setState({ open: false });
-        }, 4000);
     }
 
-    handleRequestClose = () => {
-        const { dispatch } = this.props;
-        this.state.timeout = clearTimeout(this.state.timeout);
-        this.setState({ open: false });
-        dispatch(popMessage());
+    handleRequestClose = (event, reason) => {
+        // Don't close notification if user clicks elsewhere on screen
+        if (reason !== 'clickaway') {
+            const { dispatch } = this.props;
+            this.setState({ open: false });
+            dispatch(popMessage());
+        }
     }
 
     render() {
@@ -64,6 +58,16 @@ class AtlasSnackbar extends React.Component {
                     message={messageValue.get('message')}
                     open={this.state.open}
                     onClose={this.handleRequestClose}
+                    role="alert"
+                    action={
+                        <IconButton
+                            key="close"
+                            aria-label="Close"
+                            onClick={this.handleRequestClose}
+                            style={{ color: 'white' }}
+                        >
+                            <CloseIcon />
+                        </IconButton>}
                 />
             );
         }

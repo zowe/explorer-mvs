@@ -5,7 +5,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *
- * Copyright IBM Corporation 2016, 2019
+ * Copyright IBM Corporation 2016, 2020
  */
 
 import { Map, List } from 'immutable';
@@ -20,7 +20,7 @@ export default function snackbarNotifications(state = INITIAL_STATE, action) {
         case PUSH_NOTIFICATION_MESSAGE:
             return state.set('messages', state.get('messages').push(action.message));
         case POP_NOTIFICATION_MESSAGE:
-            return state.set('messages', state.get('messages').pop());
+            return state.set('messages', state.get('messages').shift());
         default:
             return state;
     }
