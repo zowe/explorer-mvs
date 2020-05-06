@@ -37,11 +37,6 @@ body {
     width: 100%;
 }
 
-/* Override inline width style */
-.dataset-qualifier-field{
-    padding-left: 8px;
-    flex-grow: 1;
-}
 
 .tree-card {
     padding-bottom: 0;
