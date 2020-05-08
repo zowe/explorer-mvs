@@ -10,6 +10,7 @@
 import { expect } from 'chai';
 import { WebDriver, By, WebElement, until } from "selenium-webdriver";
 import { getDriver, setApimlAuthTokenCookie, loadPage } from "explorer-fvt-utilities";
+import { editDatasetQualifierField } from "../utilities";
 import {
     USERNAME,
     PASSWORD,
@@ -59,13 +60,7 @@ describe('Test searching for datasets', function () {
         });
 
         async function testQualifierSearch(driver: WebDriver, searchQualifier: string, matchQualifier: string) {
-            const qualifierField: WebElement = await driver.findElement(By.id("datasets-qualifier-field"));
-            await qualifierField.clear();
-            await qualifierField.sendKeys(searchQualifier);
-
-            await driver.wait(until.elementLocated(By.id('loading-icon')), 20000);
-            await driver.wait(until.elementLocated(By.id('refresh-icon')), 20000);
-
+            await editDatasetQualifierField(driver, searchQualifier);
             const datasets: WebElement[] = await driver.findElements(By.className('node-label'));
             let allQualifiersMatch: boolean = true;
             datasets.forEach(async (nodeLabel: WebElement) => {
@@ -90,7 +85,7 @@ describe('Test searching for datasets', function () {
             expect(await testRefreshIconTransition(driver)).to.be.true;
         });
 
-        async function testRefreshIconTransition(driver) {
+        async function testRefreshIconTransition(driver :WebDriver) {
             await driver.wait(until.elementLocated(By.id('loading-icon')), 10000);
             const loadingIcon: WebElement[] = await driver.findElements(By.id('loading-icon'));
             if (loadingIcon.length !== 1) {
