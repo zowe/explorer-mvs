@@ -30,7 +30,7 @@ node('ibm-jenkins-slave-dind') {
     string(
       name: 'FVT_API_ARTIFACT',
       description: 'Datasets API artifact download pattern',
-      defaultValue: 'libs-release-local/org/zowe/explorer/data/sets/*/data-sets-server-zowe-package-*.zip',
+      defaultValue: 'libs-snapshot-local/org/zowe/explorer/data/sets/*/data-sets-server-zowe-package-*.zip',
       trim: true,
       required: true
     ),
@@ -59,6 +59,13 @@ node('ibm-jenkins-slave-dind') {
       name: 'FVT_SERVER_HOSTNAME',
       description: 'Server hostname for integration test',
       defaultValue: 'fvt-test-server',
+      trim: true,
+      required: true
+    ),
+    string(
+      name: 'API_ML_DEBUG_PROFILES',
+      description: 'Debug profiles for API Gateway',
+      defaultValue: 'default',
       trim: true,
       required: true
     )

@@ -37,11 +37,6 @@ body {
     width: 100%;
 }
 
-/* Override inline width style */
-.component-text-field-fill{
-    padding-left: 8px;
-    width: 100% !important;
-}
 
 .tree-card {
     padding-bottom: 0;
