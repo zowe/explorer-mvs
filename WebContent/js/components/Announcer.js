@@ -19,7 +19,7 @@ const Announcer = ({ message }) => {
     return (
         <div
             aria-live="polite"
-            aria-atomic="true"
+            aria-label={message}
             style={{ visibility: 'hidden' }}
         >
             {message}

@@ -66,8 +66,14 @@ class DatasetTree extends React.Component {
         if (!isFetchingDatasets && isFetchingDatasetsPrev) {
             this.setState({ message: 'Dataset members loaded' });
         }
+        if (isFetchingDatasets && !isFetchingDatasetsPrev) {
+            this.setState({ message: 'Dataset members loading' });
+        }
         if (!isFetchingTree && isFetchingTreePrev) {
             this.setState({ message: 'Dataset tree loaded' });
+        }
+        if (isFetchingTree && !isFetchingTreePrev) {
+            this.setState({ message: 'Dataset tree loading' });
         }
     }
 
