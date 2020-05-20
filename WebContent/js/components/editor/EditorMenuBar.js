@@ -49,30 +49,13 @@ export default class EditorMenuBar extends React.Component {
         );
     }
 
-    constructor(props) {
-        super(props);
-
-        // TODO:: Is initial syntax necessary?
-        this.state = {
-            syntax: props.initialSyntax,
-        };
-    }
-
-    componentWillReceiveProps(nextProps) {
-        const { initialSyntax } = this.props;
-        if (initialSyntax !== nextProps.initialSyntax) {
-            this.setState({ syntax: nextProps.initialSyntax });
-        }
-    }
-
     handleSyntaxChange = event => {
         const { updateEditorSyntax } = this.props;
-        this.setState({ syntax: event.target.value });
         updateEditorSyntax(event.target.value);
     };
 
     render() {
-        const { file, handleSave, handleSaveAs } = this.props;
+        const { file, handleSave, handleSaveAs, initialSyntax } = this.props;
         return (
             <div>
                 <RaisedButton
@@ -97,7 +80,7 @@ export default class EditorMenuBar extends React.Component {
                 {file ? EditorMenuBar.renderFullScreenButton(file) : null}
                 <FormControl style={{ float: 'right', paddingTop: '5px', width: '100px' }}>
                     <Select
-                        value={this.state.syntax}
+                        value={initialSyntax}
                         onChange={this.handleSyntaxChange}
                     >
                         {EditorMenuBar.renderTypesDropdown()}

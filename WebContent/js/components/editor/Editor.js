@@ -31,9 +31,11 @@ class Editor extends React.Component {
 
         this.state = {
             currentContent: props.content,
-            currentEtag: props.etag,
             syntax: PLAIN_TEXT,
             dialog: NO_DIALOG,
+            prevFile: null,
+            prevContent: null,
+            prevLocation: props.location,
         };
         this.getContent = this.getContent.bind(this);
         this.editorReady = this.editorReady.bind(this);
@@ -43,22 +45,21 @@ class Editor extends React.Component {
         this.dialogReturn = this.dialogReturn.bind(this);
     }
 
-    componentWillReceiveProps(nextProps) {
-        const { etag, location, content, file, isFetching } = this.props;
-        if (etag !== nextProps.etag) {
-            this.setState({ currentEtag: nextProps.etag });
+    static getDerivedStateFromProps(props, state) {
+        const { prevContent, prevFile, prevLocation } = state; 
+        const newState = {};
+        if (prevLocation && props.content !== null && props.content !== prevContent && !props.isFetching) {
+            newState.prevContent = props.content;
+            newState.currentContent = props.content;
         }
-        if (location && nextProps.content !== null && nextProps.content !== content && !isFetching) {
-            this.setState({ currentContent: nextProps.content });
+        if (props.file !== prevFile && props.file.includes('JCL')) {
+            newState.prevFile = props.file;
+            newState.syntax = JCL_TEXT;
         }
-        if (file !== nextProps.file) {
-            if (nextProps.file.includes('JCL')) {
-                this.setState({ syntax: JCL_TEXT });
-            }
-        }
-        if (location !== nextProps.location) {
+        if (props.location !== prevLocation) { 
             window.location.reload();
         }
+        return Object.keys(newState).length ? newState : null;
     }
 
     getContent = content => {
@@ -70,8 +71,8 @@ class Editor extends React.Component {
     }
 
     handleSave() {
-        const { dispatch, file } = this.props;
-        dispatch(saveDataset(file, this.state.currentContent, this.state.currentEtag));
+        const { dispatch, file, etag } = this.props;
+        dispatch(saveDataset(file, this.state.currentContent, etag));
     }
 
     handleSaveAs() {
