@@ -46,7 +46,7 @@ class Editor extends React.Component {
     }
 
     static getDerivedStateFromProps(props, state) {
-        const { prevContent, prevFile, prevLocation } = state; 
+        const { prevContent, prevFile, prevLocation } = state;
         const newState = {};
         if (prevLocation && props.content !== null && props.content !== prevContent && !props.isFetching) {
             newState.prevContent = props.content;
@@ -56,7 +56,7 @@ class Editor extends React.Component {
             newState.prevFile = props.file;
             newState.syntax = JCL_TEXT;
         }
-        if (props.location !== prevLocation) { 
+        if (props.location !== prevLocation) {
             window.location.reload();
         }
         return Object.keys(newState).length ? newState : null;
@@ -144,7 +144,6 @@ Editor.propTypes = {
     content: PropTypes.string,
     etag: PropTypes.string,
     file: PropTypes.string,
-    isFetching: PropTypes.bool,
     dispatch: PropTypes.func,
     location: PropTypes.shape({
         search: PropTypes.string,
