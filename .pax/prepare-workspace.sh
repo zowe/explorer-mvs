@@ -73,6 +73,7 @@ echo "[${SCRIPT_NAME}] copying startup script ..."
 mkdir -p "${PAX_WORKSPACE_DIR}/content/scripts"
 cp -r scripts/explorer-mvs-start.sh "${PAX_WORKSPACE_DIR}/content/scripts"
 cp -r scripts/explorer-mvs-configure.sh "${PAX_WORKSPACE_DIR}/content/scripts"
+cp -r scripts/explorer-mvs-validate.sh "${PAX_WORKSPACE_DIR}/content/scripts"
 
 # pre-configure server config
 echo "[${SCRIPT_NAME}] update default UI server config ..."
