@@ -116,8 +116,8 @@ class DatasetTree extends React.Component {
                     <form onSubmit={this.handleQualifierUpdate}>
                         <div className="component-header">
                             <UpperCaseTextField
-                                className="component-text-field-fill"
-                                id="path"
+                                id="datasets-qualifier-field"
+                                style={{ flexGrow: 1, paddingLeft: '8px' }}
                                 value={DSPath}
                                 fullWidth={false}
                                 fieldChangedCallback={this.handlePathChange}
@@ -162,7 +162,7 @@ function mapStateToProps(state) {
         datasets: stateRootDatasets.get('datasets'),
         DSChildren: stateRoot.get('DSChildren'),
         DSPath: stateRoot.get('DSPath'),
-        isFetching: stateRoot.get('isFetching'),
+        isFetching: stateRoot.get('isFetching') || stateRootDatasets.get('isFetching'),
         validated: validationRoot.get('validated'),
         username: validationRoot.get('username'),
     };
