@@ -41,6 +41,7 @@ export default class TreeDatasetMember extends React.Component {
     constructor(props) {
         super(props);
         this.getDataSetAndMemberName = this.getDataSetAndMemberName.bind(this);
+        this.handleKeyDown = this.handleKeyDown.bind(this);
 
         this.state = {
             dialog: NO_DIALOG,
@@ -63,6 +64,12 @@ export default class TreeDatasetMember extends React.Component {
     handleEdit = () => {
         const { dispatch } = this.props;
         dispatch(fetchDS(this.getDataSetAndMemberName()));
+    }
+
+    handleKeyDown(e) {
+        if (e.key === 'Enter') {
+            this.handleEdit();
+        }
     }
 
     handleDeleteDataset = () => {
@@ -114,7 +121,11 @@ export default class TreeDatasetMember extends React.Component {
             return (
                 <div key={member}>
                     <ContextMenuTrigger id={member}>
-                        <div onClick={() => { this.handleEdit(); }}>
+                        <div
+                            onClick={() => { this.handleEdit(); }}
+                            tabIndex="0"
+                            onKeyDown={this.handleKeyDown}
+                        >
                             <li>
                                 <ContentIcon className="node-icon" />
                                 <span className="node-label content-link">{member}</span>
