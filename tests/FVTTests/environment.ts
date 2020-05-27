@@ -15,4 +15,4 @@ export const SERVER_PORT :number = parseInt(process.env.SERVER_HTTPS_PORT);
 export const BASE_URL :string = `https://${SERVER_HOST}:${SERVER_PORT}`;
 export const BASE_URL_WITH_PATH :string =`${BASE_URL}/ui/v1/explorer-mvs`;
 
-export const TEST_DATASET :string = `${USERNAME}.FVTTEST`;
+export const TEST_DATASET :string = `${USERNAME.toUpperCase()}.FVTTEST`;
