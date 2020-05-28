@@ -36,8 +36,10 @@ class LoginDialog extends React.Component {
     }
 
     componentDidMount() {
-        const { dispatch } = this.props;
-        return dispatch(validateUser());
+        const { dispatch, forceLogin } = this.props;
+        if (forceLogin) {
+            dispatch(validateUser());
+        }
     }
 
     handleUsernameChange(event) {
@@ -119,6 +121,7 @@ LoginDialog.propTypes = {
     dispatch: PropTypes.func.isRequired,
     isValidating: PropTypes.bool.isRequired,
     validationMessage: PropTypes.string,
+    forceLogin: PropTypes.bool.isRequired,
 };
 
 function mapStateToProps(state) {
@@ -126,6 +129,7 @@ function mapStateToProps(state) {
     return {
         isValidating: validationRoot.get('isValidating'),
         validationMessage: validationRoot.get('message'),
+        forceLogin: validationRoot.get('forceLogin'),
     };
 }
 
