@@ -28,6 +28,7 @@ const NO_DATASETS_FOUND_MESSAGE = 'No Datasets found';
 class DatasetTree extends React.Component {
     constructor(props) {
         super(props);
+        this.updateMessage = this.updateMessage.bind(this);
         this.handlePathChange = this.handlePathChange.bind(this);
         this.renderDSChild = this.renderDSChild.bind(this);
         this.refreshDSTree = this.refreshDSTree.bind(this);
@@ -39,7 +40,7 @@ class DatasetTree extends React.Component {
         };
     }
 
-    componentWillMount() {
+    componentDidMount() {
         const { dispatch, username, DSChildren } = this.props;
         if (DSChildren.isEmpty()) {
             dispatch(setDSPath(username));
@@ -47,22 +48,23 @@ class DatasetTree extends React.Component {
         }
     }
 
-    componentWillReceiveProps(nextProps) {
-        const { dispatch, DSPath, username } = this.props;
+    componentDidUpdate(prevProps) {
+        const { dispatch, DSPath, username } = prevProps;
         // When qualifier is changed but not in the case of first page load
-        if (DSPath !== nextProps.DSPath && !(DSPath === '' && username === nextProps.DSPath)) {
+        if (DSPath !== this.props.DSPath && !(DSPath === '' && username === this.props.DSPath)) {
             clearTimeout(this.state.timeout);
             this.state.timeout = setTimeout(() => {
                 dispatch(resetDSChildren());
-                dispatch(fetchDatasetTreeChildren(nextProps.DSPath));
+                dispatch(fetchDatasetTreeChildren(this.props.DSPath));
             }, 1500);
         }
+
+        this.updateMessage(prevProps);
     }
 
-    componentDidUpdate(prevProps) {
+    updateMessage(prevProps) {
         const { isFetchingDatasets, isFetchingTree } = this.props;
         const { isFetchingDatasets: isFetchingDatasetsPrev, isFetchingTree: isFetchingTreePrev } = prevProps;
-
         if (!isFetchingDatasets && isFetchingDatasetsPrev) {
             this.setState({ message: 'Dataset members loaded' });
         }

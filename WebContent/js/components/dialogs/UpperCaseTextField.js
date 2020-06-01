@@ -24,10 +24,10 @@ export default class UpperCaseTextField extends React.Component {
         };
     }
 
-    componentWillReceiveProps(nextProps) {
-        const { value } = this.props;
-        if (value !== nextProps.value) {
-            this.fieldChanged(nextProps.value);
+    componentDidUpdate(prevProps) {
+        const { value } = prevProps;
+        if (value !== this.props.value) {
+            this.fieldChanged(this.props.value);
         }
     }
 
