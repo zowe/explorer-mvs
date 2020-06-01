@@ -28,6 +28,7 @@ const NO_DATASETS_FOUND_MESSAGE = 'No Datasets found';
 class DatasetTree extends React.Component {
     constructor(props) {
         super(props);
+        this.updateMessage = this.updateMessage.bind(this);
         this.handlePathChange = this.handlePathChange.bind(this);
         this.renderDSChild = this.renderDSChild.bind(this);
         this.refreshDSTree = this.refreshDSTree.bind(this);
@@ -57,12 +58,13 @@ class DatasetTree extends React.Component {
                 dispatch(fetchDatasetTreeChildren(this.props.DSPath));
             }, 1500);
         }
+
+        this.updateMessage(prevProps);
     }
 
-    componentDidUpdate(prevProps) {
+    updateMessage(prevProps) {
         const { isFetchingDatasets, isFetchingTree } = this.props;
         const { isFetchingDatasets: isFetchingDatasetsPrev, isFetchingTree: isFetchingTreePrev } = prevProps;
-
         if (!isFetchingDatasets && isFetchingDatasetsPrev) {
             this.setState({ message: 'Dataset members loaded' });
         }
