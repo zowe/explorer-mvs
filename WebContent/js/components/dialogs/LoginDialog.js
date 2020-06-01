@@ -37,7 +37,7 @@ class LoginDialog extends React.Component {
 
     componentDidMount() {
         const { dispatch, forceLogin } = this.props;
-        if (forceLogin) {
+        if (!forceLogin) {
             dispatch(validateUser());
         }
     }
