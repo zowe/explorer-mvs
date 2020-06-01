@@ -40,6 +40,7 @@ export default class CreateMemberDialog extends React.Component {
             label="New Member Name"
             fieldChangedCallback={this.updateName}
             fullWidth={true}
+            autoFocus={true}
         />);
 
         return (

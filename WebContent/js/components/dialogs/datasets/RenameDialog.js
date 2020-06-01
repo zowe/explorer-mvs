@@ -44,6 +44,7 @@ export default class RenameDialog extends React.Component {
             fieldChangedCallback={this.updateName}
             value={this.state.newName}
             fullWidth={true}
+            autoFocus={true}
         />);
 
         return (
