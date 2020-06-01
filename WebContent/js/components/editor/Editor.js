@@ -62,6 +62,11 @@ class Editor extends React.Component {
         return Object.keys(newState).length ? newState : null;
     }
 
+    componentDidUpdate() {
+        const { title } = this.props;
+        document.title = title;
+    }
+
     getContent = content => {
         this.setState({ currentContent: content });
     }
@@ -148,6 +153,7 @@ Editor.propTypes = {
     location: PropTypes.shape({
         search: PropTypes.string,
     }),
+    title: PropTypes.string.isRequired,
 };
 
 function mapStateToProps(state) {
@@ -157,6 +163,7 @@ function mapStateToProps(state) {
         etag: editorRoot.get('etag'),
         file: editorRoot.get('file'),
         isFetching: editorRoot.get('isFetching'),
+        title: editorRoot.get('title'),
     };
 }
 

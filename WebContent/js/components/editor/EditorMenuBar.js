@@ -76,7 +76,7 @@ export default class EditorMenuBar extends React.Component {
                 >
                     Save as..
                 </RaisedButton>
-                {file}
+                <span aria-live="polite">{file}</span>
                 {file ? EditorMenuBar.renderFullScreenButton(file) : null}
                 <FormControl style={{ float: 'right', paddingTop: '5px', width: '100px' }}>
                     <Select
