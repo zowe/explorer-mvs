@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/no-noninteractive-tabindex */
 /**
  * This program and the accompanying materials are made available under the terms of the
  * Eclipse Public License v2.0 which accompanies this distribution, and is available at
@@ -47,6 +48,7 @@ export class TreeDataset extends React.Component {
     constructor(props) {
         super(props);
         this.handleToggle = this.handleToggle.bind(this);
+        this.handleKeyDown = this.handleKeyDown.bind(this);
         this.dialogReturn = this.dialogReturn.bind(this);
 
         this.state = {
@@ -69,18 +71,16 @@ export class TreeDataset extends React.Component {
     }
 
     handleToggle() {
-        return (() => {
-            const { childId, dispatch, dataSetOrganization } = this.props;
-            if (!this.isDSToggled()) {
-                if (dataSetOrganization.startsWith(DATASET_ORG_SEQUENTIAL)) {
-                    this.handleEdit();
-                } else {
-                    dispatch(fetchDSMembers(childId));
-                }
+        const { childId, dispatch, dataSetOrganization } = this.props;
+        if (!this.isDSToggled()) {
+            if (dataSetOrganization.startsWith(DATASET_ORG_SEQUENTIAL)) {
+                this.handleEdit();
             } else {
-                dispatch(toggleDSNode(childId, !this.isDSToggled()));
+                dispatch(fetchDSMembers(childId));
             }
-        });
+        } else {
+            dispatch(toggleDSNode(childId, !this.isDSToggled()));
+        }
     }
 
     /**
@@ -132,6 +132,12 @@ export class TreeDataset extends React.Component {
         this.setState({ dialog: RENAME_DATASET });
     }
 
+    handleKeyDown(e) {
+        if (e.key === 'Enter') {
+            this.handleToggle();
+        }
+    }
+
     renderDS() {
         const { dataSetOrganization } = this.props;
         if (dataSetOrganization.startsWith(DATASET_ORG_PARTITIONED)) {
@@ -149,9 +155,9 @@ export class TreeDataset extends React.Component {
         return (
             <div>
                 <ContextMenuTrigger id={childId}>
-                    <div onClick={this.handleToggle()}>
+                    <div onClick={this.handleToggle} tabIndex="0" onKeyDown={this.handleKeyDown}>
                         {this.getToggleIcon()}
-                        <span className="node-label node-toggle">{childId}</span>
+                        <span className="node-label node-toggle" >{childId}</span>
                     </div>
                 </ContextMenuTrigger>
                 <DatasetPartitionedMenu
@@ -173,7 +179,7 @@ export class TreeDataset extends React.Component {
             <div>
                 <ContextMenuTrigger id={childId}>
                     <ContentIcon className="node-icon" />
-                    <span className="node-label content-link" onClick={this.handleToggle()}>{childId}</span>
+                    <span className="node-label content-link" onClick={this.handleToggle} tabIndex="0" onKeyDown={this.handleKeyDown}>{childId}</span>
                 </ContextMenuTrigger>
                 <DatasetSequentialMenu
                     childId={childId}

@@ -19,6 +19,12 @@ export default class RefreshIcon extends React.Component {
         submitAction();
     }
 
+    handleKeyDown = e => {
+        if (e.key === 'Enter') {
+            this.handleSubmit();
+        }
+    }
+
     render() {
         const { isFetching } = this.props;
         const iconStyle = { float: 'right', padding: '10px' };
@@ -37,6 +43,8 @@ export default class RefreshIcon extends React.Component {
                 size={iconSize}
                 style={iconStyle}
                 onClick={this.handleSubmit}
+                tabIndex="0"
+                onKeyDown={this.handleKeyDown}
             />);
     }
 }
