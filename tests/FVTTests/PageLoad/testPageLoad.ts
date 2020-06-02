@@ -8,7 +8,7 @@
  * Copyright IBM Corporation 2020
  */
 import { expect } from 'chai';
-import { WebDriver, until, By } from "selenium-webdriver"
+import { WebDriver, until, By, WebElement } from "selenium-webdriver"
 
 import {
     getDriver,
@@ -43,7 +43,7 @@ describe('MVS explorer page load', function () {
     });
 
     describe('MVS Explorer home page', () => {
-        before('Initialise', async () => {
+        beforeEach('Initialise', async () => {
             await loadPage(driver, BASE_URL_WITH_PATH);
             await driver.wait(until.elementLocated(By.id('refresh-icon')));
         })
@@ -52,5 +52,14 @@ describe('MVS explorer page load', function () {
             expect(await testElementAppearsXTimesById(driver, 'dataset-tree-card', 1)).to.be.true;
             expect(await testElementAppearsXTimesById(driver, 'editor-card', 1)).to.be.true;
         });
+
+        it('Should have cursor focus on datasets-qualifier-field on page load', async () => {
+            const datasetsQualifierField :WebElement = await driver.findElement(By.id('datasets-qualifier-field'));
+            const datasetsQualifierFieldId :string = await datasetsQualifierField.getId();
+            const focusedElement :WebElement = await driver.switchTo().activeElement(); //Get the active/focused element
+            const focusedElementId :string = await focusedElement.getId();
+
+            expect(datasetsQualifierFieldId).to.equal(focusedElementId);
+        })
     });
 });
