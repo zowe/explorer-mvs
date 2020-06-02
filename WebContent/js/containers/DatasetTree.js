@@ -33,6 +33,8 @@ class DatasetTree extends React.Component {
         this.renderDSChild = this.renderDSChild.bind(this);
         this.refreshDSTree = this.refreshDSTree.bind(this);
         this.isDSToggled = this.isDSToggled.bind(this);
+        this.isInitialLoad = this.isInitialLoad.bind(this);
+        // this.treeRef = React.createRef();
 
         this.state = {
             timeout: 0,
@@ -49,17 +51,41 @@ class DatasetTree extends React.Component {
     }
 
     componentDidUpdate(prevProps) {
-        const { dispatch, DSPath, username } = prevProps;
-        // When qualifier is changed but not in the case of first page load
-        if (DSPath !== this.props.DSPath && !(DSPath === '' && username === this.props.DSPath)) {
-            clearTimeout(this.state.timeout);
-            this.state.timeout = setTimeout(() => {
-                dispatch(resetDSChildren());
-                dispatch(fetchDatasetTreeChildren(this.props.DSPath));
-            }, 1500);
+        const { dispatch, DSPath } = prevProps;
+
+        if (DSPath !== this.props.DSPath) {
+            // in the case of first page load
+            if (this.isInitialLoad(prevProps)) {
+                // DatasetTree.setFocus(this.treeRef.current, '[tabindex]:not([tabindex="-1"]');
+                setTimeout(() => {
+                    DatasetTree.setFocus(document, '#datasets-qualifier-field');
+                }, 0);
+            } else {
+                // When qualifier is changed but not in the case of first page load
+                clearTimeout(this.state.timeout);
+                this.state.timeout = setTimeout(() => {
+                    dispatch(resetDSChildren());
+                    dispatch(fetchDatasetTreeChildren(this.props.DSPath));
+                }, 1500);
+            }
         }
 
         this.updateMessage(prevProps);
+    }
+
+
+    static setFocus(root, selector) {
+        if (root) {
+            const focusable = root.querySelector(selector);
+            if (focusable) {
+                focusable.focus();
+            }
+        }
+    }
+
+    isInitialLoad(prevProps) {
+        const { DSPath, username } = prevProps;
+        return (DSPath === '' && username === this.props.DSPath);
     }
 
     updateMessage(prevProps) {
@@ -143,6 +169,7 @@ class DatasetTree extends React.Component {
                                 value={DSPath}
                                 fullWidth={false}
                                 fieldChangedCallback={this.handlePathChange}
+                                autoFocus={true}
                             />
                             <RefreshIcon
                                 isFetching={isFetchingTree || isFetchingDatasets}
@@ -152,7 +179,7 @@ class DatasetTree extends React.Component {
                         </div>
                     </form>
                     <FullHeightTree offset={26}>
-                        <ul>
+                        <ul /* ref={this.treeRef} */>
                             {!DSChildren.isEmpty() ?
                                 DSChildren.keySeq().toArray().sort().map(this.renderDSChild) :
                                 this.renderNotFound()
