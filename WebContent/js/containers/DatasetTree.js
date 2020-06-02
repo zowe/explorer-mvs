@@ -34,7 +34,6 @@ class DatasetTree extends React.Component {
         this.refreshDSTree = this.refreshDSTree.bind(this);
         this.isDSToggled = this.isDSToggled.bind(this);
         this.isInitialLoad = this.isInitialLoad.bind(this);
-        // this.treeRef = React.createRef();
 
         this.state = {
             timeout: 0,
@@ -56,7 +55,6 @@ class DatasetTree extends React.Component {
         if (DSPath !== this.props.DSPath) {
             // in the case of first page load
             if (this.isInitialLoad(prevProps)) {
-                // DatasetTree.setFocus(this.treeRef.current, '[tabindex]:not([tabindex="-1"]');
                 setTimeout(() => {
                     DatasetTree.setFocus(document, '#datasets-qualifier-field');
                 }, 0);
@@ -179,7 +177,7 @@ class DatasetTree extends React.Component {
                         </div>
                     </form>
                     <FullHeightTree offset={26}>
-                        <ul /* ref={this.treeRef} */>
+                        <ul>
                             {!DSChildren.isEmpty() ?
                                 DSChildren.keySeq().toArray().sort().map(this.renderDSChild) :
                                 this.renderNotFound()
