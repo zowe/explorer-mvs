@@ -25,11 +25,11 @@ class AtlasSnackbar extends React.Component {
         this.registerMessageWithSnackbar = this.registerMessageWithSnackbar.bind(this);
     }
 
-    componentWillReceiveProps(nextProps) {
-        const { snackbarNotificationsMessages } = this.props;
-        if (nextProps.snackbarNotificationsMessages.first() &&
-            snackbarNotificationsMessages.first() !== nextProps.snackbarNotificationsMessages.first()) {
-            const messageValue = nextProps.snackbarNotificationsMessages.first();
+    componentDidUpdate(prevProps) {
+        const { snackbarNotificationsMessages } = prevProps;
+        if (this.props.snackbarNotificationsMessages.first() &&
+            snackbarNotificationsMessages.first() !== this.props.snackbarNotificationsMessages.first()) {
+            const messageValue = this.props.snackbarNotificationsMessages.first();
             window.sendMvsNotificationsToZlux(messageValue.get('message'));
             this.registerMessageWithSnackbar();
         }
@@ -64,6 +64,7 @@ class AtlasSnackbar extends React.Component {
                     message={messageValue.get('message')}
                     open={this.state.open}
                     onClose={this.handleRequestClose}
+                    role="alert"
                 />
             );
         }

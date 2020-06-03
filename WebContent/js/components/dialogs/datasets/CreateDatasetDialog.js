@@ -156,6 +156,7 @@ export default class CreateDatasetDialog extends React.Component {
                         label="Dataset Name"
                         updateName={this.updateName}
                         fullWidth={true}
+                        autoFocus={true}
                     />
                 </div>
                 <br />

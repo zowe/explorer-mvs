@@ -14,14 +14,15 @@ import {
     getDriver,
     setApimlAuthTokenCookie,
     loadPage,
+    testElementAppearsXTimesById
 } from 'explorer-fvt-utilities';
-import { testElementAppearsXTimesById } from 'explorer-fvt-utilities/lib/ElementTestUtilities';
 import {
     USERNAME,
     PASSWORD,
     BASE_URL,
     BASE_URL_WITH_PATH,
 } from '../environment';
+import { createTestDataset, deleteTestDataset } from "../Utilities"
 
 require('geckodriver');
 
@@ -42,6 +43,7 @@ describe('Test initialisation of dataset tree', function () {
 
     describe('Initial Tree Load', () => {
         before('Prepare page for test', async () => {
+            await createTestDataset();
             await loadPage(driver, BASE_URL_WITH_PATH);
             await driver.wait(until.elementLocated(By.id('refresh-icon')));
         });
@@ -49,6 +51,10 @@ describe('Test initialisation of dataset tree', function () {
         beforeEach('', async () => {
             await driver.wait(until.elementLocated(By.id('refresh-icon')));
         });
+
+        after('Cleanup', async () => {
+            await deleteTestDataset();
+        })
 
         it('Should render dataset qualifier field, refresh icon and full height tree', async () => {
             expect(await testElementAppearsXTimesById(driver, 'datasets-qualifier-field', 1)).to.be.true;

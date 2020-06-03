@@ -9,12 +9,14 @@
  */
 
 import { Map } from 'immutable';
+import { DEFAULT_TITLE } from '../../../../WebContent/js/reducers/editor';
 
 export const baseEditor = Map({
     content: null,
     etag: null,
     file: '',
     isFetching: false,
+    title: DEFAULT_TITLE,
 });
 
 export const requestedContent = Map({
@@ -22,6 +24,7 @@ export const requestedContent = Map({
     etag: null,
     file: '',
     isFetching: true,
+    title: DEFAULT_TITLE,
 });
 
 export const content = '//TSTJCICS JOB (ADL),ATLAS,MSGCLASS=0,CLASS=A,TIME=1440\n//*        THIS JOB SIMULATES A CICS REGION FOR 60 SECONDS';
@@ -44,6 +47,7 @@ export const receivedContent = Map({
     etag,
     file: dataset,
     isFetching: false,
+    title: `${DEFAULT_TITLE} [${dataset}]`,
 });
 
 export const receivedSeqContent = Map({
@@ -51,6 +55,7 @@ export const receivedSeqContent = Map({
     etag,
     file: datasetSeq,
     isFetching: false,
+    title: `${DEFAULT_TITLE} [${datasetSeq}]`,
 });
 
 export const renameSeqContent = Map({
@@ -58,6 +63,7 @@ export const renameSeqContent = Map({
     etag,
     file: renameDSSeq,
     isFetching: false,
+    title: `${DEFAULT_TITLE} [${renameDSSeq}]`,
 });
 
 export const afterRenameDSMember = Map({
@@ -65,6 +71,7 @@ export const afterRenameDSMember = Map({
     etag,
     file: renameDSMember,
     isFetching: false,
+    title: `${DEFAULT_TITLE} [${renameDSMember}]`,
 });
 
 export const afterRenameDSName = Map({
@@ -72,6 +79,7 @@ export const afterRenameDSName = Map({
     etag,
     file: renameDSName,
     isFetching: false,
+    title: `${DEFAULT_TITLE} [${renameDSName}]`,
 });
 
 export const invalidatedContent = Map({
@@ -79,6 +87,7 @@ export const invalidatedContent = Map({
     etag: null,
     file: 'Unable to retrieve content',
     isFetching: false,
+    title: DEFAULT_TITLE,
 });
 
 export const newContent = '//THE CONTENT AHS BEEN CHANGED IS NO LONGER VALID JCLn//*        THIS JOB SIMULATES A CICS REGION FOR 60 SECONDS';
@@ -88,6 +97,7 @@ export const newContentEditor = Map({
     etag,
     file: dataset,
     isFetching: false,
+    title: `${DEFAULT_TITLE} [${dataset}]`,
 });
 
 export const newEtag = 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAA';
@@ -97,6 +107,7 @@ export const newEtagEditor = Map({
     etag: newEtag,
     file: dataset,
     isFetching: false,
+    title: `${DEFAULT_TITLE} [${dataset}]`,
 });
 
 export const invalidatedEtagEditor = Map({
@@ -104,6 +115,7 @@ export const invalidatedEtagEditor = Map({
     etag: null,
     file: dataset,
     isFetching: false,
+    title: `${DEFAULT_TITLE} [${dataset}]`,
 });
 
 export const invalidatedSaveEditor = Map({
@@ -111,6 +123,7 @@ export const invalidatedSaveEditor = Map({
     etag: null,
     file: dataset,
     isFetching: false,
+    title: `${DEFAULT_TITLE} [${dataset}]`,
 });
 
 export const requestDataset = Map({
