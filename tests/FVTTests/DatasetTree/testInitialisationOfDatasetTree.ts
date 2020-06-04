@@ -22,7 +22,7 @@ import {
     BASE_URL,
     BASE_URL_WITH_PATH,
 } from '../environment';
-import { createTestPartitionedDataset, cleanupDatasets } from "../Utilities"
+import { createTestPartitionedDataset, cleanupDatasets } from "../utilities"
 
 require('geckodriver');
 
