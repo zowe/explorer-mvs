@@ -42,10 +42,13 @@ describe('Test Context Menu for datasets', function () {
             await driver.wait(until.elementLocated(By.id('refresh-icon')));
         });
 
-        async function openContextMenu(dataset) {
+        async function openContextMenu(dataset :string) {
             await editDatasetQualifierField(driver, `${dataset}`);
             const datasets: WebElement[] = await driver.findElements(By.className('node-label'));
-
+            const nodeText = await datasets[0].getText();
+            if (nodeText != dataset) {
+                throw(`Did not find expected Dataset ${dataset} in dataset tree`);
+            }
             await driver.actions().contextClick(datasets[0]).perform();
         }
 

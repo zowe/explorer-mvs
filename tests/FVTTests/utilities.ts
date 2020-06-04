@@ -17,7 +17,7 @@ import {
     b64Credentials,
     TEST_PARTITIONED_DATASET,
     TEST_SEQUENTIAL_DATASET } from './environment';
-import { WebDriver, WebElement, By, until } from 'selenium-webdriver';
+import { WebDriver, WebElement, By, until, Key } from 'selenium-webdriver';
 
 function getHttpsAgent() :https.Agent {
     return new https.Agent({
@@ -112,7 +112,8 @@ export async function editDatasetQualifierField(driver :WebDriver, searchQualifi
     const qualifierField: WebElement = await driver.findElement(By.id("datasets-qualifier-field"));
     await qualifierField.clear();
     await qualifierField.sendKeys(searchQualifier);
+    await qualifierField.sendKeys(Key.ENTER);
 
-    await driver.sleep(200);
+    await driver.sleep(500);
     await driver.wait(until.elementLocated(By.id('refresh-icon')), 20000);
 }
