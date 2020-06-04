@@ -113,6 +113,6 @@ export async function editDatasetQualifierField(driver :WebDriver, searchQualifi
     await qualifierField.clear();
     await qualifierField.sendKeys(searchQualifier);
 
-    await driver.wait(until.elementLocated(By.id('loading-icon')), 20000);
+    await driver.sleep(200);
     await driver.wait(until.elementLocated(By.id('refresh-icon')), 20000);
 }
