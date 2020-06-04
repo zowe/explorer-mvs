@@ -16,7 +16,8 @@ import {
     SERVER_PORT,
     b64Credentials,
     TEST_PARTITIONED_DATASET,
-    TEST_SEQUENTIAL_DATASET } from './environment';
+    TEST_SEQUENTIAL_DATASET, 
+    TEST_DATASET_MEMBER} from './environment';
 import { WebDriver, WebElement, By, until, Key } from 'selenium-webdriver';
 
 function getHttpsAgent() :https.Agent {
@@ -28,31 +29,42 @@ function getHttpsAgent() :https.Agent {
 export async function createTestPartitionedDataset() {
     await deleteDataset(TEST_PARTITIONED_DATASET, true);    //try to delete dataset if it didn't get cleaned up last time
     await createDataset({
-        "primary": 300,
-        "allocationUnit": "TRACK",
-        "recordFormat": "FB",
-        "dataSetOrganization": "PO",
-        "name":`${TEST_PARTITIONED_DATASET}`,
-        "directoryBlocks": 20,
-        "secondary": 100,
-        "recordLength": 80
+        primary: 300,
+        allocationUnit: "TRACK",
+        recordFormat: "FB",
+        dataSetOrganization: "PO",
+        name:`${TEST_PARTITIONED_DATASET}`,
+        directoryBlocks: 20,
+        secondary: 100,
+        recordLength: 80
     })
 }
 
 export async function createTestSequentialDataset() {
     await deleteDataset(TEST_SEQUENTIAL_DATASET, true) //try to delete dataset if it didn't get cleaned up last time
     await createDataset({
-            "primary":300,
-            "allocationUnit":"TRACK",
-            "recordFormat":"FB",
-            "dataSetOrganization":"PS",
-            "name":`${TEST_SEQUENTIAL_DATASET}`,
-            "secondary":100,
-            "recordLength":80
+            primary:300,
+            allocationUnit:"TRACK",
+            recordFormat:"FB",
+            dataSetOrganization:"PS",
+            name:`${TEST_SEQUENTIAL_DATASET}`,
+            secondary:100,
+            recordLength:80
         })
 }
 
-async function createDataset(requestBody) {
+interface DatasetCreationParams {
+    primary :number,
+    allocationUnit :string,
+    recordFormat :string,
+    dataSetOrganization :string,
+    name? :string,
+    directoryBlocks? :number,
+    secondary :number,
+    recordLength :number,
+}
+
+async function createDataset(requestBody :DatasetCreationParams) {
     const agent :https.Agent = getHttpsAgent();
     await fetch(`https://${SERVER_HOST}:${SERVER_PORT}/api/v2/datasets`, {
         method: 'POST',
@@ -76,6 +88,33 @@ async function createDataset(requestBody) {
         },
     )
 }
+
+export async function createTestDatasetMember() {
+    const agent :https.Agent = getHttpsAgent();
+    const fullDatasetAndMemberName = `${TEST_PARTITIONED_DATASET}(${TEST_DATASET_MEMBER})`;
+    await fetch(`https://${SERVER_HOST}:${SERVER_PORT}/api/v2/datasets/${fullDatasetAndMemberName}/content`, {
+        method: 'PUT',
+        headers: { 
+            authorization: b64Credentials,
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({records: ""}),
+        agent,
+    }).then (
+        async response => {
+            if(response.ok) {
+                console.log(`${fullDatasetAndMemberName}, created succesfully`);
+            } else {
+                console.log(`${fullDatasetAndMemberName}, create failed`);
+                return response.json().then(e => { 
+                    console.log(e.message);
+                    throw Error(e.message); 
+                });
+            }
+        }
+    )
+}
+
 
 export async function cleanupDatasets(failOk = false){
     await deleteDataset(TEST_PARTITIONED_DATASET, true);

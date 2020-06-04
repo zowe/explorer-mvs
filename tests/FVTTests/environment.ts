@@ -22,3 +22,4 @@ const uniqueQualifier = time.substr(time.length - 7);
 
 export const TEST_PARTITIONED_DATASET :string = `${USERNAME.toUpperCase()}.FVTTEST.A${uniqueQualifier}`;
 export const TEST_SEQUENTIAL_DATASET :string = `${USERNAME.toUpperCase()}.FVTTEST.B${uniqueQualifier}`;
+export const TEST_DATASET_MEMBER :string = 'TEST';
