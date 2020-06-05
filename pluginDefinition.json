@@ -9,7 +9,7 @@
     "launchDefinition": {
       "pluginShortNameKey": "MVS Explorer",
       "pluginShortNameDefault": "MVS Explorer", 
-      "imageSrc": "images/explorer-MVS.png"
+      "imageSrc": "img/explorer-MVS.png"
     },
     "descriptionKey": "",
     "descriptionDefault": "",
