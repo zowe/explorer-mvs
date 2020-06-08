@@ -10,6 +10,7 @@
 import { expect } from 'chai';
 import { WebDriver, By, WebElement, until } from "selenium-webdriver";
 import { getDriver, setApimlAuthTokenCookie, loadPage } from "explorer-fvt-utilities";
+import { editDatasetQualifierField } from "../utilities";
 import {
     USERNAME,
     PASSWORD,
@@ -59,11 +60,7 @@ describe('Test searching for datasets', function () {
         });
 
         async function testQualifierSearch(driver: WebDriver, searchQualifier: string, matchQualifier: string) {
-            const qualifierField: WebElement = await driver.findElement(By.id("datasets-qualifier-field"));
-            await qualifierField.clear();
-            await qualifierField.sendKeys(searchQualifier);
-
-            expect(await testRefreshIconTransition(driver)).to.be.true;
+            await editDatasetQualifierField(driver, searchQualifier);
 
             const datasets: WebElement[] = await driver.findElements(By.className('node-label'));
             let allQualifiersMatch: boolean = true;
@@ -94,6 +91,7 @@ describe('Test searching for datasets', function () {
                 await driver.wait(until.elementLocated(By.id('loading-icon')), 10000);
             } catch(err) {
                 console.log('[testRefreshIconTransition] fail on loading-icon not found');
+                return false;
             }
             await driver.wait(until.elementLocated(By.id('refresh-icon')), 30000);
             const newRefreshIcon: WebElement[] = await driver.findElements(By.id('refresh-icon'));
