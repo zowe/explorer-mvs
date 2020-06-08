@@ -22,7 +22,7 @@ import {
     BASE_URL,
     BASE_URL_WITH_PATH,
 } from '../environment';
-import { createTestDataset, deleteTestDataset } from "../Utilities"
+import { createTestPartitionedDataset, cleanupDatasets } from "../utilities"
 
 require('geckodriver');
 
@@ -43,7 +43,7 @@ describe('Test initialisation of dataset tree', function () {
 
     describe('Initial Tree Load', () => {
         before('Prepare page for test', async () => {
-            await createTestDataset();
+            await createTestPartitionedDataset();
             await loadPage(driver, BASE_URL_WITH_PATH);
             await driver.wait(until.elementLocated(By.id('refresh-icon')));
         });
@@ -53,7 +53,7 @@ describe('Test initialisation of dataset tree', function () {
         });
 
         after('Cleanup', async () => {
-            await deleteTestDataset();
+            await cleanupDatasets();
         })
 
         it('Should render dataset qualifier field, refresh icon and full height tree', async () => {

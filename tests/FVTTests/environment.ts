@@ -15,7 +15,11 @@ export const SERVER_PORT :number = parseInt(process.env.SERVER_HTTPS_PORT);
 export const BASE_URL :string = `https://${SERVER_HOST}:${SERVER_PORT}`;
 export const BASE_URL_WITH_PATH :string =`${BASE_URL}/ui/v1/explorer-mvs`;
 
+export const b64Credentials = `Basic ${new Buffer(`${USERNAME}:${PASSWORD}`).toString('base64')}`;
+
 const time :string = Date.now().toString()
 const uniqueQualifier = time.substr(time.length - 7);
 
-export const TEST_DATASET :string = `${USERNAME.toUpperCase()}.FVTTEST.A${uniqueQualifier}`;
+export const TEST_PARTITIONED_DATASET :string = `${USERNAME.toUpperCase()}.FVTTEST.A${uniqueQualifier}`;
+export const TEST_SEQUENTIAL_DATASET :string = `${USERNAME.toUpperCase()}.FVTTEST.B${uniqueQualifier}`;
+export const TEST_DATASET_MEMBER :string = 'TEST';
