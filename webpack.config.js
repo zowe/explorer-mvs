@@ -17,6 +17,37 @@ const webpack = require('webpack');
 const path = require('path');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const CompressionPlugin = require('compression-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+
+const copyArray = [{
+    from: path.resolve(__dirname, './WebContent/zlux-hooks'),
+    to: path.resolve(OUTPUT_FOLDER, 'zlux-hooks'),
+},
+{
+    from: path.resolve(__dirname, './WebContent/css'),
+    to: path.resolve(OUTPUT_FOLDER, 'css'),
+},
+{
+    from: path.resolve(__dirname, './WebContent/img'),
+    to: path.resolve(OUTPUT_FOLDER, 'img'),
+},
+{
+    from: path.resolve(__dirname, './WebContent/index.html'),
+    to: path.resolve(OUTPUT_FOLDER),
+},
+{
+    from: path.resolve(__dirname, './WebContent/favicon.ico'),
+    to: path.resolve(OUTPUT_FOLDER),
+},
+];
+
+const copyTask = new CopyWebpackPlugin(copyArray);
+
+const cleanTask = new CleanWebpackPlugin();
+
+
 module.exports = {
     devtool: debug ? 'source-map' : false,
     entry: path.join(__dirname, 'WebContent/js/index.js'),
@@ -48,7 +79,7 @@ module.exports = {
         path: path.join(__dirname, OUTPUT_FOLDER),
         filename: 'app.min.js',
     },
-    plugins: debug ? [] : [
+    plugins: debug ? [cleanTask, copyTask] : [cleanTask,
         new webpack.DefinePlugin({
             'process.env.REACT_SYNTAX_HIGHLIGHTER_LIGHT_BUILD': true,
             'process.env.NODE_ENV': JSON.stringify(REACT_APP_ENVIRONMENT),
@@ -62,5 +93,10 @@ module.exports = {
                 },
             },
         }),
+        new CompressionPlugin({
+            threshold: 100000,
+            minRatio: 0.8,
+        }),
+        copyTask,
     ],
 };

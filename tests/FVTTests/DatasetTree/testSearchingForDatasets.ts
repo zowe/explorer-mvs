@@ -61,6 +61,7 @@ describe('Test searching for datasets', function () {
 
         async function testQualifierSearch(driver: WebDriver, searchQualifier: string, matchQualifier: string) {
             await editDatasetQualifierField(driver, searchQualifier);
+
             const datasets: WebElement[] = await driver.findElements(By.className('node-label'));
             let allQualifiersMatch: boolean = true;
             datasets.forEach(async (nodeLabel: WebElement) => {
@@ -85,11 +86,11 @@ describe('Test searching for datasets', function () {
             expect(await testRefreshIconTransition(driver)).to.be.true;
         });
 
-        async function testRefreshIconTransition(driver :WebDriver) {
-            await driver.wait(until.elementLocated(By.id('loading-icon')), 10000);
-            const loadingIcon: WebElement[] = await driver.findElements(By.id('loading-icon'));
-            if (loadingIcon.length !== 1) {
-                console.log('loading-icon never found');
+        async function testRefreshIconTransition(driver) {
+            try {
+                await driver.wait(until.elementLocated(By.id('loading-icon')), 10000);
+            } catch(err) {
+                console.log('[testRefreshIconTransition] fail on loading-icon not found');
                 return false;
             }
             await driver.wait(until.elementLocated(By.id('refresh-icon')), 30000);
