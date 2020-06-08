@@ -63,8 +63,7 @@ describe('Test searching for datasets', function () {
             await qualifierField.clear();
             await qualifierField.sendKeys(searchQualifier);
 
-            await driver.wait(until.elementLocated(By.id('loading-icon')), 20000);
-            await driver.wait(until.elementLocated(By.id('refresh-icon')), 20000);
+            expect(await testRefreshIconTransition(driver)).to.be.true;
 
             const datasets: WebElement[] = await driver.findElements(By.className('node-label'));
             let allQualifiersMatch: boolean = true;
