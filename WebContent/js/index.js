@@ -25,7 +25,17 @@ import rootReducer from './reducers';
 import ConnectedHomeView from './containers/pages/Home';
 import ConnectedFullScreenEditor from './containers/pages/FullScreenEditor';
 
-const store = applyMiddleware(thunk, createLogger())(createStore)(rootReducer, Map({}));
+// redux dev tool extension enabled
+let appMiddleware;
+if (window.localStorage.getItem('enableReduxLogger') === 'true') {
+    appMiddleware = applyMiddleware(thunk, createLogger());
+} else {
+    appMiddleware = applyMiddleware(thunk);
+}
+
+const store = appMiddleware(createStore)(rootReducer, Map({}),
+    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
+);
 
 ReactDOM.render(
     <Provider store={store}>
