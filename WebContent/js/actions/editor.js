@@ -10,7 +10,7 @@
 
 import { fetchDatasetTreeChildren } from './treeDS';
 import { fetchDSMembers } from '../actions/treeDatasets';
-import { atlasGet, atlasPut, atlasPost, encodeURLComponent } from '../utilities/urlUtils';
+import { atlasGet, atlasPut, atlasPost } from '../utilities/urlUtils';
 import { constructAndPushMessage } from './snackbarNotifications';
 import { checkForValidationFailure } from './validation';
 
@@ -79,10 +79,10 @@ export function invalidateContent() {
     };
 }
 
-export function fetchDS(file) {
+export function fetchDS(DSName) {
     return dispatch => {
-        dispatch(requestDSContent(file));
-        const endpoint = `datasets/${encodeURIComponent(file)}/content`;
+        dispatch(requestDSContent(DSName));
+        const endpoint = `datasets/${DSName}/content`;
         let etag;
         return atlasGet(endpoint, {})
             .then(response => {
@@ -102,7 +102,7 @@ export function fetchDS(file) {
                 return response.json();
             })
             .then(json => {
-                return dispatch(receiveDSContent(file, json.records, etag));
+                return dispatch(receiveDSContent(DSName, json.records, etag));
             })
             .catch(err => {
                 let { message } = err;
@@ -110,7 +110,7 @@ export function fetchDS(file) {
                     message = GET_CONTENT_FAIL_MESSAGE;
                 }
 
-                dispatch(constructAndPushMessage(`${message} ${file}`));
+                dispatch(constructAndPushMessage(`${message} ${DSName}`));
                 return dispatch(invalidateContent());
             });
     };
@@ -157,17 +157,17 @@ function invalidateEtagChange() {
     };
 }
 
-function getNewDatasetEtag(file) {
+function getNewDatasetEtag(DSName) {
     return dispatch => {
-        dispatch(requestEtag(file));
-        const endpoint = `datasets/${encodeURLComponent(file)}/content`;
+        dispatch(requestEtag(DSName));
+        const endpoint = `datasets/${DSName}/content`;
         return atlasGet(endpoint)
             .then(response => {
                 return dispatch(checkForValidationFailure(response));
             })
             .then(response => {
                 if (response.ok) {
-                    dispatch(receiveEtag(file));
+                    dispatch(receiveEtag(DSName));
                     return response.headers.get('etag');
                 }
                 throw Error(response.statusText);
@@ -200,28 +200,28 @@ function invalidateSave() {
     };
 }
 
-export function saveDataset(file, content, etag) {
+export function saveDataset(DSname, content, etag) {
     return dispatch => {
-        dispatch(requestSave(file));
-        const endpoint = `datasets/${encodeURLComponent(file)}/content`;
+        dispatch(requestSave(DSname));
+        const endpoint = `datasets/${DSname}/content`;
         return atlasPut(endpoint, makeRecordsFromContent(content), etag)
             .then(response => {
                 return dispatch(checkForValidationFailure(response));
             })
             .then(response => {
                 if (response.ok) {
-                    dispatch(constructAndPushMessage(`${SAVE_SUCCESS_MESSAGE} ${file}`));
-                    return dispatch(receiveSave(file));
+                    dispatch(constructAndPushMessage(`${SAVE_SUCCESS_MESSAGE} ${DSname}`));
+                    return dispatch(receiveSave(DSname));
                 }
                 if (response.status !== 412) { // Precondition failed (usually etag invalid) so don't enable save
                     dispatch(invalidateSave(response));
                 }
                 throw Error(response.statusText);
             }).then(() => {
-                dispatch(getNewDatasetEtag(file));
+                dispatch(getNewDatasetEtag(DSname));
             })
             .catch(() => {
-                dispatch(constructAndPushMessage(`${SAVE_FAIL_MESSAGE} ${file}`));
+                dispatch(constructAndPushMessage(`${SAVE_FAIL_MESSAGE} ${DSname}`));
             });
     };
 }
@@ -308,10 +308,10 @@ function receiveDSAttributes(path, data) {
     };
 }
 
-export function fetchDatasetAttributes(path) {
+export function fetchDatasetAttributes(DSname) {
     return dispatch => {
-        dispatch(requestDSAttributes(path));
-        const contentURL = `datasets/${encodeURIComponent(path)}`;
+        dispatch(requestDSAttributes(DSname));
+        const contentURL = `datasets/${DSname}`;
         return atlasGet(contentURL)
             .then(response => {
                 return dispatch(checkForValidationFailure(response));
@@ -322,7 +322,7 @@ export function fetchDatasetAttributes(path) {
                 }
                 throw Error(response.statusText);
             }).then(data => {
-                dispatch(receiveDSAttributes(path, data));
+                dispatch(receiveDSAttributes(DSname, data));
             });
     };
 }

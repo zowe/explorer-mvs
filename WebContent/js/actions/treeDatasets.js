@@ -193,7 +193,7 @@ export function createDataset(DSProperties, path) {
 export function fetchDSMembers(DSName) {
     return dispatch => {
         dispatch(requestChildMembers(DSName));
-        return atlasGet(`datasets/${encodeURIComponent(DSName)}/members`)
+        return atlasGet(`datasets/${DSName}/members`)
             .then(response => {
                 return dispatch(checkForValidationFailure(response));
             })
@@ -222,7 +222,7 @@ export function fetchDSMembers(DSName) {
 export function createMember(DSName, member) {
     return dispatch => {
         dispatch(requestNewMember(DSName, member));
-        return atlasPut(`datasets/${encodeURIComponent(DSName)}(${encodeURIComponent(member)})/content`, makeRecordsFromContent(''))
+        return atlasPut(`datasets/${DSName}(${member})/content`, makeRecordsFromContent(''))
             .then(response => {
                 return dispatch(checkForValidationFailure(response));
             })
@@ -289,7 +289,7 @@ function cleanupStateAfterRename(oldName, newName, isOpenInViewer) {
 export function deleteDataset(DSName, isOpenInViewer) {
     return dispatch => {
         dispatch(requestDeleteDataset(DSName));
-        return atlasDelete(`datasets/${encodeURIComponent(DSName)}`)
+        return atlasDelete(`datasets/${DSName}`)
             .then(response => {
                 return dispatch(checkForValidationFailure(response));
             })
@@ -317,7 +317,7 @@ export function renameDataset(oldName, newName, isOpenInViewer) {
     return dispatch => {
         dispatch(requestRenameDataset(oldName));
         const renameBody = `{"newName":"${newName}"}`;
-        return atlasPut(`datasets/${encodeURIComponent(oldName)}/rename`, renameBody)
+        return atlasPut(`datasets/${oldName}/rename`, renameBody)
             .then(response => {
                 return dispatch(checkForValidationFailure(response));
             })

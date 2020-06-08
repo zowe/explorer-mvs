@@ -17,10 +17,6 @@ if (typeof location !== 'undefined') {
 }
 export const LOCAL_DEV_SERVER = host;
 
-export function encodeURLComponent(URL) {
-    return encodeURIComponent(URL);
-}
-
 export function whichServer() {
     let server = LOCAL_DEV_SERVER;
     if (location.hostname === 'tester.test.com') {
