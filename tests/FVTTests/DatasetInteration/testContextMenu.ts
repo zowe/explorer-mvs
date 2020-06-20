@@ -9,7 +9,7 @@
  */
 import { expect } from 'chai';
 import { WebDriver, By, WebElement, until } from "selenium-webdriver";
-import { getDriver, setApimlAuthTokenCookie, loadPage, testElementAppearsXTimesById } from "explorer-fvt-utilities";
+import { loadPage, testElementAppearsXTimesById } from "explorer-fvt-utilities";
 import { 
     editDatasetQualifierField, 
     createTestSequentialDataset, 
@@ -17,14 +17,13 @@ import {
     cleanupDatasets, 
     createTestDatasetMember } from "../utilities";
 import {
-    USERNAME,
-    PASSWORD,
-    BASE_URL,
     BASE_URL_WITH_PATH,
     TEST_PARTITIONED_DATASET,
     TEST_SEQUENTIAL_DATASET,
     TEST_DATASET_MEMBER,
 } from '../environment';
+
+import { getDriver } from '../testConfig';
 
 describe('Test Context Menu for datasets', function () {
     let driver: WebDriver;
@@ -32,7 +31,6 @@ describe('Test Context Menu for datasets', function () {
     
     before('Initialise', async () => {
         driver = await getDriver();
-        await setApimlAuthTokenCookie(driver, USERNAME, PASSWORD, `${BASE_URL}/api/v1/gateway/auth/login`, BASE_URL_WITH_PATH);
         await createTestPartitionedDataset();
         await createTestDatasetMember();
         await createTestSequentialDataset();
