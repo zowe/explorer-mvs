@@ -80,6 +80,7 @@ export default class EditorMenuBar extends React.Component {
                 {file ? EditorMenuBar.renderFullScreenButton(file) : null}
                 <FormControl style={{ float: 'right', paddingTop: '5px', width: '100px' }}>
                     <Select
+                        MenuProps={{disableEnforceFocus: true}}
                         value={initialSyntax}
                         onChange={this.handleSyntaxChange}
                     >
