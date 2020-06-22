@@ -21,23 +21,27 @@ import { setDSPath, fetchDatasetTreeChildren, resetDSChildren } from '../actions
 import { fetchDSMembers } from '../actions/treeDatasets';
 import FullHeightTree from './FullHeightTree';
 import UpperCaseTextField from '../components/dialogs/UpperCaseTextField';
+import Announcer from '../components/Announcer';
 
 const NO_DATASETS_FOUND_MESSAGE = 'No Datasets found';
 
 class DatasetTree extends React.Component {
     constructor(props) {
         super(props);
+        this.updateMessage = this.updateMessage.bind(this);
         this.handlePathChange = this.handlePathChange.bind(this);
         this.renderDSChild = this.renderDSChild.bind(this);
         this.refreshDSTree = this.refreshDSTree.bind(this);
         this.isDSToggled = this.isDSToggled.bind(this);
+        this.isInitialLoad = this.isInitialLoad.bind(this);
 
         this.state = {
             timeout: 0,
+            message: null,
         };
     }
 
-    componentWillMount() {
+    componentDidMount() {
         const { dispatch, username, DSChildren } = this.props;
         if (DSChildren.isEmpty()) {
             dispatch(setDSPath(username));
@@ -45,15 +49,57 @@ class DatasetTree extends React.Component {
         }
     }
 
-    componentWillReceiveProps(nextProps) {
-        const { dispatch, DSPath, username } = this.props;
-        // When qualifier is changed but not in the case of first page load
-        if (DSPath !== nextProps.DSPath && !(DSPath === '' && username === nextProps.DSPath)) {
-            clearTimeout(this.state.timeout);
-            this.state.timeout = setTimeout(() => {
-                dispatch(resetDSChildren());
-                dispatch(fetchDatasetTreeChildren(nextProps.DSPath));
-            }, 1500);
+    componentDidUpdate(prevProps) {
+        const { dispatch, DSPath } = prevProps;
+
+        if (DSPath !== this.props.DSPath) {
+            // in the case of first page load
+            if (this.isInitialLoad(prevProps)) {
+                setTimeout(() => {
+                    DatasetTree.setFocus(document, '#datasets-qualifier-field');
+                }, 0);
+            } else {
+                // When qualifier is changed but not in the case of first page load
+                clearTimeout(this.state.timeout);
+                this.state.timeout = setTimeout(() => {
+                    dispatch(resetDSChildren());
+                    dispatch(fetchDatasetTreeChildren(this.props.DSPath));
+                }, 1500);
+            }
+        }
+
+        this.updateMessage(prevProps);
+    }
+
+
+    static setFocus(root, selector) {
+        if (root) {
+            const focusable = root.querySelector(selector);
+            if (focusable) {
+                focusable.focus();
+            }
+        }
+    }
+
+    isInitialLoad(prevProps) {
+        const { DSPath, username } = prevProps;
+        return (DSPath === '' && username === this.props.DSPath);
+    }
+
+    updateMessage(prevProps) {
+        const { isFetchingDatasets, isFetchingTree } = this.props;
+        const { isFetchingDatasets: isFetchingDatasetsPrev, isFetchingTree: isFetchingTreePrev } = prevProps;
+        if (!isFetchingDatasets && isFetchingDatasetsPrev) {
+            this.setState({ message: 'Dataset members loaded' });
+        }
+        if (isFetchingDatasets && !isFetchingDatasetsPrev) {
+            this.setState({ message: 'Dataset members loading' });
+        }
+        if (!isFetchingTree && isFetchingTreePrev) {
+            this.setState({ message: 'Dataset tree loaded' });
+        }
+        if (isFetchingTree && !isFetchingTreePrev) {
+            this.setState({ message: 'Dataset tree loading' });
         }
     }
 
@@ -95,8 +141,8 @@ class DatasetTree extends React.Component {
     }
 
     renderNotFound() {
-        const { isFetching } = this.props;
-        return !isFetching ?
+        const { isFetchingTree } = this.props;
+        return !isFetchingTree ?
             <li>
                 <ErrorIcon />
                 <span className="node-label">{NO_DATASETS_FOUND_MESSAGE}</span>
@@ -105,7 +151,7 @@ class DatasetTree extends React.Component {
     }
 
     render() {
-        const { isFetching, DSChildren, DSPath, dispatch, validated } = this.props;
+        const { isFetchingTree, isFetchingDatasets, DSChildren, DSPath, dispatch, validated } = this.props;
         return (validated ?
             <Card
                 id="dataset-tree-card"
@@ -121,9 +167,10 @@ class DatasetTree extends React.Component {
                                 value={DSPath}
                                 fullWidth={false}
                                 fieldChangedCallback={this.handlePathChange}
+                                autoFocus={true}
                             />
                             <RefreshIcon
-                                isFetching={isFetching}
+                                isFetching={isFetchingTree || isFetchingDatasets}
                                 submitAction={this.refreshDSTree}
                                 dispatch={dispatch}
                             />
@@ -138,6 +185,7 @@ class DatasetTree extends React.Component {
                         </ul>
                     </FullHeightTree>
                 </CardContent>
+                <Announcer message={this.state.message} />
             </Card>
             : null
         );
@@ -146,7 +194,8 @@ class DatasetTree extends React.Component {
 
 DatasetTree.propTypes = {
     dispatch: PropTypes.func.isRequired,
-    isFetching: PropTypes.bool.isRequired,
+    isFetchingTree: PropTypes.bool.isRequired,
+    isFetchingDatasets: PropTypes.bool.isRequired,
     DSPath: PropTypes.string.isRequired,
     DSChildren: PropTypes.instanceOf(Map),
     datasets: PropTypes.instanceOf(Map),
@@ -155,14 +204,15 @@ DatasetTree.propTypes = {
 };
 
 function mapStateToProps(state) {
-    const stateRoot = state.get('treeDS');
+    const treeRoot = state.get('treeDS');
     const validationRoot = state.get('validation');
-    const stateRootDatasets = state.get('treeDatasets');
+    const datasetsRoot = state.get('treeDatasets');
     return {
-        datasets: stateRootDatasets.get('datasets'),
-        DSChildren: stateRoot.get('DSChildren'),
-        DSPath: stateRoot.get('DSPath'),
-        isFetching: stateRoot.get('isFetching') || stateRootDatasets.get('isFetching'),
+        datasets: datasetsRoot.get('datasets'),
+        DSChildren: treeRoot.get('DSChildren'),
+        DSPath: treeRoot.get('DSPath'),
+        isFetchingTree: treeRoot.get('isFetching'),
+        isFetchingDatasets: datasetsRoot.get('isFetching'),
         validated: validationRoot.get('validated'),
         username: validationRoot.get('username'),
     };

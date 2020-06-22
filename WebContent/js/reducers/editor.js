@@ -26,12 +26,14 @@ import {
 import { hasMember, parseFileName } from '../utilities/fileHelper';
 
 const CONTENT_UNABLE_TO_RETRIEVE_MESSAGE = 'Unable to retrieve content';
+export const DEFAULT_TITLE = 'MVS Explorer';
 
 const INITIAL_EDITOR_STATE = Map({
     content: null,
     etag: null,
     file: '',
     isFetching: false,
+    title: DEFAULT_TITLE,
 });
 
 function updateDSName(file, newDSName) {
@@ -50,6 +52,7 @@ export default function editor(state = INITIAL_EDITOR_STATE, action) {
                 content: action.content,
                 isFetching: false,
                 etag: action.etag,
+                title: `${DEFAULT_TITLE} [${action.file}]`,
             });
         // TODO:: Do we need two invalidates?
         case INVALIDATE_CONTENT:
@@ -58,6 +61,7 @@ export default function editor(state = INITIAL_EDITOR_STATE, action) {
                 file: CONTENT_UNABLE_TO_RETRIEVE_MESSAGE,
                 content: CONTENT_UNABLE_TO_RETRIEVE_MESSAGE,
                 etag: null,
+                title: DEFAULT_TITLE,
             });
         case REQUEST_SAVE:
             return state.merge({
@@ -84,6 +88,7 @@ export default function editor(state = INITIAL_EDITOR_STATE, action) {
             }
             return state.merge({
                 file: newName,
+                title: `${DEFAULT_TITLE} [${newName}]`,
             });
         }
         case INVALIDATE_ETAG:

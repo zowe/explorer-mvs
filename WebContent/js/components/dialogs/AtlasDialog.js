@@ -47,16 +47,18 @@ export default class AtlasDialog extends React.Component {
                 <Dialog
                     open={this.state.open}
                     onClose={this.handleClose}
+                    id="dialog"
                 >
-                    <DialogTitle>{this.props.title}</DialogTitle>
+                    <DialogTitle id="dialog-title">{this.props.title}</DialogTitle>
                     <DialogContent
                         style={{ ...this.props.bodyStyle, ...this.props.contentStyle, ...{ width: '550px' } }}
+                        id="dialog-content"
                     >
                         <form onSubmit={this.handleSubmit} >
                             {this.props.dialogContent}
                         </form>
                     </DialogContent>
-                    <DialogActions>
+                    <DialogActions id="dialog-actions">
                         <Button
                             onClick={this.handleClose}
                         >

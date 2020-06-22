@@ -60,13 +60,13 @@ export default class DatasetSaveAsDialog extends React.Component {
 
     render() {
         const { dialogReturn, dispatch, file } = this.props;
-        const dialogWidthStyle = { width: '584px' };
         const dialogContentMember = (
             <div>
                 <DatasetMemberName
                     label="New Member Name"
                     updateMember={this.updateMember}
                     fullWidth={true}
+                    autoFocus={true}
                 />
             </div>);
         const dialogContentDataset = (
@@ -75,6 +75,7 @@ export default class DatasetSaveAsDialog extends React.Component {
                     label="New Dataset Name"
                     updateName={this.updateName}
                     fullWidth={true}
+                    autoFocus={true}
                 />
             </div>);
 
@@ -85,7 +86,6 @@ export default class DatasetSaveAsDialog extends React.Component {
                 dialogReturn={dialogReturn}
                 dispatch={dispatch}
                 dialogContent={DatasetSaveAsDialog.isMember(file) ? dialogContentMember : dialogContentDataset}
-                contentStyle={dialogWidthStyle}
                 bodyStyle={{ overflowY: 'auto' }}
             />
         );
