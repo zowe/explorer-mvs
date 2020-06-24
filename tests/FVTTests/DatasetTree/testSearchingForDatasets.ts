@@ -9,14 +9,13 @@
  */
 import { expect } from 'chai';
 import { WebDriver, By, WebElement, until } from "selenium-webdriver";
-import { getDriver, setApimlAuthTokenCookie, loadPage } from "explorer-fvt-utilities";
+import { loadPage } from "explorer-fvt-utilities";
 import { editDatasetQualifierField } from "../utilities";
 import {
-    USERNAME,
-    PASSWORD,
-    BASE_URL,
     BASE_URL_WITH_PATH,
 } from '../environment';
+import { getDriver } from '../testConfig';
+
 
 describe('Test searching for datasets', function () {
     let driver: WebDriver;
@@ -24,7 +23,6 @@ describe('Test searching for datasets', function () {
     
     before('Initialise', async () => {
         driver = await getDriver();
-        await setApimlAuthTokenCookie(driver, USERNAME, PASSWORD, `${BASE_URL}/api/v1/gateway/auth/login`, BASE_URL_WITH_PATH);
     });
 
     after('Close out', async () => {

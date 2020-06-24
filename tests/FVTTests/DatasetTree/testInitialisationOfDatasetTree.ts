@@ -11,20 +11,15 @@ import { expect } from 'chai';
 import { WebDriver, By, WebElement, until } from "selenium-webdriver"
 
 import {
-    getDriver,
-    setApimlAuthTokenCookie,
     loadPage,
     testElementAppearsXTimesById
 } from 'explorer-fvt-utilities';
 import {
     USERNAME,
-    PASSWORD,
-    BASE_URL,
     BASE_URL_WITH_PATH,
 } from '../environment';
+import { getDriver } from '../testConfig';
 import { createTestPartitionedDataset, cleanupDatasets } from "../utilities"
-
-require('geckodriver');
 
 // Need to use unnamed function so we can specify the retries
 // eslint-disable-next-line
@@ -34,7 +29,6 @@ describe('Test initialisation of dataset tree', function () {
 
     before('Initialise', async () => {
         driver = await getDriver();
-        await setApimlAuthTokenCookie(driver, USERNAME, PASSWORD, `${BASE_URL}/api/v1/gateway/auth/login`, BASE_URL_WITH_PATH);
     });
 
     after('Close out', async () => {
