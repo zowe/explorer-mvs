@@ -187,7 +187,10 @@ npm run test:fvt
   )
 
   // we have pax packaging step
-  pipeline.packaging(name: 'explorer-mvs')
+  pipeline.packaging(
+    name: 'explorer-mvs',
+    paxOptions: '-o saveext'
+  )
 
   // define we need publish stage
   pipeline.publish(
