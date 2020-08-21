@@ -35,6 +35,7 @@ describe('MVS explorer page load', function () {
         before('Initialise', async () => {
             await loadPage(driver, BASE_URL_WITH_PATH);
             await driver.wait(until.elementLocated(By.id('refresh-icon')));
+            await driver.manage().window().setRect({ width: 1600, height: 800 });
         })
         it('Should be able to resize sidebar component (explorer-sidebar)', async () => {
             await resizeSidebar(1000);
@@ -42,7 +43,7 @@ describe('MVS explorer page load', function () {
         });
         it('Should not be able to make sidebar component too small (explorer-sidebar)', async () => {
             await resizeSidebar(100);
-            expect(parseInt(await getSidebarCSSValue('width'))).to.equal(252);
+            expect(parseInt(await getSidebarCSSValue('width'))).to.be.above(250);
         });
     });
 
