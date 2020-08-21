@@ -83,16 +83,19 @@ const HomeView = props => {
                     onMouseMove={onDragging}
                 >
                     <div
+                        id="explorer-sidebar"
                         className={`component col col-3 ${collapsed ? 'hidden' : ''}`}
                         style={windowWidth <= widthForFullScreen ? {} : { width: `${treeWidthPercent * 100}%` }}
                     >
                         <ConnectedDatasetTree id="datasetTree" title="Dataset Explorer" subtitle="Browse Datasets and members" type="datasets" />
                     </div>
                     <div
+                        id="resize-bar"
                         className={`component col col-0-1 collapse-col ${collapsed ? '' : 'draggable'} `}
                         onMouseDown={onDraggingStart}
                     >
                         <IconButton
+                            id="collapse-button"
                             className="collapse-btn"
                             onClick={() => {
                                 setCollapse(!collapsed);
