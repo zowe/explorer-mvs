@@ -1,6 +1,12 @@
 # Change Log
 All notable changes to the MVS-Explorer will be documented in this file.
 
+
+## <1.0.7>
+
+### Bug fixes
+- Fix issue where dataset tree and content viewer were not alligned (https://github.com/zowe/zlux/issues/484), Tanks @jordanCain
+
 ## <1.0.6>
 
 ### New features and enhancements
