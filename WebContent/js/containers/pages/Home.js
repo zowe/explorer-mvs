@@ -17,7 +17,7 @@ import Editor from '../../components/editor/Editor';
 import ConnectedDatasetTree from '../DatasetTree';
 import LoginDialog from '../../components/dialogs/LoginDialog';
 import ConnectedSnackbar from '../../components/Snackbar';
-import debounce from '../../utilities/debouncer';
+import debounce from '../../utilities/debounce';
 
 const HomeView = props => {
     const { validated } = props;

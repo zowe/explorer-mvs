@@ -66,8 +66,8 @@ describe('MVS explorer page load', function () {
 
     async function getSidebarCSSValue(value: string) {
         const explorerSidebar = await driver.findElement(By.id('explorer-sidebar'));
-        const explorerSidebarWidth = await explorerSidebar.getCssValue(value);
-        return explorerSidebarWidth;
+        const explorerSidebarCSSValue = await explorerSidebar.getCssValue(value);
+        return explorerSidebarCSSValue;
     }
 
     async function switchSidebarState() {
