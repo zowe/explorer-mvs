@@ -11,6 +11,8 @@ All notable changes to the MVS-Explorer will be documented in this file.
 ### Bug fixes
 
 - Fix issue where dataset tree and content viewer were not aligned (https://github.com/zowe/zlux/issues/484), Tanks @jordanCain
+- Add default value for ZOWE_EXPLORER_FRAME_ANCESTORS at lifecycle start script.           
+  It resolves (https://github.com/zowe/explorer-ui-server/issues/44), thanks @nakulmanchanda
 
 ## <1.0.2>
 
