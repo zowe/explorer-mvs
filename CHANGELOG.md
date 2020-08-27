@@ -8,6 +8,10 @@ All notable changes to the MVS-Explorer will be documented in this file.
 - Changed packaging and lifecycle start.sh script to support explorer-ui-server keyring support (https://github.com/zowe/zowe-install-packaging/pull/1177), Thanks @stevenhorsman, @js665999, @nakulmanchanda, @jackjia-ibm
 - Added ability to collapse and resize jobs tree (https://github.com/zowe/zlux/issues/259), Thanks @skurnevich
 
+### Bug fixes
+
+- Fix issue where dataset tree and content viewer were not aligned (https://github.com/zowe/zlux/issues/484), Tanks @jordanCain
+
 ## <1.0.2>
 
 ### New features and enhancements

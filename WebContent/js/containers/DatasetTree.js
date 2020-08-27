@@ -176,7 +176,7 @@ class DatasetTree extends React.Component {
                             />
                         </div>
                     </form>
-                    <FullHeightTree offset={26}>
+                    <FullHeightTree offset={18}>
                         <ul>
                             {!DSChildren.isEmpty() ?
                                 DSChildren.keySeq().toArray().sort().map(this.renderDSChild) :
