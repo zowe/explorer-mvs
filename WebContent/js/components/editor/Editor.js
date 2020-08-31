@@ -113,7 +113,7 @@ class Editor extends React.Component {
     }
 
     render() {
-        const { content, file } = this.props;
+        const { content, file, isFetching } = this.props;
         return (
             <div>
                 <Card id="editor-card" class="component-no-vertical-pad">
@@ -123,6 +123,7 @@ class Editor extends React.Component {
                     >
                         <EditorMenuBar
                             file={file}
+                            isFetching={isFetching}
                             updateEditorSyntax={this.handleChangeSyntax}
                             initialSyntax={this.state.syntax}
                             handleSave={this.handleSave}
@@ -150,6 +151,7 @@ Editor.propTypes = {
     content: PropTypes.string,
     etag: PropTypes.string,
     file: PropTypes.string,
+    isFetching: PropTypes.bool,
     dispatch: PropTypes.func,
     location: PropTypes.shape({
         search: PropTypes.string,
