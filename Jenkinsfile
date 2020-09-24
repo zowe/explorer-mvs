@@ -135,9 +135,9 @@ node('ibm-jenkins-slave-dind') {
     ],
   )
 
-pipeline.test(
+  pipeline.test(
     name          : 'Integration',
-    timeout       : [ time: 20, unit: 'MINUTES' ],
+    timeout       : [ time: 30, unit: 'MINUTES' ],
     operation     : {
       echo "Preparing server for integration test ..."
       ansiColor('xterm') {
@@ -179,6 +179,7 @@ npm run test:fvt
   )
 
   // we need sonar scan
+  // failBuild set to false whilst investigating https://github.com/zowe/zlux/issues/285
   pipeline.sonarScan(
     scannerTool     : lib.Constants.DEFAULT_LFJ_SONARCLOUD_SCANNER_TOOL,
     scannerServer   : lib.Constants.DEFAULT_LFJ_SONARCLOUD_SERVER,

@@ -6,6 +6,8 @@ All notable changes to the MVS-Explorer will be documented in this file.
 ### New features and enhancements
 
 - Added loading icon to editor menu bar when opening a datasets contents (https://github.com/zowe/zlux/issues/291), Thanks @jordanCain
+- Changed packaging and lifecycle start.sh script to support explorer-ui-server keyring support (https://github.com/zowe/zowe-install-packaging/pull/1177), Thanks @stevenhorsman, @js665999, @nakulmanchanda, @jackjia-ibm
+- Added .npmrc to specify npm registry as config. Thanks @nakulmanchanda 
 
 ## <1.0.6>
 
