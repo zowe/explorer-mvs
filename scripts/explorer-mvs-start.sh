@@ -29,7 +29,8 @@ EXPLORER_PLUGIN_BASEURI=$($NODE_BIN -e "process.stdout.write(require('./app/pack
 EXPLORER_PLUGIN_NAME=$($NODE_BIN -e "process.stdout.write(require('./app/package.json').config.pluginName)")
 
 # get current ui server directory
-SERVER_DIR="${ROOT_DIR}/components/explorer-mvs/bin/server/"
+EXPLORER_APP_DIR="${ROOT_DIR}/components/explorer-mvs/bin/app"
+SERVER_DIR="${ROOT_DIR}/shared/explorer-ui-server"
 
 JOB_NAME="${ZOWE_PREFIX}UD"
 
@@ -39,8 +40,9 @@ fi
 
 # start service
 _BPX_JOBNAME=${JOB_NAME} $NODE_BIN $SERVER_DIR/src/index.js \
-  	--service ${EXPLORER_PLUGIN_NAME} \
+  --service ${EXPLORER_PLUGIN_NAME} \
 	--path ${EXPLORER_PLUGIN_BASEURI} \
+	--dir  ${EXPLORER_APP_DIR} \
 	--port ${MVS_EXPLORER_UI_PORT} \
 	--key  ${KEYSTORE_KEY} \
 	--cert ${KEYSTORE_CERTIFICATE} \
