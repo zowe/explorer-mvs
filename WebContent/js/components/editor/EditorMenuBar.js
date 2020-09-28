@@ -16,6 +16,7 @@ import NewTabIcon from '@material-ui/icons/Tab';
 import Select from '@material-ui/core/Select';
 import FormControl from '@material-ui/core/FormControl';
 import MenuItem from '@material-ui/core/MenuItem';
+import CircularProgressMui from '@material-ui/core/CircularProgress';
 
 export default class EditorMenuBar extends React.Component {
     static renderTypesDropdown() {
@@ -55,7 +56,7 @@ export default class EditorMenuBar extends React.Component {
     };
 
     render() {
-        const { file, handleSave, handleSaveAs, initialSyntax } = this.props;
+        const { file, handleSave, handleSaveAs, initialSyntax, isFetching } = this.props;
         return (
             <div>
                 <RaisedButton
@@ -77,6 +78,7 @@ export default class EditorMenuBar extends React.Component {
                     Save as..
                 </RaisedButton>
                 <span aria-live="polite">{file}</span>
+                {isFetching && <CircularProgressMui size={24} style={{ verticalAlign: 'middle', marginLeft: '5px' }} />}
                 {file ? EditorMenuBar.renderFullScreenButton(file) : null}
                 <FormControl style={{ float: 'right', paddingTop: '5px', width: '100px' }}>
                     <Select
@@ -94,6 +96,7 @@ export default class EditorMenuBar extends React.Component {
 
 EditorMenuBar.propTypes = {
     file: PropTypes.string,
+    isFetching: PropTypes.bool,
     updateEditorSyntax: PropTypes.func,
     initialSyntax: PropTypes.string,
     handleSave: PropTypes.func,

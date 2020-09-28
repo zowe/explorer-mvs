@@ -19,18 +19,18 @@ export const baseEditor = Map({
     title: DEFAULT_TITLE,
 });
 
+export const dataset = 'JCAIN.TEST.JCL(TSTJCICS)';
+export const datasetSeq = 'JCAIN.TEST.TXT';
+
 export const requestedContent = Map({
     content: null,
     etag: null,
-    file: '',
+    file: dataset,
     isFetching: true,
     title: DEFAULT_TITLE,
 });
 
 export const content = '//TSTJCICS JOB (ADL),ATLAS,MSGCLASS=0,CLASS=A,TIME=1440\n//*        THIS JOB SIMULATES A CICS REGION FOR 60 SECONDS';
-
-export const dataset = 'JCAIN.TEST.JCL(TSTJCICS)';
-export const datasetSeq = 'JCAIN.TEST.TXT';
 
 /* depends on 'dataset' name above */
 export const renameDSMember = 'JCAIN.TEST.JCL(NEWNAME)';

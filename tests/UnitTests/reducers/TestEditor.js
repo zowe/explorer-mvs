@@ -21,7 +21,7 @@ describe('Reducer: editor', () => {
     });
 
     it('Should handle REQUEST_CONTENT', () => {
-        const action = { type: editorActions.REQUEST_CONTENT };
+        const action = { type: editorActions.REQUEST_CONTENT, file: editorResources.dataset };
         expect(editor(editorResources.baseContent, action)).toEqual(editorResources.requestedContent);
     });
 

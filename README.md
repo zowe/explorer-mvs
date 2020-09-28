@@ -5,21 +5,14 @@
 The issues for the MVS explorer are tracked under the Zowe Zlux repository, https://github.com/zowe/zlux and tagged accordingly with the 'explorer-mvs' label. Open issues tagged with 'explorer-mvs' can be found [here](https://github.com/zowe/zlux/issues?q=is%3Aissue+is%3Aopen+label%3Aexplorer-mvs).
 
 
-## App Development Workflow 
-
-### Configure NPM Registry
-
-This is required for explorer-ui-server, orion-editor-component and explorer-fvt-utilities. These modules are only published on Zowe Artifactory.
-
-```
-npm config set registry https://zowe.jfrog.io/zowe/api/npm/npm-release
-```
+# App Development Workflow 
 
 ### Install Dependencies
 
-Configure your npm registry to pickup Zowe dependencies
+As following modules 
+ `explorer-ui-server`, `orion-editor-component` and `explorer-fvt-utilities` are published on Zowe Artifactory.
+ `.npmrc` file is pre-configured with registry value of `https://zowe.jfrog.io/zowe/api/npm/npm-release`
 ```
-npm config set registry https://zowe.jfrog.io/zowe/api/npm/npm-release/
 npm install
 ```
 

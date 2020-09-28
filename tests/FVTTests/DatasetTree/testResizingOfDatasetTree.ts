@@ -31,7 +31,7 @@ describe('MVS explorer page load', function () {
         }
     });
 
-    describe('Sidebar resizing', () => {
+    describe.skip('Sidebar resizing', () => {
         before('Initialise', async () => {
             await loadPage(driver, BASE_URL_WITH_PATH);
             await driver.wait(until.elementLocated(By.id('refresh-icon')));

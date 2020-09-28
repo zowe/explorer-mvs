@@ -45,6 +45,7 @@ export default function editor(state = INITIAL_EDITOR_STATE, action) {
         case REQUEST_CONTENT:
             return state.merge({
                 isFetching: true,
+                file: action.file,
             });
         case RECEIVE_CONTENT:
             return state.merge({
