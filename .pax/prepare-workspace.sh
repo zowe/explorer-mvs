@@ -31,7 +31,7 @@ rm -fr "${PAX_WORKSPACE_DIR}/content"
 mkdir -p "${PAX_WORKSPACE_DIR}/content"
 
 # build client
-if [ ! -z "$(ls -1 dist/app.min.*.js)" ]; then
+if [ ! -d "dist" ] || [ ! -z "$(ls -1 dist/app.min.*.js)" ]; then
   echo "[${SCRIPT_NAME}] building client ..."
   npm run prod
 fi
@@ -43,13 +43,15 @@ cp README.md "${PAX_WORKSPACE_DIR}/content/app"
 cp package.json "${PAX_WORKSPACE_DIR}/content/app"
 cp package-lock.json "${PAX_WORKSPACE_DIR}/content/app"
 cp -r dist/. "${PAX_WORKSPACE_DIR}/content/app"
+cp manifest.yaml "${PAX_WORKSPACE_DIR}/content"
+cp apiml-static-registration.yaml.template "${PAX_WORKSPACE_DIR}/content"
 
 # copy start script to target folder
-echo "[${SCRIPT_NAME}] copying startup script ..."
-mkdir -p "${PAX_WORKSPACE_DIR}/content/scripts"
-cp -r scripts/explorer-mvs-start.sh "${PAX_WORKSPACE_DIR}/content/scripts"
-cp -r scripts/explorer-mvs-configure.sh "${PAX_WORKSPACE_DIR}/content/scripts"
-cp -r scripts/explorer-mvs-validate.sh "${PAX_WORKSPACE_DIR}/content/scripts"
+echo "[${SCRIPT_NAME}] copying startup scripts ..."
+mkdir -p "${PAX_WORKSPACE_DIR}/content/bin"
+cp -r bin/start.sh "${PAX_WORKSPACE_DIR}/content/bin"
+cp -r bin/configure.sh "${PAX_WORKSPACE_DIR}/content/bin"
+cp -r bin/validate.sh "${PAX_WORKSPACE_DIR}/content/bin"
 
 # move content to another folder
 rm -fr "${PAX_WORKSPACE_DIR}/ascii"
