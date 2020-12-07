@@ -18,7 +18,7 @@
 
 NODE_BIN=${NODE_HOME}/bin/node
 
-EXPLORER_CONFIG="$ROOT_DIR/components/explorer-mvs/bin/app/package.json"
+EXPLORER_CONFIG="$ROOT_DIR/components/explorer-mvs/app/package.json"
 EXPLORER_PLUGIN_BASEURI=$($NODE_BIN -e "process.stdout.write(require('${EXPLORER_CONFIG}').config.baseuri)")
 EXPLORER_PLUGIN_ID=$($NODE_BIN -e "process.stdout.write(require('${EXPLORER_CONFIG}').config.pluginId)")
 EXPLORER_PLUGIN_NAME=$($NODE_BIN -e "process.stdout.write(require('${EXPLORER_CONFIG}').config.pluginName)")
@@ -32,7 +32,7 @@ then
     "${EXPLORER_PLUGIN_NAME}" \
     ${EXPLORER_PLUGIN_FULLURL} \
     "${WORKSPACE_DIR}/explorer-mvs" \
-    "${ROOT_DIR}/components/explorer-mvs/bin/app/img/explorer-MVS.png"
+    "${ROOT_DIR}/components/explorer-mvs/app/img/explorer-MVS.png"
 fi
 
 # Remove any old config
@@ -45,7 +45,7 @@ cat <<EOF >$STATIC_DEF_CONFIG_DIR/datasets_ui.ebcdic.yml
 #
 services:
   - serviceId: explorer-mvs
-    title: IBM z/OS Datasets UI
+    title: MVS Explorer
     description: IBM z/OS Datasets UI service
     catalogUiTileId:
     instanceBaseUrls:

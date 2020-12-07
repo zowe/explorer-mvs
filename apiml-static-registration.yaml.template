@@ -1,0 +1,11 @@
+services:
+  - serviceId: explorer-mvs
+    title: MVS Explorer
+    description: IBM z/OS Datasets UI service
+    catalogUiTileId:
+    instanceBaseUrls:
+      - https://${ZOWE_EXPLORER_HOST}:${MVS_EXPLORER_UI_PORT}/
+    homePageRelativeUrl:
+    routedServices:
+      - gatewayUrl: ui/v1
+        serviceRelativeUrl: {{ configs.baseUri }} # Note - this needs reading from manifest.yaml/component configs

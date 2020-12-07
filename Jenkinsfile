@@ -30,7 +30,7 @@ node('ibm-jenkins-slave-dind') {
     string(
       name: 'FVT_API_ARTIFACT',
       description: 'Datasets API artifact download pattern',
-      defaultValue: 'libs-snapshot-local/org/zowe/explorer/data/sets/*/data-sets-server-zowe-package-*.zip',
+      defaultValue: 'libs-snapshot-local/org/zowe/explorer/files/*/files-server-zowe-package-*.zip',
       trim: true,
       required: true
     ),
@@ -142,7 +142,7 @@ node('ibm-jenkins-slave-dind') {
       echo "Preparing server for integration test ..."
       ansiColor('xterm') {
         // prepare environtment for integration test
-        sh "./scripts/prepare-fvt.sh \"${params.FVT_APIML_ARTIFACT}\" \"${params.FVT_API_ARTIFACT}\" \"${params.FVT_ZOSMF_HOST}\" \"${params.FVT_ZOSMF_PORT}\""
+        sh "./bin/prepare-fvt.sh \"${params.FVT_APIML_ARTIFACT}\" \"${params.FVT_API_ARTIFACT}\" \"${params.FVT_ZOSMF_HOST}\" \"${params.FVT_ZOSMF_PORT}\""
       }
       // wait a while to give time for service to be started
       sleep time: 2, unit: 'MINUTES'
