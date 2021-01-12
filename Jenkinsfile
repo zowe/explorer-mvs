@@ -30,7 +30,7 @@ node('ibm-jenkins-slave-dind') {
     string(
       name: 'FVT_API_ARTIFACT',
       description: 'Datasets API artifact download pattern',
-      defaultValue: 'libs-snapshot-local/org/zowe/explorer/files/*/files-server-zowe-package-*.zip',
+      defaultValue: 'libs-snapshot-local/org/zowe/explorer/files/*/files-api-package-*.zip',
       trim: true,
       required: true
     ),
