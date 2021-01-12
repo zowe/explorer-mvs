@@ -11,6 +11,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { ContextMenu, MenuItem } from 'react-contextmenu';
+import { MENU_NEW_DATASET, MENU_OPEN, MENU_DELETE, MENU_SUBMIT, MENU_RENAME } from './DatasetPartitionedMenu';
 
 const DatasetSequentialMenu = props => {
     const {
@@ -19,23 +20,25 @@ const DatasetSequentialMenu = props => {
         handleDeleteDataset,
         handleEdit,
         handleJobSubmit,
-        handleRename } = props;
+        handleRename,
+        onHide,
+        onShow } = props;
     return (
-        <ContextMenu id={childId}>
+        <ContextMenu id={childId} onShow={onShow} onHide={onHide}>
             <MenuItem onClick={handleCreateDataset}>
-                New Dataset...
+                {MENU_NEW_DATASET}
             </MenuItem>
             <MenuItem onClick={handleEdit}>
-                Open
+                {MENU_OPEN}
             </MenuItem>
             <MenuItem onClick={handleDeleteDataset}>
-                Delete
+                {MENU_DELETE}
             </MenuItem>
             <MenuItem data={{ action: childId }} onClick={handleJobSubmit}>
-                Submit as Job
+                {MENU_SUBMIT}
             </MenuItem>
             <MenuItem data={{ action: childId }} onClick={handleRename}>
-                Rename
+                {MENU_RENAME}
             </MenuItem>
         </ContextMenu>
     );
@@ -50,4 +53,6 @@ DatasetSequentialMenu.propTypes = {
     handleEdit: PropTypes.func.isRequired,
     handleJobSubmit: PropTypes.func.isRequired,
     handleRename: PropTypes.func.isRequired,
+    onHide: PropTypes.func.isRequired,
+    onShow: PropTypes.func.isRequired,
 };

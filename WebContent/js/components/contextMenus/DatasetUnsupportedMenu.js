@@ -11,13 +11,14 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { ContextMenu, MenuItem } from 'react-contextmenu';
+import { MENU_NEW_DATASET } from './DatasetPartitionedMenu';
 
 const DatasetUnsupportedMenu = props => {
-    const { childId, handleCreateDataset } = props;
+    const { childId, handleCreateDataset, onHide, onShow } = props;
     return (
-        <ContextMenu id={childId}>
+        <ContextMenu id={childId} onShow={onShow} onHide={onHide}>
             <MenuItem onClick={handleCreateDataset}>
-                New Dataset...
+                {MENU_NEW_DATASET}
             </MenuItem>
         </ContextMenu>
     );
@@ -28,4 +29,6 @@ export default DatasetUnsupportedMenu;
 DatasetUnsupportedMenu.propTypes = {
     childId: PropTypes.string.isRequired,
     handleCreateDataset: PropTypes.func.isRequired,
+    onHide: PropTypes.func.isRequired,
+    onShow: PropTypes.func.isRequired,
 };

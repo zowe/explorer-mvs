@@ -18,6 +18,7 @@ import ContentIcon from '@material-ui/icons/Description';
 import UnsupportedIcon from '@material-ui/icons/Dns';
 import { ContextMenuTrigger } from 'react-contextmenu';
 import { Map } from 'immutable';
+import { hideMenu } from 'react-contextmenu/modules/actions';
 import { fetchDSMembers, toggleDSNode } from '../../actions/treeDatasets';
 import { fetchDS } from '../../actions/editor';
 import { submitJob } from '../../actions/jobSubmitter';
@@ -53,6 +54,8 @@ export class TreeDataset extends React.Component {
 
         this.state = {
             dialog: NO_DIALOG,
+            menuShortCuts: true,
+            menuVisible: false,
         };
     }
 
@@ -132,9 +135,49 @@ export class TreeDataset extends React.Component {
         this.setState({ dialog: RENAME_DATASET });
     }
 
+    hideContextMenu() {
+        hideMenu();
+        this.setState({ menuVisible: false });
+    }
+
     handleKeyDown(e) {
-        if (e.key === 'Enter') {
+        const { childId, dataSetOrganization } = this.props;
+        const data = { action: childId };
+        if (e.metaKey || e.altKey || e.ctrlKey) {
+            return;
+        }
+        if (e.key === 'Enter' && this.state.menuVisible === false) {
             this.handleToggle();
+        }
+        if (this.state.menuVisible && this.state.menuShortCuts) {
+            if (e.key.toLowerCase() === 'd') {
+                e.preventDefault();
+                this.handleCreateDataset();
+                this.hideContextMenu();
+            }
+            if (dataSetOrganization.startsWith(DATASET_ORG_PARTITIONED) || dataSetOrganization.startsWith(DATASET_ORG_SEQUENTIAL)) {
+                if (e.key.toLowerCase() === 'delete') {
+                    this.handleDeleteDataset();
+                    this.hideContextMenu();
+                }
+                if (e.key.toLowerCase() === 'f2') {
+                    this.handleRename();
+                    this.hideContextMenu();
+                }
+                if (dataSetOrganization.startsWith(DATASET_ORG_PARTITIONED) && e.key.toLowerCase() === 'n') {
+                    e.preventDefault();
+                    this.handleCreateMember();
+                    this.hideContextMenu();
+                }
+                if (dataSetOrganization.startsWith(DATASET_ORG_SEQUENTIAL) && e.key.toLowerCase() === 'o') {
+                    this.handleEdit();
+                    this.hideContextMenu();
+                }
+                if (dataSetOrganization.startsWith(DATASET_ORG_SEQUENTIAL) && e.key.toLowerCase() === 's') {
+                    this.handleJobSubmit(e, data);
+                    this.hideContextMenu();
+                }
+            }
         }
     }
 
@@ -154,7 +197,11 @@ export class TreeDataset extends React.Component {
         const { childId, dataSetOrganization } = this.props;
         return (
             <div>
-                <ContextMenuTrigger id={childId}>
+                <ContextMenuTrigger
+                    id={childId}
+                    onShow={() => { this.setState({ menuVisible: true }); }}
+                    onHide={() => { this.setState({ menuVisible: false }); }}
+                >
                     <div onClick={this.handleToggle} tabIndex="0" onKeyDown={this.handleKeyDown}>
                         {this.getToggleIcon()}
                         <span className="node-label node-toggle" >{childId}</span>
@@ -168,6 +215,8 @@ export class TreeDataset extends React.Component {
                     handleCreateMember={() => { this.handleCreateMember(); }}
                     handleDeleteDataset={() => { this.handleDeleteDataset(); }}
                     handleRename={() => { this.handleRename(); }}
+                    onShow={() => { this.setState({ menuVisible: true }); }}
+                    onHide={() => { this.setState({ menuVisible: false }); }}
                 />
             </div>
         );
@@ -177,7 +226,11 @@ export class TreeDataset extends React.Component {
         const { childId } = this.props;
         return (
             <div>
-                <ContextMenuTrigger id={childId}>
+                <ContextMenuTrigger
+                    id={childId}
+                    onShow={() => { this.setState({ menuVisible: true }); }}
+                    onHide={() => { this.setState({ menuVisible: false }); }}
+                >
                     <ContentIcon className="node-icon" />
                     <span className="node-label content-link" onClick={this.handleToggle} tabIndex="0" onKeyDown={this.handleKeyDown}>{childId}</span>
                 </ContextMenuTrigger>
@@ -189,6 +242,8 @@ export class TreeDataset extends React.Component {
                     handleEdit={() => { this.handleEdit(); }}
                     handleJobSubmit={this.handleJobSubmit}
                     handleRename={this.handleRename}
+                    onShow={() => { this.setState({ menuVisible: true }); }}
+                    onHide={() => { this.setState({ menuVisible: false }); }}
                 />
             </div>
         );
@@ -198,13 +253,19 @@ export class TreeDataset extends React.Component {
         const { childId } = this.props;
         return (
             <div>
-                <ContextMenuTrigger id={childId}>
+                <ContextMenuTrigger
+                    id={childId}
+                    onShow={() => { this.setState({ menuVisible: true }); }}
+                    onHide={() => { this.setState({ menuVisible: false }); }}
+                >
                     <UnsupportedIcon className="node-icon" />
-                    <span className="node-label">{childId}</span>
+                    <span className="node-label"tabIndex="0" onKeyDown={this.handleKeyDown}>{childId}</span>
                 </ContextMenuTrigger>
                 <DatasetUnsupportedMenu
                     childId={childId}
                     handleCreateDataset={() => { this.handleCreateDataset(); }}
+                    onShow={() => { this.setState({ menuVisible: true }); }}
+                    onHide={() => { this.setState({ menuVisible: false }); }}
                 />
             </div>
         );
