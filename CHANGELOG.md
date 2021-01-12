@@ -8,6 +8,7 @@ All notable changes to the MVS-Explorer will be documented in this file.
 - Added loading icon to editor menu bar when opening a datasets contents (https://github.com/zowe/zlux/issues/291), Thanks @jordanCain
 - Changed packaging and lifecycle start.sh script to support explorer-ui-server keyring support (https://github.com/zowe/zowe-install-packaging/pull/1177), Thanks @stevenhorsman, @js665999, @nakulmanchanda, @jackjia-ibm
 - Added .npmrc to specify npm registry as config. Thanks @nakulmanchanda 
+- Added shortcuts for all menu items (https://github.com/zowe/zlux/issues/493), Thanks @Martin-Zeithaml
 
 ## <1.0.6>
 
@@ -18,7 +19,7 @@ All notable changes to the MVS-Explorer will be documented in this file.
 
 ### Bug fixes
 
-- Fix issue where dataset tree and content viewer were not aligned (https://github.com/zowe/zlux/issues/484), Tanks @jordanCain
+- Fix issue where dataset tree and content viewer were not aligned (https://github.com/zowe/zlux/issues/484), Thanks @jordanCain
 - Add default value for ZOWE_EXPLORER_FRAME_ANCESTORS at lifecycle start script.           
   It resolves (https://github.com/zowe/explorer-ui-server/issues/44), thanks @nakulmanchanda
 
