@@ -197,11 +197,7 @@ export class TreeDataset extends React.Component {
         const { childId, dataSetOrganization } = this.props;
         return (
             <div>
-                <ContextMenuTrigger
-                    id={childId}
-                    onShow={() => { this.setState({ menuVisible: true }); }}
-                    onHide={() => { this.setState({ menuVisible: false }); }}
-                >
+                <ContextMenuTrigger id={childId}>
                     <div onClick={this.handleToggle} tabIndex="0" onKeyDown={this.handleKeyDown}>
                         {this.getToggleIcon()}
                         <span className="node-label node-toggle" >{childId}</span>
@@ -226,11 +222,7 @@ export class TreeDataset extends React.Component {
         const { childId } = this.props;
         return (
             <div>
-                <ContextMenuTrigger
-                    id={childId}
-                    onShow={() => { this.setState({ menuVisible: true }); }}
-                    onHide={() => { this.setState({ menuVisible: false }); }}
-                >
+                <ContextMenuTrigger id={childId}>
                     <ContentIcon className="node-icon" />
                     <span className="node-label content-link" onClick={this.handleToggle} tabIndex="0" onKeyDown={this.handleKeyDown}>{childId}</span>
                 </ContextMenuTrigger>
@@ -253,11 +245,7 @@ export class TreeDataset extends React.Component {
         const { childId } = this.props;
         return (
             <div>
-                <ContextMenuTrigger
-                    id={childId}
-                    onShow={() => { this.setState({ menuVisible: true }); }}
-                    onHide={() => { this.setState({ menuVisible: false }); }}
-                >
+                <ContextMenuTrigger id={childId}>
                     <UnsupportedIcon className="node-icon" />
                     <span className="node-label"tabIndex="0" onKeyDown={this.handleKeyDown}>{childId}</span>
                 </ContextMenuTrigger>
