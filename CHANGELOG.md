@@ -1,6 +1,18 @@
 # Change Log
 All notable changes to the MVS-Explorer will be documented in this file.
 
+## <1.0.10>
+
+### New features and enhancements
+- Refactor MVS packagaing & installation scripts, and folder renames, to accomodate new iframe capability in ZLUX. Thanks @NakulManchanda
+- Added manifest for API ML & App Framework installation using new plugin installation process. Thanks @JadinLuong, @jackjia-ibm
+
+## <1.0.9>
+
+### New features and enhancements
+
+- Added trap int signal for zowe launcher to stop the running process
+
 ## <1.0.7>
 
 ### New features and enhancements
