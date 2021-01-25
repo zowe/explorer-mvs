@@ -1,6 +1,6 @@
 {
   "name": "explorer-mvs",
-  "version": "1.0.11",
+  "version": "1.0.12",
   "directories": {
     "test": "tests"
   },
@@ -10,7 +10,7 @@
     "babel-polyfill": "^6.16.0",
     "file-loader": "^0.11.2",
     "immutable": "^3.8.1",
-    "orion-editor-component": "0.0.12",
+    "orion-editor-component": "0.0.13",
     "prop-types": "^15.5.10",
     "query-string": "^6.8.2",
     "react": "^16.4.2",
