@@ -114,7 +114,7 @@ describe('Test Context Menu for datasets', function () {
 
             it('Should display context menu with expected menu items', async () => {
                 await findDatasetAndOpenContextMenu(TEST_PARTITIONED_DATASET);
-                const expectedContextMenuItems = ['New Dataset...', 'New Dataset Member...', 'Delete', 'Rename'];
+                const expectedContextMenuItems = ['New Dataset', 'New Dataset Member', 'Delete', 'Rename F2'];
                 const actualContextMenuItems = await getContextMenuItems();
                 expect(expectedContextMenuItems).to.eql(actualContextMenuItems);
             });
@@ -173,9 +173,9 @@ describe('Test Context Menu for datasets', function () {
                 expect(contextMenu).to.be.an('array').with.length.greaterThan(0);
             });
 
-            it('Should display contect menu with expected items', async () => {
+            it('Should display context menu with expected items', async () => {
                 await openDatasetMemberContextMenu(TEST_PARTITIONED_DATASET, TEST_DATASET_MEMBER);
-                const expectedContextMenuItems = ['New Dataset Member...', 'Open', 'Delete Member', 'Submit as Job', 'Rename'];
+                const expectedContextMenuItems = ['New Dataset Member', 'Open', 'Delete Member', 'Submit as Job', 'Rename F2'];
                 const actualContextMenuItems = await getContextMenuItems();
                 expect(expectedContextMenuItems).to.eql(actualContextMenuItems);                
             });
@@ -219,7 +219,7 @@ describe('Test Context Menu for datasets', function () {
 
             it('Should display context menu with expected menu items', async () => {
                 await findDatasetAndOpenContextMenu(TEST_SEQUENTIAL_DATASET);
-                const expectedContextMenuItems = ['New Dataset...', 'Open', 'Delete', 'Submit as Job', 'Rename'];
+                const expectedContextMenuItems = ['New Dataset', 'Open', 'Delete', 'Submit as Job', 'Rename F2'];
                 const actualContextMenuItems = await getContextMenuItems();
                 expect(expectedContextMenuItems).to.eql(actualContextMenuItems);
             });

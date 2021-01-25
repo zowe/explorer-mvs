@@ -8,7 +8,7 @@
  * Copyright IBM Corporation 2018, 2020
  */
 // let host = 'winmvs3b.hursley.ibm.com:7288';
-let host = 'tvt5003.svl.ibm.com:7554';
+let host = 'tvt5003.svl.ibm.com:47554';
 if (typeof location !== 'undefined') {
     const hostname = location.hostname;
     if (hostname !== 'localhost' || process.env.NODE_ENV === 'production') {
