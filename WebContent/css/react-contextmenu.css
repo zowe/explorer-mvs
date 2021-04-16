@@ -24,6 +24,10 @@
     pointer-events: none;
 }
 
+.react-contextmenu-right {
+    float: right;
+}
+
 .react-contextmenu.react-contextmenu--visible {
     opacity: 1;
     pointer-events: auto;
@@ -42,6 +46,7 @@
 }
 
 .react-contextmenu-item.react-contextmenu-item--active,
+.react-contextmenu-item.react-contextmenu-item--selected,
 .react-contextmenu-item:hover {
     color: #fff;
     background-color: #20a0ff;

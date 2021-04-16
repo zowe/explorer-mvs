@@ -13,6 +13,7 @@ import React from 'react';
 import ContentIcon from '@material-ui/icons/Description';
 import ErrorIcon from '@material-ui/icons/Error';
 import { ContextMenuTrigger } from 'react-contextmenu';
+import { hideMenu } from 'react-contextmenu/modules/actions';
 import { fetchDS } from '../../actions/editor';
 import { submitJob } from '../../actions/jobSubmitter';
 
@@ -45,6 +46,8 @@ export default class TreeDatasetMember extends React.Component {
 
         this.state = {
             dialog: NO_DIALOG,
+            menuShortCuts: true,
+            menuVisible: false,
         };
     }
 
@@ -66,9 +69,40 @@ export default class TreeDatasetMember extends React.Component {
         dispatch(fetchDS(this.getDataSetAndMemberName()));
     }
 
+    hideContextMenu() {
+        hideMenu();
+        this.setState({ menuVisible: false });
+    }
+
     handleKeyDown(e) {
-        if (e.key === 'Enter') {
+        if (e.metaKey || e.altKey || e.ctrlKey) {
+            return;
+        }
+        if (e.key === 'Enter' && this.state.menuVisible === false) {
             this.handleEdit();
+        }
+        if (this.state.menuShortCuts && this.state.menuVisible) {
+            if (e.key.toLowerCase() === 'n') {
+                e.preventDefault();
+                this.handleCreateMember();
+                this.hideContextMenu();
+            }
+            if (e.key.toLowerCase() === 'o') {
+                this.handleEdit();
+                this.hideContextMenu();
+            }
+            if (e.key.toLowerCase() === 'delete') {
+                this.handleDeleteDataset();
+                this.hideContextMenu();
+            }
+            if (e.key.toLowerCase() === 'f2') {
+                this.handleRename();
+                this.hideContextMenu();
+            }
+            if (e.key.toLowerCase() === 's') {
+                this.handleJobSubmit();
+                this.hideContextMenu();
+            }
         }
     }
 
@@ -140,6 +174,8 @@ export default class TreeDatasetMember extends React.Component {
                         handleRename={() => { this.handleRename(); }}
                         handleDeleteDataset={() => { this.handleDeleteDataset(); }}
                         handleCreateMember={() => { this.handleCreateMember(); }}
+                        onShow={() => { this.setState({ menuVisible: true }); }}
+                        onHide={() => { this.setState({ menuVisible: false }); }}
                     />
                     {this.renderDialog()}
                 </div>
