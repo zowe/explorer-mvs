@@ -44,8 +44,8 @@ export default class EditorMenuBar extends React.Component {
 
     static renderFullScreenButton(file) {
         return (
-            <IconButton style={{ float: 'right' }}>
-                <NewTabIcon onClick={() => { EditorMenuBar.openDatasetInNewWindow(file); }} />
+            <IconButton style={{ float: 'right' }} onClick={() => { EditorMenuBar.openDatasetInNewWindow(file); }}>
+                <NewTabIcon />
             </IconButton>
         );
     }

@@ -7,29 +7,21 @@
  *
  * Copyright IBM Corporation 2018, 2020
  */
-// let host = 'winmvs3b.hursley.ibm.com:7288';
-let host = 'tvt5003.svl.ibm.com:7554';
-if (typeof location !== 'undefined') {
-    const hostname = location.hostname;
-    if (hostname !== 'localhost' || process.env.NODE_ENV === 'production') {
-        host = location.host;
-    }
-}
-export const LOCAL_DEV_SERVER = host;
 
 export function encodeURLComponent(URL) {
     return encodeURIComponent(URL);
 }
 
 export function whichServer() {
-    let server = LOCAL_DEV_SERVER;
+    let server = location.host;
     if (location.hostname === 'tester.test.com') {
         server = 'tester.test.com:7443';
     }
-    return `${server}`;
+    return server;
 }
-function atlasAction(endpoint, fetchParams) {
-    return fetch(`https://${whichServer()}/api/v2/${endpoint}`, fetchParams);
+
+export function atlasAction(endpoint, content) {
+    return fetch(`https://${whichServer()}/api/v2/${endpoint}`, content);
 }
 
 export function atlasGet(endpoint) {
