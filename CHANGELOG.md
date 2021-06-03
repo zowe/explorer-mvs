@@ -1,6 +1,10 @@
 # Change Log
 All notable changes to the MVS-Explorer will be documented in this file.
 
+## <1.0.14>
+- updated material ui
+- updated webpack build and dev config
+
 ## <1.0.10>
 
 ### New features and enhancements
