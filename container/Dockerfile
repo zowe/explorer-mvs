@@ -35,10 +35,13 @@ COPY --chown=zowe:zowe component .
 
 ##################################
 # build component
+# upgrade npm to v7
 # pretty same as .pax/prepare-workspace.sh. any way we can merge?
-RUN npm install -g npm \
-    && npm install --no-audit \
-    && npm run prod \
+RUN mkdir -p ~/.npm-global \
+    && npm config set prefix '~/.npm-global' \
+    && npm install -g npm \
+    && ~/.npm-global/bin/npm install --no-audit --no-optional --legacy-peer-deps \
+    && ~/.npm-global/bin/npm run prod \
     && mkdir -p final/web \
     && mkdir -p final/bin \
     && cp README.md final \
