@@ -30,8 +30,8 @@ function getDSChildrenFromJSON(childData) {
     let children = Map({});
     childData.items.forEach(child => {
         // If dataSetOrganization is undefined we dont want to display as it's just the root qualifier
-        if (child.dataSetOrganization) {
-            children = children.set(child.name, child.dataSetOrganization);
+        if (child.dsorg) {
+            children = children.set(child.dsname, child.dsorg);
         }
     });
     return children;
