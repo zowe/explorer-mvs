@@ -55,14 +55,13 @@ jobs:
           github-user: ${{ secrets.ZOWE_ROBOT_USER }}
           github-password: ${{ secrets.ZOWE_ROBOT_TOKEN }}
           github-email: ${{ secrets.ZOWE_ROBOT_EMAIL }}
-          extra-init: |
-            const { execSync } = require('child_process')
-            console.log(execSync('npm install -g npm').toString().trim())
-            console.log(execSync('npm -v').toString().trim())
-        env:
-          DEBUG: zowe-actions:shared-actions:prepare-workflow
-          
-      - name: '[Prep 5] Setup Node'
+
+      - name: '[Prep 5] explorer-mvs exclusive - upgrade npm to v7'
+        run: |
+          npm install -g npm
+          npm -v
+
+      - name: '[Prep 6] Setup Node'
         uses: actions/setup-node@v2
         with:
           node-version: 10.18.1
