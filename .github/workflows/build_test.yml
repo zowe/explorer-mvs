@@ -55,6 +55,9 @@ jobs:
           github-user: ${{ secrets.ZOWE_ROBOT_USER }}
           github-password: ${{ secrets.ZOWE_ROBOT_TOKEN }}
           github-email: ${{ secrets.ZOWE_ROBOT_EMAIL }}
+          extra-init: |
+            const { execSync } = require('child_process')
+            execSync('npm install -g npm')
           
       - name: '[Prep 5] Setup Node'
         uses: actions/setup-node@v2
