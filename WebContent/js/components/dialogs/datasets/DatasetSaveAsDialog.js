@@ -40,15 +40,10 @@ export default class DatasetSaveAsDialog extends React.Component {
 
     submitAction = () => {
         const { file, content, etag } = this.props;
-        return saveAsDatasetMember(DatasetSaveAsDialog.getDatasetFromFile(file), this.state.newDSMember, content);
-        /**
-         * Disabling the call to saveAsDataset() as we do not support Saving As DataSet functionality in MVS explorer
-         * return DatasetSaveAsDialog.isMember(file) ?
-         * saveAsDatasetMember(DatasetSaveAsDialog.getDatasetFromFile(file), this.state.newDSMember, content) :
-         * saveAsDataset(file, this.state.newDSName, content, etag);
-         */
+        return DatasetSaveAsDialog.isMember(file) ?
+            saveAsDatasetMember(DatasetSaveAsDialog.getDatasetFromFile(file), this.state.newDSMember, content) :
+            saveAsDataset(file, this.state.newDSName, content, etag);
     }
-    
 
 
     updateName(newValue) {

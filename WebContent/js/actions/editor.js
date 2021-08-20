@@ -224,7 +224,6 @@ function invalidateSaveAs() {
     };
 }
 
-/* Disabling this code as we do not support Saving As DataSet functionality in MVS explorer
 export function saveAsDataset(file, newFile, newContent) {
     return dispatch => {
         dispatch(requestSaveAs(file, newFile));
@@ -251,7 +250,6 @@ export function saveAsDataset(file, newFile, newContent) {
             });
     };
 }
-*/
 
 export function saveAsDatasetMember(DSName, newDSMember, newContent) {
     return dispatch => {
