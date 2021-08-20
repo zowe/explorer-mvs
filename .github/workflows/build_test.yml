@@ -56,15 +56,15 @@ jobs:
           github-password: ${{ secrets.ZOWE_ROBOT_TOKEN }}
           github-email: ${{ secrets.ZOWE_ROBOT_EMAIL }}
 
-      - name: '[Prep 5] explorer-mvs exclusive - upgrade npm to v7'
-        run: |
-          npm install -g npm
-          npm -v
-
-      - name: '[Prep 6] Setup Node'
+      - name: '[Prep 5] Setup Node'
         uses: actions/setup-node@v2
         with:
           node-version: 10.18.1
+
+      - name: '[Prep extra] explorer-mvs exclusive - upgrade npm to v7'
+        run: |
+          npm install -g npm
+          npm -v
 
       - name: '[Setup] NodeJS project setup'
         uses: zowe-actions/nodejs-actions/setup@main
