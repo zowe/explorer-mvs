@@ -57,7 +57,8 @@ jobs:
           github-email: ${{ secrets.ZOWE_ROBOT_EMAIL }}
           extra-init: |
             const { execSync } = require('child_process')
-            execSync('npm install -g npm')
+            console.log(execSync('npm install -g npm').toString().trim());
+            console.log(execSync('npm -v').toString().trim());
           
       - name: '[Prep 5] Setup Node'
         uses: actions/setup-node@v2
