@@ -29,10 +29,7 @@ const INITIAL_TREE_STATE = Map({
 function getDSChildrenFromJSON(childData) {
     let children = Map({});
     childData.items.forEach(child => {
-        // If dataSetOrganization is undefined we dont want to display as it's just the root qualifier
-        if (child.dsorg) {
-            children = children.set(child.dsname, child.dsorg);
-        }
+        children = children.set(child.dsname, child.dsorg ? child.dsorg : '' );
     });
     return children;
 }
