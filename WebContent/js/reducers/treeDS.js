@@ -29,7 +29,7 @@ const INITIAL_TREE_STATE = Map({
 function getDSChildrenFromJSON(childData) {
     let children = Map({});
     childData.items.forEach(child => {
-        children = children.set(child.dsname, child.dsorg ? child.dsorg : '' );
+        children = children.set(child.dsname, child.dsorg ? child.dsorg : '');
     });
     return children;
 }
