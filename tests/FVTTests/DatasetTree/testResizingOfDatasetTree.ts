@@ -48,6 +48,9 @@ describe('MVS explorer page load', function () {
     });
 
     describe('Sidebar collapsing', () => {
+        before('Initialise', async () => {
+            await driver.wait(until.elementLocated(By.id('collapse-button')));
+        })
         it('Should handle collapsing of sidebar component (explorer-sidebar)', async () => {
             await switchSidebarState();
             expect(await getSidebarCSSValue('display')).to.equal('none');
