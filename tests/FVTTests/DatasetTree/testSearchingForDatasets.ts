@@ -86,12 +86,12 @@ describe('Test searching for datasets', function () {
 
         async function testRefreshIconTransition(driver) {
             try {
-                await driver.wait(until.elementLocated(By.id('loading-icon')), 30000);
+                await driver.wait(until.elementLocated(By.id('loading-icon')), 10000);
             } catch(err) {
                 console.log('[testRefreshIconTransition] fail on loading-icon not found');
                 return false;
             }
-            await driver.wait(until.elementLocated(By.id('refresh-icon')), 90000);
+            await driver.wait(until.elementLocated(By.id('refresh-icon')), 30000);
             const newRefreshIcon: WebElement[] = await driver.findElements(By.id('refresh-icon'));
             if (newRefreshIcon.length !== 1) {
                 console.log('refresh-icon never found');
