@@ -34,7 +34,7 @@ export async function createTestPartitionedDataset() {
         recfm: "FB",
         dsorg: "PO",
         name:`${TEST_PARTITIONED_DATASET}`,
-        avgblk: 20,
+        dirblk: 20,
         secondary: 100,
         lrecl: 80
     })
@@ -60,14 +60,14 @@ interface DatasetCreationParams {
     recfm :string,
     dsorg :string,
     name? :string,
-    avgblk? :number,
+    dirblk? :number,
     secondary :number,
     lrecl :number,
 }
 
 async function createDataset(requestBody :DatasetCreationParams) {
     const agent :https.Agent = getHttpsAgent();
-    await fetch(`https://${SERVER_HOST}:${SERVER_PORT}/ibmzosmf/api/v1/zosmf/restfiles/ds`, {
+    await fetch(`https://${SERVER_HOST}:${SERVER_PORT}/ibmzosmf/api/v1/zosmf/restfiles/ds/${requestBody.name}`, {
         method: 'POST',
         headers: {
             authorization: b64Credentials,
@@ -97,9 +97,10 @@ export async function createTestDatasetMember() {
         method: 'PUT',
         headers: { 
             authorization: b64Credentials,
-            'Content-Type': 'application/json',
+            'Content-Type': 'text/plain',
+            'X-IBM-Data-Type': 'text' 
         },
-        body: JSON.stringify({records: ""}),
+        body: '',
         agent,
     }).then (
         async response => {

@@ -10,7 +10,7 @@
 
 import HTTPStatusCodes from '../constants/HTTPStatusCodeConstants';
 import { fetchDatasetTreeChildren, removeDataset, renameDataset as renameDatasetRefresh } from './treeDS';
-import { invalidateContent, updateEditorFileName, makeRecordsFromContent } from './editor';
+import { invalidateContent, updateEditorFileName } from './editor';
 import { atlasGet, atlasPost, atlasPut, atlasDelete } from '../utilities/urlUtils';
 import { constructAndPushMessage } from './snackbarNotifications';
 import { checkForValidationFailure } from './validation';
@@ -229,7 +229,7 @@ export function fetchDSMembers(DSName) {
 export function createMember(DSName, member) {
     return dispatch => {
         dispatch(requestNewMember(DSName, member));
-        return atlasPut(`/restfiles/ds/${encodeURIComponent(DSName)}(${encodeURIComponent(member)})`, makeRecordsFromContent(''))
+        return atlasPut(`/restfiles/ds/${encodeURIComponent(DSName)}(${encodeURIComponent(member)})`, '')
             .then(response => {
                 return dispatch(checkForValidationFailure(response));
             })
