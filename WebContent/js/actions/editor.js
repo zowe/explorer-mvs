@@ -38,10 +38,6 @@ const SAVE_FAIL_MESSAGE = 'Save failed for';
 const SAVE_SUCCESS_MESSAGE = 'Save success for';
 const GET_CONTENT_FAIL_MESSAGE = 'Get content failed for';
 
-export function makeRecordsFromContent(content) {
-    return `${content}`;
-}
-
 function requestDSContent(file) {
     return {
         type: REQUEST_CONTENT,
@@ -189,7 +185,7 @@ export function saveDataset(file, content, etag) {
     return dispatch => {
         dispatch(requestSave(file));
         const endpoint = `/restfiles/ds/${encodeURLComponent(file)}`;
-        return atlasPut(endpoint, makeRecordsFromContent(content), etag)
+        return atlasPut(endpoint, content, etag)
             .then(response => {
                 return dispatch(checkForValidationFailure(response));
             })
@@ -255,7 +251,7 @@ export function saveAsDatasetMember(DSName, newDSMember, newContent) {
     return dispatch => {
         const newDS = `${DSName}(${newDSMember})`;
         dispatch(requestSaveAs(newDS));
-        return atlasPut(`/restfiles/ds/${newDS}`, makeRecordsFromContent(newContent), null)
+        return atlasPut(`/restfiles/ds/${newDS}`, newContent, null)
             .then(response => {
                 return dispatch(checkForValidationFailure(response));
             })
