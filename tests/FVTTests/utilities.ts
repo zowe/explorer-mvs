@@ -72,6 +72,7 @@ async function createDataset(requestBody :DatasetCreationParams) {
         headers: {
             authorization: b64Credentials,
             'Content-Type': 'application/json',
+            'X-CSRF-ZOSMF-HEADER': '*',
         },
         agent,
         body: JSON.stringify(requestBody),
@@ -98,7 +99,8 @@ export async function createTestDatasetMember() {
         headers: { 
             authorization: b64Credentials,
             'Content-Type': 'text/plain',
-            'X-IBM-Data-Type': 'text' 
+            'X-IBM-Data-Type': 'text',
+            'X-CSRF-ZOSMF-HEADER': '*',
         },
         body: '',
         agent,
@@ -131,7 +133,7 @@ export async function deleteDataset(dataset :string, failOk = false) {
     const agent :https.Agent = getHttpsAgent();
     await fetch(`https://${SERVER_HOST}:${SERVER_PORT}/ibmzosmf/api/v1/zosmf/restfiles/ds/${dataset}`, {
         method: 'DELETE',
-        headers: { authorization: b64Credentials },
+        headers: { authorization: b64Credentials, 'X-CSRF-ZOSMF-HEADER': '*' },
         agent
     }).then(
         async response => {
