@@ -99,7 +99,7 @@ jobs:
           export ZOWE_USERNAME=${{ secrets.SSH_MARIST1_USERNAMEP }}
           export ZOWE_PASSWORD=${{ secrets.SSH_MARIST1_PASSWORDP }}
           echo "Starting integration test ..."
-          export SERVER_HOST_NAME=${CUSTOM_FVT_SERVER_HOSTNAME:-${{ env.DEFAULT_FVT_SERVER_HOSTNAME }}}
+          export SERVER_HOST_NAME=localhost
           export SERVER_HTTPS_PORT=7554
           export TEST_BROWSER=firefox
           npm run test:fvt
