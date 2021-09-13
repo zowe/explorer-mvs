@@ -223,7 +223,7 @@ function invalidateSaveAs() {
 export function saveAsDataset(file, newFile, newContent) {
     return dispatch => {
         dispatch(requestSaveAs(file, newFile));
-        return atlasPost(`/restfiles/ds/${newFile}`,
+        return atlasPost(`/restfiles/ds/${encodeURIComponent(newFile)}`,
             `{"basedsn": "${file}", "records": "${newContent}"}`)
             .then(response => {
                 return dispatch(checkForValidationFailure(response));
@@ -251,7 +251,7 @@ export function saveAsDatasetMember(DSName, newDSMember, newContent) {
     return dispatch => {
         const newDS = `${DSName}(${newDSMember})`;
         dispatch(requestSaveAs(newDS));
-        return atlasPut(`/restfiles/ds/${newDS}`, newContent, null)
+        return atlasPut(`/restfiles/ds/${encodeURIComponent(newDS)}`, newContent, null)
             .then(response => {
                 return dispatch(checkForValidationFailure(response));
             })
