@@ -5,7 +5,7 @@
   "pluginType": "application",
   "webContent": {
     "framework": "iframe",
-    "destination": "https://${ZOWE_EXTERNAL_HOST}:${GATEWAY_PORT}/ui/v1/explorer-mvs",
+    "destination": "/ui/v1/explorer-mvs",
     "launchDefinition": {
       "pluginShortNameKey": "MVS Explorer",
       "pluginShortNameDefault": "MVS Explorer", 
