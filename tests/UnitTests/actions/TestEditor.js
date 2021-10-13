@@ -65,8 +65,8 @@ describe('Action: editor', () => {
                 },
             ];
             nock(BASE_URL)
-                .get(`/datasets/${dataset}/content`)
-                .reply(200, { records: editorResources.content });
+                .get(`/restfiles/ds/${dataset}`)
+                .reply(200, editorResources.content);
 
             const store = mockStore();
 
@@ -131,7 +131,7 @@ describe('Action: editor', () => {
 
         it('Should create actions to request and invalidate content due to 500 internal server error', () => {
             const dataset = 'NOT.A.DATASET';
-            const internalServerErrorMsg = 'internal server error';
+            const internalServerErrorMsg = 'Get content failed for';
             const expectedActions = [{
                 type: editorActions.REQUEST_CONTENT,
                 file: dataset,
@@ -147,7 +147,7 @@ describe('Action: editor', () => {
             }];
 
             nock(BASE_URL)
-                .get(`/datasets/${dataset}/content`)
+                .get(`/restfiles/ds/${dataset}`)
                 .reply(500, { message: internalServerErrorMsg });
 
             const store = mockStore();
@@ -176,7 +176,7 @@ describe('Action: editor', () => {
             }];
 
             nock(BASE_URL)
-                .get(`/datasets/${dataset}/content`)
+                .get(`/restfiles/ds/${dataset}`)
                 .reply(404, {});
 
             const store = mockStore();
@@ -239,7 +239,7 @@ describe('Action: editor', () => {
 
 
             nock(BASE_URL)
-                .get(`/datasets/${editorResources.dataset}/content`)
+                .get(`/restfiles/ds/${editorResources.dataset}`)
                 .reply(200, { records: editorResources.content }, { etag: editorResources.newEtag });
 
             const store = mockStore(fromJS({
@@ -313,10 +313,10 @@ describe('Action: editor', () => {
             ];
 
             nock(BASE_URL)
-                .put(`/datasets/${editorResources.dataset}/content`)
+                .put(`/restfiles/ds/${editorResources.dataset}`)
                 .reply(200);
             nock(BASE_URL)
-                .get(`/datasets/${editorResources.dataset}/content`)
+                .get(`/restfiles/ds/${editorResources.dataset}`)
                 .reply(200, { records: editorResources.content, etag: editorResources.newEtag });
 
             const store = mockStore(fromJS({
@@ -351,7 +351,7 @@ describe('Action: editor', () => {
             ];
 
             nock(BASE_URL)
-                .put(`/datasets/${editorResources.dataset}/content`)
+                .put(`/restfiles/ds/${editorResources.dataset}`)
                 .reply(404);
             // TODO:: Nock does not offer the ability to add statusText yet,
             // So we can't test the response status text gets added to a message (see "Not Found" above)
@@ -512,7 +512,7 @@ describe('Action: editor', () => {
                 mockVoidFunction(treeDatasetActions, 'fetchDSMembers');
 
                 nock(BASE_URL)
-                    .put(`/datasets/${editorResources.datasetNoMember}(${editorResources.datasetMemberNew})/content`)
+                    .put(`/restfiles/ds/${editorResources.datasetNoMember}(${editorResources.datasetMemberNew})`)
                     .reply(201);
 
                 const store = mockStore();
@@ -545,7 +545,7 @@ describe('Action: editor', () => {
                 ];
 
                 nock(BASE_URL)
-                    .put(`/datasets/${editorResources.datasetNoMember}(${editorResources.datasetMemberNew})/content`)
+                    .put(`/restfiles/ds/${editorResources.datasetNoMember}(${editorResources.datasetMemberNew})`)
                     .reply(500);
 
                 const store = mockStore();
@@ -579,7 +579,7 @@ describe('Action: editor', () => {
             ];
 
             nock(BASE_URL)
-                .get(`/datasets/${path}`)
+                .get(`/restfiles/ds/${path}`)
                 .reply(200, attributes);
 
             const store = mockStore();

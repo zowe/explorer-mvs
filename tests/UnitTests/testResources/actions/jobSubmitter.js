@@ -10,8 +10,8 @@
 
 export const jobSubmitResponse = {
     owner: 'JCAIN',
-    jobName: 'ATLJ0001',
-    jobId: 'JOB06041',
+    jobname: 'ATLJ0001',
+    jobid: 'JOB06041',
     type: 'JOB',
     status: 'INPUT',
     executionClass: 'A',

@@ -84,7 +84,7 @@ export function renameDataset(oldName, newName) {
 export function fetchDatasetTreeChildren(path) {
     return dispatch => {
         dispatch(requestDSChildren(path));
-        const endpoint = `datasets/${path}`;
+        const endpoint = `/restfiles/ds?dslevel=${encodeURIComponent(path)}`;
         return atlasGet(endpoint)
             .then(response => {
                 return dispatch(checkForValidationFailure(response));
