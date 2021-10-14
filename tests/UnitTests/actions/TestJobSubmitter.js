@@ -40,9 +40,8 @@ describe('Action: jobSubmitter', () => {
             const rewiredSuccessMessage = rewiredJobSubmitter.__get__('JOB_SUBMIT_SUCCESS_MESSAGE');
             const job = 'ATLAS.TEST.JCL(TSTJ0001)';
             nock(BASE_URL)
-                .put('/restjobs/jobs', {
-                    request: 'Submit Job',
-                    file: `//'${job}'`,
+                .post('/jobs/dataset', {
+                    file: "'ATLAS.TEST.JCL(TSTJ0001)'",
                 })
                 .reply(200, jobSubmitterData.jobSubmitResponse);
             const expectedActions = [
@@ -52,7 +51,7 @@ describe('Action: jobSubmitter', () => {
                 {
                     type: snackbarActions.PUSH_NOTIFICATION_MESSAGE,
                     message: new Map({
-                        message: `${jobSubmitterData.jobSubmitResponse.jobname} ${rewiredSuccessMessage}, id=${jobSubmitterData.jobSubmitResponse.jobid}`,
+                        message: `${jobSubmitterData.jobSubmitResponse.jobName} ${rewiredSuccessMessage}, id=${jobSubmitterData.jobSubmitResponse.jobId}`,
                     }),
                 },
                 {

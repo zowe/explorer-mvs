@@ -112,7 +112,7 @@ describe('Reducer: editor', () => {
     it('Should handle RECEIVE_ATTRIBUTES, process child data isToggled to true and isFetching to false', () => {
         const action = {
             type: editorActions.RECEIVE_ATTRIBUTES,
-            data: treeResources.DSChildData.items,
+            data: treeResources.DSChildData.items.slice(1),
         };
         expect(editor(editorResources.requestDataset, action)).toEqual(editorResources.recievedDatasetAttributes);
     });
