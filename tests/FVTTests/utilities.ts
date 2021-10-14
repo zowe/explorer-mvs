@@ -30,49 +30,47 @@ export async function createTestPartitionedDataset() {
     await deleteDataset(TEST_PARTITIONED_DATASET, true);    //try to delete dataset if it didn't get cleaned up last time
     await createDataset({
         primary: 300,
-        alcunit: "TRK",
-        recfm: "FB",
-        dsorg: "PO",
+        allocationUnit: "TRACK",
+        recordFormat: "FB",
+        dataSetOrganization: "PO",
         name:`${TEST_PARTITIONED_DATASET}`,
-        dirblk: 20,
+        directoryBlocks: 20,
         secondary: 100,
-        lrecl: 80
+        recordLength: 80
     })
 }
-
 
 export async function createTestSequentialDataset() {
     await deleteDataset(TEST_SEQUENTIAL_DATASET, true) //try to delete dataset if it didn't get cleaned up last time
     await createDataset({
             primary:300,
-            alcunit: "TRK",
-            recfm:"FB",
-            dsorg:"PS",
+            allocationUnit:"TRACK",
+            recordFormat:"FB",
+            dataSetOrganization:"PS",
             name:`${TEST_SEQUENTIAL_DATASET}`,
             secondary:100,
-            lrecl:80
+            recordLength:80
         })
 }
 
 interface DatasetCreationParams {
     primary :number,
-    alcunit :string,
-    recfm :string,
-    dsorg :string,
+    allocationUnit :string,
+    recordFormat :string,
+    dataSetOrganization :string,
     name? :string,
-    dirblk? :number,
+    directoryBlocks? :number,
     secondary :number,
-    lrecl :number,
+    recordLength :number,
 }
 
 async function createDataset(requestBody :DatasetCreationParams) {
     const agent :https.Agent = getHttpsAgent();
-    await fetch(`https://${SERVER_HOST}:${SERVER_PORT}/ibmzosmf/api/v1/zosmf/restfiles/ds/${requestBody.name}`, {
+    await fetch(`https://${SERVER_HOST}:${SERVER_PORT}/api/v2/datasets`, {
         method: 'POST',
         headers: {
             authorization: b64Credentials,
             'Content-Type': 'application/json',
-            'X-CSRF-ZOSMF-HEADER': '*',
         },
         agent,
         body: JSON.stringify(requestBody),
@@ -94,15 +92,13 @@ async function createDataset(requestBody :DatasetCreationParams) {
 export async function createTestDatasetMember() {
     const agent :https.Agent = getHttpsAgent();
     const fullDatasetAndMemberName = `${TEST_PARTITIONED_DATASET}(${TEST_DATASET_MEMBER})`;
-    await fetch(`https://${SERVER_HOST}:${SERVER_PORT}/ibmzosmf/api/v1/zosmf/restfiles/ds/${fullDatasetAndMemberName}`, {
+    await fetch(`https://${SERVER_HOST}:${SERVER_PORT}/api/v2/datasets/${fullDatasetAndMemberName}/content`, {
         method: 'PUT',
         headers: { 
             authorization: b64Credentials,
-            'Content-Type': 'text/plain',
-            'X-IBM-Data-Type': 'text',
-            'X-CSRF-ZOSMF-HEADER': '*',
+            'Content-Type': 'application/json',
         },
-        body: '',
+        body: JSON.stringify({records: ""}),
         agent,
     }).then (
         async response => {
@@ -131,9 +127,9 @@ export async function cleanupDatasets(failOk = false){
  */
 export async function deleteDataset(dataset :string, failOk = false) {
     const agent :https.Agent = getHttpsAgent();
-    await fetch(`https://${SERVER_HOST}:${SERVER_PORT}/ibmzosmf/api/v1/zosmf/restfiles/ds/${dataset}`, {
+    await fetch(`https://${SERVER_HOST}:${SERVER_PORT}/api/v2/datasets/${dataset}`, {
         method: 'DELETE',
-        headers: { authorization: b64Credentials, 'X-CSRF-ZOSMF-HEADER': '*' },
+        headers: { authorization: b64Credentials },
         agent
     }).then(
         async response => {

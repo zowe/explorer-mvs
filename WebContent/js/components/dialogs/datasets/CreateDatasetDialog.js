@@ -80,17 +80,17 @@ export default class CreateDatasetDialog extends React.Component {
         const { DSPath } = this.props;
         let properties = Map({
             name: this.state.dsname,
-            dsorg: CreateDatasetDialog.getDsorgFromType(this.state.type),
-            alcunit: this.state.allocationUnit,
+            dataSetOrganization: CreateDatasetDialog.getDsorgFromType(this.state.type),
+            allocationUnit: this.state.allocationUnit,
             primary: parseInt(this.state.primary, 10),
             secondary: parseInt(this.state.secondary, 10),
-            dirblk: parseInt(this.state.directoryBlocks, 10),
-            recfm: this.state.recordFormat,
-            blksize: parseInt(this.state.blockSize, 10),
-            lrecl: parseInt(this.state.recordLength, 10),
+            directoryBlocks: parseInt(this.state.directoryBlocks, 10),
+            recordFormat: this.state.recordFormat,
+            blockSize: parseInt(this.state.blockSize, 10),
+            recordLength: parseInt(this.state.recordLength, 10),
         });
-        if (properties.get('dsorg') === SEQUENTIAL.Dsorg) {
-            properties = properties.delete('dirblk');
+        if (properties.get('dataSetOrganization') === SEQUENTIAL.Dsorg) {
+            properties = properties.delete('directoryBlocks');
         }
         properties.forEach((value, key) => {
             if (!value) {

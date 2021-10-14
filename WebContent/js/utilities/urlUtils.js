@@ -21,13 +21,13 @@ export function whichServer() {
 }
 
 export function atlasAction(endpoint, content) {
-    return fetch(`https://${whichServer()}/ibmzosmf/api/v1/zosmf${endpoint}`, content);
+    return fetch(`https://${whichServer()}/api/v2/${endpoint}`, content);
 }
 
 export function atlasGet(endpoint) {
     const fetchParams = {
         method: 'GET',
-        headers: { 'Content-Type': 'application/json', 'Access-Control-Expose-Headers': 'ETag', 'X-IBM-Attributes': 'base' },
+        headers: { 'Content-Type': 'application/json', 'Access-Control-Expose-Headers': 'ETag' },
         credentials: 'include' };
     return atlasAction(endpoint, fetchParams);
 }
@@ -50,12 +50,7 @@ export function atlasPost(endpoint, body) {
 }
 
 export function atlasPut(endpoint, body, etag) {
-    let header;
-    if (body.includes('"request": "rename"') || body.includes('"request":"Submit Job"')) {
-        header = { 'Content-Type': 'application/json' };
-    } else {
-        header = { 'Content-Type': 'text/plain', 'X-IBM-Data-Type': 'text' };
-    }
+    const header = { 'Content-Type': 'application/json' };
     if (etag) {
         header['If-Match'] = etag;
     }
