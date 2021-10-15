@@ -1,7 +1,9 @@
 # Change Log
 All notable changes to the MVS-Explorer will be documented in this file.
 
-##<1.0.15>
+## <1.0.17>
+
+### New features and enhancements
 - Replaced the File APIs with zOSMF APIs
 
 ## <1.0.14>
