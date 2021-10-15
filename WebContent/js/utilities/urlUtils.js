@@ -27,7 +27,7 @@ export function atlasAction(endpoint, content) {
 export function atlasGet(endpoint) {
     const fetchParams = {
         method: 'GET',
-        headers: { 'Content-Type': 'application/json', 'Access-Control-Expose-Headers': 'ETag', 'X-IBM-Attributes': 'base', 'X-CSRF-ZOSMF-HEADER': '*'  },
+        headers: { 'Content-Type': 'application/json', 'Access-Control-Expose-Headers': 'ETag', 'X-IBM-Attributes': 'base', 'X-CSRF-ZOSMF-HEADER': '*' },
         credentials: 'include' };
     return atlasAction(endpoint, fetchParams);
 }
