@@ -27,7 +27,11 @@ export function atlasAction(endpoint, content) {
 export function atlasGet(endpoint) {
     const fetchParams = {
         method: 'GET',
-        headers: { 'Content-Type': 'application/json', 'Access-Control-Expose-Headers': 'ETag', 'X-IBM-Attributes': 'base', 'X-CSRF-ZOSMF-HEADER': '*', 'X-IBM-Response-Timeout':60 },
+        headers: { 'Content-Type': 'application/json',
+            'Access-Control-Expose-Headers': 'ETag',
+            'X-IBM-Attributes': 'base',
+            'X-CSRF-ZOSMF-HEADER': '*',
+            'X-IBM-Response-Timeout': 60 },
         credentials: 'include' };
     return atlasAction(endpoint, fetchParams);
 }
