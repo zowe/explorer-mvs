@@ -9,7 +9,7 @@
  */
 
 import { constructAndPushMessage } from './snackbarNotifications';
-import { atlasPost } from '../utilities/urlUtils';
+import { atlasPut } from '../utilities/urlUtils';
 import { checkForValidationFailure } from './validation';
 
 
@@ -52,7 +52,7 @@ export function resetResponse() {
 export function submitJob(job) {
     return dispatch => {
         dispatch(requestSubmit());
-        return atlasPost('jobs/dataset', JSON.stringify({ file: `'${job}'` }))
+        return atlasPut('/restjobs/jobs', JSON.stringify({ request: 'Submit Job', file: `//'${job}'` }))
             .then(response => {
                 return dispatch(checkForValidationFailure(response));
             })
@@ -63,7 +63,7 @@ export function submitJob(job) {
                 throw Error(response.statusText);
             })
             .then(response => {
-                dispatch(constructAndPushMessage(`${response.jobName} ${JOB_SUBMIT_SUCCESS_MESSAGE}, id=${response.jobId}`));
+                dispatch(constructAndPushMessage(`${response.jobname} ${JOB_SUBMIT_SUCCESS_MESSAGE}, id=${response.jobid}`));
                 dispatch(receiveRC(response));
             })
             .catch(() => {

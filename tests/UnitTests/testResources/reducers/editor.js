@@ -11,6 +11,8 @@
 import { Map } from 'immutable';
 import { DEFAULT_TITLE } from '../../../../WebContent/js/reducers/editor';
 
+/* eslint max-len: ["error", { "code": 400 }] */
+
 export const baseEditor = Map({
     content: null,
     etag: null,
@@ -139,11 +141,5 @@ export const requestedDatasetAttributes = Map({
 export const recievedDatasetAttributes = Map({
     DSPath: dataset,
     isFetching: false,
-    attributes: Map({
-        blockSize: '3213',
-        dataSetOrganization: 'PO',
-        recordLength: '80',
-        name: 'JCAIN.SPF.ISPROF',
-        recordFormat: 'FB',
-    }),
+    attributes: Map({ dsname: 'JCAIN.ISPF.ISPPROF', blksz: '3120', catnm: 'CATALOG.T50111', cdate: '2021/07/08', dev: '3390', dsntp: 'PDS', dsorg: 'PO', edate: '***None***', extx: '1', lrecl: '80', migr: 'NO', mvol: 'N', ovf: 'NO', rdate: '2021/08/17', recfm: 'FB', sizex: '10', spacu: 'TRACKS', used: '20', vol: 'T50113', vols: 'T50113' }),
 });
