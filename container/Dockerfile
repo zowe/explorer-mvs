@@ -49,19 +49,7 @@ RUN mkdir -p ~/.npm-global \
     && cp package-lock.json final/web \
     && cp -r dist/. final/web \
     && cp manifest.yaml final \
-    && cp apiml-static-registration.yaml.template final \
-    && cp pluginDefinition.prod.json final/pluginDefinition.json \
-    && cp bin/start.sh final/bin \
-    && chmod +x final/bin/* \
-    && mkdir -p final/explorer-ui-server \
-    && cd explorer-ui-server \
-    && npm ci --no-audit \
-    && npm run build \
-    && cd dist \
-    && npm install --production \
-    && cd .. \
-    && cp -r dist/. ../final/explorer-ui-server/ \
-    && cp manifest.yaml ../final/explorer-ui-server/
+    && cp pluginDefinition.prod.json final/pluginDefinition.json
 
 ##################################
 # second stage
@@ -76,8 +64,3 @@ WORKDIR /component
 # copy files
 COPY --from=builder --chown=zowe:zowe /home/zowe/final ./
 COPY --chown=zowe:zowe component/LICENSE /licenses
-
-##################################
-# start command
-EXPOSE 8550
-ENTRYPOINT [ "bin/start.sh" ]

@@ -1,6 +1,6 @@
 {
   "name": "explorer-mvs",
-  "version": "1.0.18",
+  "version": "2.0.0",
   "directories": {
     "test": "tests"
   },
@@ -123,8 +123,7 @@
   "license": "EPL-2.0",
   "config": {
     "pluginId": "org.zowe.explorer-mvs",
-    "pluginName": "MVS Explorer",
-    "baseuri": "/ui/v1/explorer-mvs"
+    "pluginName": "MVS Explorer"
   },
   "proxy": {
     "target": "https://tvt5003.svl.ibm.com:47554"
