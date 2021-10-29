@@ -44,7 +44,6 @@ cp package.json "${PAX_WORKSPACE_DIR}/content/web"
 cp package-lock.json "${PAX_WORKSPACE_DIR}/content/web"
 cp -r dist/. "${PAX_WORKSPACE_DIR}/content/web"
 cp manifest.yaml "${PAX_WORKSPACE_DIR}/content"
-cp apiml-static-registration.yaml.template "${PAX_WORKSPACE_DIR}/content"
 cp pluginDefinition.prod.json "${PAX_WORKSPACE_DIR}/content/pluginDefinition.json"
 
 # update build information
