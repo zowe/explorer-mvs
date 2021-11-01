@@ -253,8 +253,8 @@ jobs:
 
       - name: "[Test 5] Start integration test"
         run: |
-          export ZOWE_USERNAME=${{ secrets.SSH_MARIST1_USERNAMEP }}
-          export ZOWE_PASSWORD=${{ secrets.SSH_MARIST1_PASSWORDP }}
+          export ZOWE_USERNAME=${{ secrets.SSH_MARIST_USERNAMEP }}
+          export ZOWE_PASSWORD=${{ secrets.SSH_MARIST_PASSWORDP }}
           echo "Starting integration test ..."
           export SERVER_HOST_NAME=${CUSTOM_FVT_SERVER_HOSTNAME:-${{ env.DEFAULT_FVT_SERVER_HOSTNAME }}}
           export SERVER_HTTPS_PORT=7554
