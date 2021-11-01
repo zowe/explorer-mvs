@@ -21,7 +21,8 @@ module.exports = {
         "no-underscore-dangle":0,
         "jsx-a11y/no-static-element-interactions":0,
         "lines-between-class-members": ["error", "always"],
-        "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }]
+        "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
+        "no-redeclare": [2, {"builtinGlobals": false}]
     },
     "env": {
         "browser": true,
@@ -30,7 +31,7 @@ module.exports = {
         "jest": true,
         "mocha": true
     },
-    "parser": "babel-eslint",
+    "parser": "@babel/eslint-parser",
     "parserOptions": {
         "ecmaVersion": 6,
         "sourceType": "module",

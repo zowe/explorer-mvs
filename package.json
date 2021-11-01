@@ -1,6 +1,7 @@
 {
   "name": "explorer-mvs",
   "version": "2.0.0",
+  "types": "module",
   "directories": {
     "test": "tests"
   },
@@ -30,7 +31,7 @@
     "@types/mocha": "^7.0.1",
     "@types/node": "^13.7.1",
     "@types/selenium-webdriver": "^4.0.8",
-    "babel-eslint": "^10.1.0",
+    "@babel/eslint-parser": "^7.5.4",
     "babel-loader": "^8.0.0",
     "babel-plugin-react-html-attrs": "^2.0.0",
     "babel-plugin-transform-class-properties": "^6.3.13",
@@ -47,9 +48,9 @@
     "css-loader": "^1.0.1",
     "dotenv": "^6.2.0",
     "es6-promise": "^4.1.0",
-    "eslint": "^4.19.1",
+    "eslint": "^7.5.0",
     "eslint-config-airbnb": "^15.1.0",
-    "eslint-plugin-import": "^2.18.0",
+    "eslint-plugin-import": "^2.25.2",
     "eslint-plugin-jsx-a11y": "^5.1.1",
     "eslint-plugin-mocha": "^4.11.0",
     "eslint-plugin-node": "^5.1.1",
