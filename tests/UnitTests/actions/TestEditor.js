@@ -22,7 +22,6 @@ import * as treeData from '../testResources/actions/treeDS';
 import * as treeDatasetActions from '../../../WebContent/js/actions/treeDatasets';
 import * as snackbarActions from '../../../WebContent/js/actions/snackbarNotifications';
 
-
 describe('Action: editor', () => {
     let sandbox;
 
@@ -237,7 +236,6 @@ describe('Action: editor', () => {
                 },
             ];
 
-
             nock(BASE_URL)
                 .get(`/restfiles/ds/${editorResources.dataset}`)
                 .reply(200, { records: editorResources.content }, { etag: editorResources.newEtag });
@@ -268,7 +266,6 @@ describe('Action: editor', () => {
                     type: editorActions.INVALIDATE_ETAG,
                 },
             ];
-
 
             nock(BASE_URL)
                 .get(`/datasets/${editorResources.dataset}/content`)
@@ -521,7 +518,9 @@ describe('Action: editor', () => {
                     editorActions.saveAsDatasetMember(
                         editorResources.datasetNoMember,
                         editorResources.datasetMemberNew,
-                        editorResources.newContent))
+                        editorResources.newContent,
+                    ),
+                )
                     .then(() => {
                         expect(store.getActions()).toEqual(expectedActions);
                     });
@@ -554,7 +553,9 @@ describe('Action: editor', () => {
                     editorActions.saveAsDatasetMember(
                         editorResources.datasetNoMember,
                         editorResources.datasetMemberNew,
-                        editorResources.newContent))
+                        editorResources.newContent,
+                    ),
+                )
                     .then(() => {
                         expect(store.getActions()).toEqual(expectedActions);
                     });

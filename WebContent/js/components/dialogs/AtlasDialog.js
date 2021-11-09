@@ -54,7 +54,7 @@ export default class AtlasDialog extends React.Component {
                         style={{ ...this.props.bodyStyle, ...this.props.contentStyle, ...{ width: '550px' } }}
                         id="dialog-content"
                     >
-                        <form onSubmit={this.handleSubmit} >
+                        <form onSubmit={this.handleSubmit}>
                             {this.props.dialogContent}
                         </form>
                     </DialogContent>
@@ -63,12 +63,14 @@ export default class AtlasDialog extends React.Component {
                             onClick={this.handleClose}
                         >
                             Cancel
-                        </Button>,
+                        </Button>
+                        ,
                         <Button
                             onClick={this.handleSubmit}
                         >
                             Ok
-                        </Button>,
+                        </Button>
+                        ,
                     </DialogActions>
                 </Dialog>
             </div>

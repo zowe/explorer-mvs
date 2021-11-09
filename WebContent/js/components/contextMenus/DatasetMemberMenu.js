@@ -13,7 +13,9 @@ import React from 'react';
 import { ContextMenu, MenuItem } from 'react-contextmenu';
 
 const DatasetMenuMember = props => {
-    const { member, handleCreateMember, handleEdit, handleDeleteDataset, handleJobSubmit, handleRename } = props;
+    const {
+        member, handleCreateMember, handleEdit, handleDeleteDataset, handleJobSubmit, handleRename,
+    } = props;
     return (
         <ContextMenu id={member}>
             <MenuItem onClick={handleCreateMember}>

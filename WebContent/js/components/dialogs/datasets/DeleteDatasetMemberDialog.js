@@ -19,7 +19,8 @@ const DeleteDatasetMemberDialog = props => {
             title={`Delete Dataset Member "${DSName}"?`}
             resource={DSName}
             {...props}
-        />);
+        />
+    );
 };
 
 export default DeleteDatasetMemberDialog;

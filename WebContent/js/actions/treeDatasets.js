@@ -11,7 +11,9 @@
 import HTTPStatusCodes from '../constants/HTTPStatusCodeConstants';
 import { fetchDatasetTreeChildren, removeDataset, renameDataset as renameDatasetRefresh } from './treeDS';
 import { invalidateContent, updateEditorFileName } from './editor';
-import { atlasGet, atlasPost, atlasPut, atlasDelete } from '../utilities/urlUtils';
+import {
+    atlasGet, atlasPost, atlasPut, atlasDelete,
+} from '../utilities/urlUtils';
 import { constructAndPushMessage } from './snackbarNotifications';
 import { checkForValidationFailure } from './validation';
 
@@ -200,7 +202,7 @@ export function fetchDSMembers(DSName) {
             .then(response => {
                 if (response.ok) {
                     return response.json();
-                } else if (response.status === HTTPStatusCodes.Forbidden) {
+                } if (response.status === HTTPStatusCodes.Forbidden) {
                     throw Error(UNAUTHORIZED_MESSAGE);
                 }
                 throw Error(response.statusText);
@@ -224,7 +226,6 @@ export function fetchDSMembers(DSName) {
             });
     };
 }
-
 
 export function createMember(DSName, member) {
     return dispatch => {
@@ -278,7 +279,6 @@ function cleanupStateAfterDelete(DSName, isOpenInViewer) {
     };
 }
 
-
 function cleanupStateAfterRename(oldName, newName, isOpenInViewer) {
     return dispatch => {
         // Now refresh the datasets members
@@ -291,7 +291,6 @@ function cleanupStateAfterRename(oldName, newName, isOpenInViewer) {
         }
     };
 }
-
 
 export function deleteDataset(DSName, isOpenInViewer) {
     return dispatch => {
@@ -367,4 +366,3 @@ export function renameDataset(oldName, newName, isOpenInViewer) {
             });
     };
 }
-

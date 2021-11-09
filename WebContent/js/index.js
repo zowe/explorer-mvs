@@ -8,8 +8,6 @@
  * Copyright IBM Corporation 2016, 2020
  */
 
-/* global document */
-
 import 'whatwg-fetch';
 
 import { Map } from 'immutable';
@@ -34,8 +32,7 @@ if (window.localStorage.getItem('enableReduxLogger') === 'true') {
 }
 
 const store = appMiddleware(createStore)(rootReducer, Map({}),
-    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
-);
+    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 
 ReactDOM.render(
     <Provider store={store}>
@@ -43,5 +40,6 @@ ReactDOM.render(
             <Route exact={true} path="/" component={ConnectedHomeView} />
             <Route path="/editor" component={ConnectedFullScreenEditor} />
         </HashRouter>
-    </Provider>
-    , document.getElementById('menuapp'));
+    </Provider>,
+    document.getElementById('menuapp'),
+);
