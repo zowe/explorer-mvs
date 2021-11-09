@@ -144,7 +144,7 @@ describe('Action: treeDatasets', () => {
     describe('createDataset', () => {
         it('Should create an action to request and then receive a new dataset, then refresh the datasets via fetchDatasetTreeChildren', () => {
             const DSName = treeDatasetsData.DSProperties.get('name');
-            const DSProperties = treeDatasetsData.DSProperties;
+            const { DSProperties } = treeDatasetsData;
             const path = 'ATLAS';
             const newTreeData = treeData.DatasetFetchChildrenLargeDataPlusOne;
             const expectedActions = [{
@@ -188,7 +188,7 @@ describe('Action: treeDatasets', () => {
 
         it('Should create an action to request and then invalidate', () => {
             const DSName = treeDatasetsData.DSProperties.get('name');
-            const DSProperties = treeDatasetsData.DSProperties;
+            const { DSProperties } = treeDatasetsData;
             const path = 'ATLAS';
             const expectedActions = [{
                 type: treeDatasets.REQUEST_NEW_DATASET,

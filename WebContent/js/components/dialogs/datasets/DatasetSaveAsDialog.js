@@ -40,11 +40,10 @@ export default class DatasetSaveAsDialog extends React.Component {
 
     submitAction = () => {
         const { file, content, etag } = this.props;
-        return DatasetSaveAsDialog.isMember(file) ?
-            saveAsDatasetMember(DatasetSaveAsDialog.getDatasetFromFile(file), this.state.newDSMember, content) :
-            saveAsDataset(file, this.state.newDSName, content, etag);
+        return DatasetSaveAsDialog.isMember(file)
+            ? saveAsDatasetMember(DatasetSaveAsDialog.getDatasetFromFile(file), this.state.newDSMember, content)
+            : saveAsDataset(file, this.state.newDSName, content, etag);
     }
-
 
     updateName(newValue) {
         this.setState({
@@ -68,7 +67,8 @@ export default class DatasetSaveAsDialog extends React.Component {
                     fullWidth={true}
                     autoFocus={true}
                 />
-            </div>);
+            </div>
+        );
         const dialogContentDataset = (
             <div>
                 <DatasetName
@@ -77,7 +77,8 @@ export default class DatasetSaveAsDialog extends React.Component {
                     fullWidth={true}
                     autoFocus={true}
                 />
-            </div>);
+            </div>
+        );
 
         return (
             <AtlasDialog

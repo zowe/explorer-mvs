@@ -23,17 +23,22 @@ export default class UnsavedWarningDialog extends React.Component {
         const dialogContent = <div>{`${editorLabel} has modifed content. Do you wish to save changes?`}</div>;
 
         const actions = [
-            { label: 'Yes',
-                onClick: () => { yesAction(); } },
-            { label: 'No',
+            {
+                label: 'Yes',
+                onClick: () => { yesAction(); },
+            },
+            {
+                label: 'No',
                 onClick: () => { noAction(); },
             },
         ];
 
-        return (<ModalAlertDialog
-            actions={actions}
-            dialogContent={dialogContent}
-        />);
+        return (
+            <ModalAlertDialog
+                actions={actions}
+                dialogContent={dialogContent}
+            />
+        );
     }
 }
 

@@ -22,5 +22,6 @@ const REDUCERS = {
     treeDatasets,
     jobSubmitter,
     editor,
-    snackbarNotifications };
+    snackbarNotifications,
+};
 export default combineReducers(REDUCERS);

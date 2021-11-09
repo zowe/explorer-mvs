@@ -79,10 +79,12 @@ export function loginUser(username, password) {
     return dispatch => {
         dispatch(requestValidation());
         return fetch(`https://${whichServer()}/api/v1/gateway/auth/login`,
-            { method: 'POST',
+            {
+                method: 'POST',
                 credentials: 'include',
                 'Access-Control-Allow-Credentials': 'true',
-                body: JSON.stringify({ username, password }) })
+                body: JSON.stringify({ username, password }),
+            })
             .then(response => {
                 if (response.ok) {
                     return dispatch(receiveValidation(username));

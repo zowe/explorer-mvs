@@ -27,8 +27,8 @@ class AtlasSnackbar extends React.Component {
 
     componentDidUpdate(prevProps) {
         const { snackbarNotificationsMessages } = prevProps;
-        if (this.props.snackbarNotificationsMessages.first() &&
-            snackbarNotificationsMessages.first() !== this.props.snackbarNotificationsMessages.first()) {
+        if (this.props.snackbarNotificationsMessages.first()
+            && snackbarNotificationsMessages.first() !== this.props.snackbarNotificationsMessages.first()) {
             const messageValue = this.props.snackbarNotificationsMessages.first();
             window.sendMvsNotificationsToZlux(messageValue.get('message'));
             this.registerMessageWithSnackbar();
@@ -39,6 +39,13 @@ class AtlasSnackbar extends React.Component {
         this.state.timeout = clearTimeout(this.state.timeout);
     }
 
+    handleRequestClose = () => {
+        const { dispatch } = this.props;
+        this.state.timeout = clearTimeout(this.state.timeout);
+        this.setState({ open: false });
+        dispatch(popMessage());
+    }
+
     registerMessageWithSnackbar() {
         const { dispatch } = this.props;
         this.setState({ open: true });
@@ -46,13 +53,6 @@ class AtlasSnackbar extends React.Component {
             dispatch(popMessage());
             this.setState({ open: false });
         }, 4000);
-    }
-
-    handleRequestClose = () => {
-        const { dispatch } = this.props;
-        this.state.timeout = clearTimeout(this.state.timeout);
-        this.setState({ open: false });
-        dispatch(popMessage());
     }
 
     render() {

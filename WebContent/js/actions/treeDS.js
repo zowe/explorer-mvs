@@ -12,7 +12,6 @@ import { atlasGet } from '../utilities/urlUtils';
 import { constructAndPushMessage } from './snackbarNotifications';
 import { checkForValidationFailure } from './validation';
 
-
 export const REQUEST_DS_TREE_CHILDREN = 'REQUEST_DS_TREE_CHILDREN';
 export const RECEIVE_DS_TREE_CHILDREN = 'RECEIVE_DS_TREE_CHILDREN';
 export const INVALIDATE_DS_TREE_CHILDREN = 'INVALIDATE_DS_TREE_CHILDREN';
