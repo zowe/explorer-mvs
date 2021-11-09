@@ -71,7 +71,6 @@ class DatasetTree extends React.Component {
         this.updateMessage(prevProps);
     }
 
-
     static setFocus(root, selector) {
         if (root) {
             const focusable = root.querySelector(selector);
@@ -81,9 +80,36 @@ class DatasetTree extends React.Component {
         }
     }
 
-    isInitialLoad(prevProps) {
-        const { DSPath, username } = prevProps;
-        return (DSPath === '' && username === this.props.DSPath);
+    handlePathChange(value) {
+        const { dispatch } = this.props;
+        dispatch(setDSPath(value));
+    }
+
+    handleQualifierUpdate = e => {
+        const { dispatch, DSPath } = this.props;
+        e.preventDefault();
+        clearTimeout(this.state.timeout);
+        dispatch(resetDSChildren());
+        dispatch(fetchDatasetTreeChildren(DSPath));
+    }
+
+    refreshDSTree() {
+        const { DSPath, DSChildren, dispatch } = this.props;
+        dispatch(resetDSChildren());
+        dispatch(fetchDatasetTreeChildren(DSPath));
+        DSChildren.keySeq().toArray().filter(childId => {
+            return this.isDSToggled(childId);
+        }).map(childId => {
+            return dispatch(fetchDSMembers(childId));
+        });
+    }
+
+    isDSToggled(childId) {
+        const { datasets } = this.props;
+        if (datasets.get(childId)) {
+            return datasets.get(childId).get('isToggled');
+        }
+        return false;
     }
 
     updateMessage(prevProps) {
@@ -103,36 +129,9 @@ class DatasetTree extends React.Component {
         }
     }
 
-    isDSToggled(childId) {
-        const { datasets } = this.props;
-        if (datasets.get(childId)) {
-            return datasets.get(childId).get('isToggled');
-        }
-        return false;
-    }
-
-    handlePathChange(value) {
-        const { dispatch } = this.props;
-        dispatch(setDSPath(value));
-    }
-
-    refreshDSTree() {
-        const { DSPath, DSChildren, dispatch } = this.props;
-        dispatch(resetDSChildren());
-        dispatch(fetchDatasetTreeChildren(DSPath));
-        DSChildren.keySeq().toArray().filter(childId => {
-            return this.isDSToggled(childId);
-        }).map(childId => {
-            return dispatch(fetchDSMembers(childId));
-        });
-    }
-
-    handleQualifierUpdate = e => {
-        const { dispatch, DSPath } = this.props;
-        e.preventDefault();
-        clearTimeout(this.state.timeout);
-        dispatch(resetDSChildren());
-        dispatch(fetchDatasetTreeChildren(DSPath));
+    isInitialLoad(prevProps) {
+        const { DSPath, username } = prevProps;
+        return (DSPath === '' && username === this.props.DSPath);
     }
 
     renderDSChild(childId) {
@@ -142,51 +141,56 @@ class DatasetTree extends React.Component {
 
     renderNotFound() {
         const { isFetchingTree } = this.props;
-        return !isFetchingTree ?
-            <li>
-                <ErrorIcon />
-                <span className="node-label">{NO_DATASETS_FOUND_MESSAGE}</span>
-            </li> :
-            null;
+        return !isFetchingTree
+            ? (
+                <li>
+                    <ErrorIcon />
+                    <span className="node-label">{NO_DATASETS_FOUND_MESSAGE}</span>
+                </li>
+            )
+            : null;
     }
 
     render() {
-        const { isFetchingTree, isFetchingDatasets, DSChildren, DSPath, dispatch, validated } = this.props;
-        return (validated ?
-            <Card
-                id="dataset-tree-card"
-                class="tree-card"
-                style={{ paddingBottom: '0px' }}
-            >
-                <CardContent>
-                    <form onSubmit={this.handleQualifierUpdate}>
-                        <div className="component-header">
-                            <UpperCaseTextField
-                                id="datasets-qualifier-field"
-                                style={{ flexGrow: 1, paddingLeft: '8px' }}
-                                value={DSPath}
-                                fullWidth={false}
-                                fieldChangedCallback={this.handlePathChange}
-                                autoFocus={true}
-                            />
-                            <RefreshIcon
-                                isFetching={isFetchingTree || isFetchingDatasets}
-                                submitAction={this.refreshDSTree}
-                                dispatch={dispatch}
-                            />
-                        </div>
-                    </form>
-                    <FullHeightTree offset={18}>
-                        <ul>
-                            {!DSChildren.isEmpty() ?
-                                DSChildren.keySeq().toArray().sort().map(this.renderDSChild) :
-                                this.renderNotFound()
-                            }
-                        </ul>
-                    </FullHeightTree>
-                </CardContent>
-                <Announcer message={this.state.message} />
-            </Card>
+        const {
+            isFetchingTree, isFetchingDatasets, DSChildren, DSPath, dispatch, validated,
+        } = this.props;
+        return (validated
+            ? (
+                <Card
+                    id="dataset-tree-card"
+                    class="tree-card"
+                    style={{ paddingBottom: '0px' }}
+                >
+                    <CardContent>
+                        <form onSubmit={this.handleQualifierUpdate}>
+                            <div className="component-header">
+                                <UpperCaseTextField
+                                    id="datasets-qualifier-field"
+                                    style={{ flexGrow: 1, paddingLeft: '8px' }}
+                                    value={DSPath}
+                                    fullWidth={false}
+                                    fieldChangedCallback={this.handlePathChange}
+                                    autoFocus={true}
+                                />
+                                <RefreshIcon
+                                    isFetching={isFetchingTree || isFetchingDatasets}
+                                    submitAction={this.refreshDSTree}
+                                    dispatch={dispatch}
+                                />
+                            </div>
+                        </form>
+                        <FullHeightTree offset={18}>
+                            <ul>
+                                {!DSChildren.isEmpty()
+                                    ? DSChildren.keySeq().toArray().sort().map(this.renderDSChild)
+                                    : this.renderNotFound()}
+                            </ul>
+                        </FullHeightTree>
+                    </CardContent>
+                    <Announcer message={this.state.message} />
+                </Card>
+            )
             : null
         );
     }

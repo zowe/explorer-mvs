@@ -44,7 +44,6 @@ export class TreeDataset extends React.Component {
         return childId === file || parseFileName(file).DSName === childId;
     }
 
-
     constructor(props) {
         super(props);
         this.handleToggle = this.handleToggle.bind(this);
@@ -54,20 +53,6 @@ export class TreeDataset extends React.Component {
         this.state = {
             dialog: NO_DIALOG,
         };
-    }
-
-    getToggleIcon() {
-        return (
-            this.isDSToggled() ? <OpenFolderIcon className="node-icon" /> : <ClosedFolderIcon className="node-icon" />
-        );
-    }
-
-    isDSToggled() {
-        const { datasets, childId } = this.props;
-        if (datasets.get(childId)) {
-            return datasets.get(childId).get('isToggled');
-        }
-        return false;
     }
 
     handleToggle() {
@@ -83,17 +68,16 @@ export class TreeDataset extends React.Component {
         }
     }
 
-    /**
-     * If we have a dataset we want to know if it has any children(members)
-     */
-    hasChildren() {
-        const { childId, datasets } = this.props;
-        if (datasets.get(childId)) {
-            if (datasets.get(childId).get('childData').length > 0) {
-                return true;
-            }
+    handleKeyDown(e) {
+        if (e.key === 'Enter') {
+            this.handleToggle();
         }
-        return false;
+    }
+
+    getToggleIcon() {
+        return (
+            this.isDSToggled() ? <OpenFolderIcon className="node-icon" /> : <ClosedFolderIcon className="node-icon" />
+        );
     }
 
     dialogReturn = () => {
@@ -132,19 +116,34 @@ export class TreeDataset extends React.Component {
         this.setState({ dialog: RENAME_DATASET });
     }
 
-    handleKeyDown(e) {
-        if (e.key === 'Enter') {
-            this.handleToggle();
+    /**
+     * If we have a dataset we want to know if it has any children(members)
+     */
+    hasChildren() {
+        const { childId, datasets } = this.props;
+        if (datasets.get(childId)) {
+            if (datasets.get(childId).get('childData').length > 0) {
+                return true;
+            }
         }
+        return false;
+    }
+
+    isDSToggled() {
+        const { datasets, childId } = this.props;
+        if (datasets.get(childId)) {
+            return datasets.get(childId).get('isToggled');
+        }
+        return false;
     }
 
     renderDS() {
         const { dataSetOrganization } = this.props;
         if (dataSetOrganization.startsWith(DATASET_ORG_PARTITIONED)) {
             return this.renderPartitionedDS();
-        } else if (dataSetOrganization.startsWith(DATASET_ORG_SEQUENTIAL)) {
+        } if (dataSetOrganization.startsWith(DATASET_ORG_SEQUENTIAL)) {
             return this.renderSequentialDS();
-        } else if (dataSetOrganization.startsWith(DATASET_ORG_VSAM)) {
+        } if (dataSetOrganization.startsWith(DATASET_ORG_VSAM)) {
             return this.renderUnsupportedDS();
         }
         return this.renderUnsupportedDS();
@@ -157,7 +156,7 @@ export class TreeDataset extends React.Component {
                 <ContextMenuTrigger id={childId}>
                     <div onClick={this.handleToggle} tabIndex="0" onKeyDown={this.handleKeyDown}>
                         {this.getToggleIcon()}
-                        <span className="node-label node-toggle" >{childId}</span>
+                        <span className="node-label node-toggle">{childId}</span>
                     </div>
                 </ContextMenuTrigger>
                 <DatasetPartitionedMenu
@@ -211,22 +210,28 @@ export class TreeDataset extends React.Component {
     }
 
     renderDSMembers() {
-        const { childId, datasets, dispatch, dataSetOrganization, file } = this.props;
+        const {
+            childId, datasets, dispatch, dataSetOrganization, file,
+        } = this.props;
 
         return (datasets.get(childId).get('childData').map(child => {
-            return (<TreeDatasetMember
-                member={child}
-                key={child}
-                parent={childId}
-                dispatch={dispatch}
-                viewerFile={file}
-                dataSetOrganization={dataSetOrganization}
-            />);
+            return (
+                <TreeDatasetMember
+                    member={child}
+                    key={child}
+                    parent={childId}
+                    dispatch={dispatch}
+                    viewerFile={file}
+                    dataSetOrganization={dataSetOrganization}
+                />
+            );
         }));
     }
 
     renderDialog() {
-        const { childId, DSPath, file, dispatch } = this.props;
+        const {
+            childId, DSPath, file, dispatch,
+        } = this.props;
         switch (this.state.dialog) {
             case CREATE_MEMBER:
                 return <CreateMemberDialog DSName={childId} dispatch={dispatch} dialogReturn={this.dialogReturn} />;
@@ -240,7 +245,8 @@ export class TreeDataset extends React.Component {
                         DSPath={DSPath}
                         dialogReturn={this.dialogReturn}
                         isOpenInViewer={TreeDataset.isOpenInViewer(childId, file)}
-                    />);
+                    />
+                );
             case RENAME_DATASET:
                 return (
                     <RenameDatasetDialog
@@ -248,7 +254,8 @@ export class TreeDataset extends React.Component {
                         dispatch={dispatch}
                         dialogReturn={this.dialogReturn}
                         isOpenInViewer={TreeDataset.isOpenInViewer(childId, file)}
-                    />);
+                    />
+                );
             default:
                 return null;
         }

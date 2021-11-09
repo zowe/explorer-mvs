@@ -13,11 +13,13 @@ import React from 'react';
 import UpperCaseTextField from '../UpperCaseTextField';
 
 const DatasetName = ({ updateName, ...props }) => {
-    return (<UpperCaseTextField
-        {...props}
-        label="New Dataset Name"
-        fieldChangedCallback={updateName}
-    />);
+    return (
+        <UpperCaseTextField
+            {...props}
+            label="New Dataset Name"
+            fieldChangedCallback={updateName}
+        />
+    );
 };
 
 export default DatasetName;

@@ -14,7 +14,6 @@ import AtlasDialog from '../AtlasDialog';
 import { renameDataset } from '../../../actions/treeDatasets';
 import UpperCaseTextField from '../UpperCaseTextField';
 
-
 export default class RenameDialog extends React.Component {
     constructor(props) {
         super(props);
@@ -37,15 +36,19 @@ export default class RenameDialog extends React.Component {
     }
 
     render() {
-        const { title, dialogReturn, dispatch, oldName, isOpenInViewer } = this.props;
+        const {
+            title, dialogReturn, dispatch, oldName, isOpenInViewer,
+        } = this.props;
 
-        const dialogContent = (<UpperCaseTextField
-            placeholder={'New name'}
-            fieldChangedCallback={this.updateName}
-            value={this.state.newName}
-            fullWidth={true}
-            autoFocus={true}
-        />);
+        const dialogContent = (
+            <UpperCaseTextField
+                placeholder="New name"
+                fieldChangedCallback={this.updateName}
+                value={this.state.newName}
+                fullWidth={true}
+                autoFocus={true}
+            />
+        );
 
         return (
             <div>

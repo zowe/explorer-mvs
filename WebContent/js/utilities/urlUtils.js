@@ -13,8 +13,8 @@ export function encodeURLComponent(URL) {
 }
 
 export function whichServer() {
-    let server = location.host;
-    if (location.hostname === 'tester.test.com') {
+    let server = global.location.host;
+    if (global.location.hostname === 'tester.test.com') {
         server = 'tester.test.com:7443';
     }
     return server;
@@ -27,12 +27,15 @@ export function atlasAction(endpoint, content) {
 export function atlasGet(endpoint) {
     const fetchParams = {
         method: 'GET',
-        headers: { 'Content-Type': 'application/json',
+        headers: {
+            'Content-Type': 'application/json',
             'Access-Control-Expose-Headers': 'ETag',
             'X-IBM-Attributes': 'base',
             'X-CSRF-ZOSMF-HEADER': '*',
-            'X-IBM-Response-Timeout': 60 },
-        credentials: 'include' };
+            'X-IBM-Response-Timeout': 60,
+        },
+        credentials: 'include',
+    };
     return atlasAction(endpoint, fetchParams);
 }
 
@@ -40,7 +43,8 @@ export function atlasDelete(endpoint) {
     const fetchParams = {
         method: 'DELETE',
         headers: { 'X-CSRF-ZOSMF-HEADER': '*' },
-        credentials: 'include' };
+        credentials: 'include',
+    };
     return atlasAction(endpoint, fetchParams);
 }
 
@@ -49,7 +53,8 @@ export function atlasPost(endpoint, body) {
         method: 'POST',
         body,
         headers: { 'Content-Type': 'application/json', 'X-CSRF-ZOSMF-HEADER': '*' },
-        credentials: 'include' };
+        credentials: 'include',
+    };
     return atlasAction(endpoint, fetchParams);
 }
 
@@ -67,6 +72,7 @@ export function atlasPut(endpoint, body, etag) {
         method: 'PUT',
         body,
         headers: header,
-        credentials: 'include' };
+        credentials: 'include',
+    };
     return atlasAction(endpoint, fetchParams);
 }

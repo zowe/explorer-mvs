@@ -12,7 +12,6 @@ import { constructAndPushMessage } from './snackbarNotifications';
 import { atlasPut } from '../utilities/urlUtils';
 import { checkForValidationFailure } from './validation';
 
-
 export const REQUEST_JOB_SUBMIT = 'REQUEST_JOB_SUBMIT';
 export const RECEIVE_JOB_SUBMIT_RESPONSE = 'RECEIVE_JOB_SUBMIT_RESPONSE';
 export const INVALIDATE_JOB_SUBMIT = 'INVALIDATE_JOB_SUBMIT';

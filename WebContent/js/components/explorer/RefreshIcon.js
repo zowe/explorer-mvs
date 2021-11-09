@@ -35,7 +35,8 @@ export default class RefreshIcon extends React.Component {
                     id="loading-icon"
                     size={iconSize}
                     style={iconStyle}
-                />);
+                />
+            );
         }
         return (
             <RefreshIconMui
@@ -45,7 +46,8 @@ export default class RefreshIcon extends React.Component {
                 onClick={this.handleSubmit}
                 tabIndex="0"
                 onKeyDown={this.handleKeyDown}
-            />);
+            />
+        );
     }
 }
 

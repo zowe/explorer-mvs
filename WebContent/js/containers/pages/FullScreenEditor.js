@@ -43,4 +43,3 @@ function mapStateToProps(state) {
 }
 const ConnectedFullScreenEditor = connect(mapStateToProps)(FullScreenEditor);
 export default ConnectedFullScreenEditor;
-
