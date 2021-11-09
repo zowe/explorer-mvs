@@ -23,27 +23,31 @@ export const requestedTreeDatasets = Map({
 export const treeDatasetsDSName = 'ATLAS.TEST.JCL';
 export const treeDatasetsDSName2 = 'ATLAS.TEST.HIST';
 
-export const treeDatasetsChildData = { items: [
-    'DEMOJOB',
-    'TSTJCICS',
-    'TSTJDB2',
-    'TSTJIMS',
-    'TSTJMQ',
-    'TSTJ0001',
-    'TSTJ0002',
-    'TSTJ0003',
-] };
+export const treeDatasetsChildData = {
+    items: [
+        'DEMOJOB',
+        'TSTJCICS',
+        'TSTJDB2',
+        'TSTJIMS',
+        'TSTJMQ',
+        'TSTJ0001',
+        'TSTJ0002',
+        'TSTJ0003',
+    ],
+};
 
-export const treeDatasetsChildData2 = { items: [
-    'DEMO',
-    'TSTJD',
-    'TSTJC',
-    'TSTJB',
-    'TSTJA',
-    'TSTJ1',
-    'TSTJ2',
-    'TSTJ3',
-] };
+export const treeDatasetsChildData2 = {
+    items: [
+        'DEMO',
+        'TSTJD',
+        'TSTJC',
+        'TSTJB',
+        'TSTJA',
+        'TSTJ1',
+        'TSTJ2',
+        'TSTJ3',
+    ],
+};
 
 export const receivedTreeDatasets = Map({
     datasets: Map({

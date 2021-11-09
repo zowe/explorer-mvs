@@ -49,12 +49,22 @@ export const restDSChildren = Map({
     DSPath: 'JCAIN',
 });
 
-export const DSChildData = { items: [
-    { dsname: 'JCAIN.ISPF.ISPPROF', blksz: '3120', catnm: 'CATALOG.T50111', cdate: '2021/07/08', dev: '3390', dsntp: 'PDS', dsorg: 'PO', edate: '***None***', extx: '1', lrecl: '80', migr: 'NO', mvol: 'N', ovf: 'NO', rdate: '2021/08/17', recfm: 'FB', sizex: '10', spacu: 'TRACKS', used: '20', vol: 'T50113', vols: 'T50113' },
-    { dsname: 'JCAIN.SPFLOG1.LIST', blksz: '129', catnm: 'CATALOG.T50111', cdate: '2021/07/09', dev: '3390', dsorg: 'PS', edate: '***None***', extx: '1', lrecl: '125', migr: 'NO', mvol: 'N', ovf: 'NO', rdate: '2021/08/17', recfm: 'VA', sizex: '9', spacu: 'BLOCKS', used: '11', vol: 'T50112', vols: 'T50112' },
-    { dsname: 'JCAIN.TEST.JCL', blksz: '32720', catnm: 'CATALOG.T50111', cdate: '2021/08/17', dev: '3390', dsntp: 'LIBRARY', dsorg: 'PO-E', edate: '***None***', extx: '1', lrecl: '80', migr: 'NO', mvol: 'N', ovf: 'NO', rdate: '2021/08/17', recfm: 'FB', sizex: '15', spacu: 'CYLINDERS', used: '3', vol: 'T50113', vols: 'T50113' },
-    { dsname: 'JCAIN.TEST.TE', blksz: '80', catnm: 'CATALOG.T50111', cdate: '2021/08/16', dev: '3390', dsntp: 'PDS', dsorg: 'PO', edate: '***None***', extx: '1', lrecl: '80', migr: 'NO', mvol: 'N', ovf: 'NO', rdate: '2021/08/17', recfm: 'FB', sizex: '300', spacu: 'TRACKS', used: '1', vol: 'T50112', vols: 'T50112' },
-] };
+export const DSChildData = {
+    items: [
+        {
+            dsname: 'JCAIN.ISPF.ISPPROF', blksz: '3120', catnm: 'CATALOG.T50111', cdate: '2021/07/08', dev: '3390', dsntp: 'PDS', dsorg: 'PO', edate: '***None***', extx: '1', lrecl: '80', migr: 'NO', mvol: 'N', ovf: 'NO', rdate: '2021/08/17', recfm: 'FB', sizex: '10', spacu: 'TRACKS', used: '20', vol: 'T50113', vols: 'T50113',
+        },
+        {
+            dsname: 'JCAIN.SPFLOG1.LIST', blksz: '129', catnm: 'CATALOG.T50111', cdate: '2021/07/09', dev: '3390', dsorg: 'PS', edate: '***None***', extx: '1', lrecl: '125', migr: 'NO', mvol: 'N', ovf: 'NO', rdate: '2021/08/17', recfm: 'VA', sizex: '9', spacu: 'BLOCKS', used: '11', vol: 'T50112', vols: 'T50112',
+        },
+        {
+            dsname: 'JCAIN.TEST.JCL', blksz: '32720', catnm: 'CATALOG.T50111', cdate: '2021/08/17', dev: '3390', dsntp: 'LIBRARY', dsorg: 'PO-E', edate: '***None***', extx: '1', lrecl: '80', migr: 'NO', mvol: 'N', ovf: 'NO', rdate: '2021/08/17', recfm: 'FB', sizex: '15', spacu: 'CYLINDERS', used: '3', vol: 'T50113', vols: 'T50113',
+        },
+        {
+            dsname: 'JCAIN.TEST.TE', blksz: '80', catnm: 'CATALOG.T50111', cdate: '2021/08/16', dev: '3390', dsntp: 'PDS', dsorg: 'PO', edate: '***None***', extx: '1', lrecl: '80', migr: 'NO', mvol: 'N', ovf: 'NO', rdate: '2021/08/17', recfm: 'FB', sizex: '300', spacu: 'TRACKS', used: '1', vol: 'T50112', vols: 'T50112',
+        },
+    ],
+};
 
 export const receivedDSChildrenTree = Map({
     id: ROOT_TREE_ID,
@@ -87,7 +97,6 @@ export const receivedDSChildrenAfterDelete = Map({
     DSPath: 'ATLAS',
 });
 
-
 export const receivedDSChildrenForRename = Map({
     id: ROOT_TREE_ID,
     DSChildren: Map({
@@ -107,7 +116,6 @@ export const receivedDSChildrenAfterRename = Map({
     isFetching: false,
     DSPath: 'ATLAS',
 });
-
 
 export const receivedDSMemberForRename = Map({
     id: ROOT_TREE_ID,

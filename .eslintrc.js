@@ -30,7 +30,7 @@ module.exports = {
         "jest": true,
         "mocha": true
     },
-    "parser": "babel-eslint",
+    "parser": "@babel/eslint-parser",
     "parserOptions": {
         "ecmaVersion": 6,
         "sourceType": "module",
