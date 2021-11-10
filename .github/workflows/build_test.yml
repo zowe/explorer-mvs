@@ -34,6 +34,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Validate package.json
+        uses: zowe-actions/shared-actions/validate-package-json@main
+
       - uses: zowe-actions/shared-actions/prepare-workflow@main
 
       - uses: zowe-actions/shared-actions/docker-prepare@main
@@ -273,6 +276,9 @@ jobs:
     steps: 
       - name: '[Prep 1] Checkout'
         uses: actions/checkout@v2
+
+      - name: Validate package.json
+        uses: zowe-actions/shared-actions/validate-package-json@main
 
       - name: '[Prep 2] Cache node modules'
         uses: actions/cache@v2
