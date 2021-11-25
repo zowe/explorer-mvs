@@ -305,11 +305,6 @@ jobs:
         with:
           node-version: 10.18.1
 
-      - name: '[Prep extra] explorer-mvs exclusive - upgrade npm to v7'
-        run: |
-          npm install -g npm
-          npm -v
-
       - name: '[Setup] NodeJS project setup'
         uses: zowe-actions/nodejs-actions/setup@main
         with:
