@@ -32,8 +32,6 @@ Example commands:
 # pull image
 docker pull zowe-docker-release.jfrog.io/ompzowe/explorer-mvs:latest
 # start container
-docker run -it --rm -p 8548:8548 \
-    -e KEYSTORE_KEY=/component/explorer-ui-server/configs/server.key \
-    -e KEYSTORE_CERTIFICATE=/component/explorer-ui-server/configs/server.cert \
+docker run -it --rm \
     zowe-docker-release.jfrog.io/ompzowe/explorer-mvs:latest
 ```

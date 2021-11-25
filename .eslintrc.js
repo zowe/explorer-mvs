@@ -25,6 +25,7 @@ module.exports = {
         "jsx-a11y/no-static-element-interactions":0,
         "lines-between-class-members": ["error", "always"],
         "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
+        "no-redeclare": [2, {"builtinGlobals": false}],
         "import/no-cycle": "off"
     },
     "env": {

@@ -2,6 +2,7 @@
 name: explorer-mvs
 # Component identifier. This identifier matches artifact path in Zowe Artifactory https://zowe.jfrog.io/.
 id: org.zowe.explorer-mvs
+version: 2.0.0
 # Component version is defined in gradle.properties for Gradle project
 # Human readable component name
 title: MVS Explorer
@@ -16,13 +17,6 @@ build:
   number: "{{build.number}}"
   commitHash: "{{build.commitHash}}"
   timestamp: "{{build.timestamp}}"
-commands:
-  start: bin/start.sh
-configs:
-  baseUri: "/ui/v1/explorer-mvs"
-apimlServices:
-  static:
-  - file: apiml-static-registration.yaml.template
 appfwPlugins:
 - path: "."
   

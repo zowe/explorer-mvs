@@ -1,6 +1,6 @@
 {
   "name": "explorer-mvs",
-  "version": "1.0.18",
+  "version": "2.0.0",
   "directories": {
       "test": "tests"
   },
@@ -12,9 +12,9 @@
       "orion-editor-component": "0.0.14",
       "prop-types": "15.7.2",
       "query-string": "6.8.2",
-      "react": "16.8.2",
+      "react": "16.14.0",
       "react-contextmenu": "2.10.0",
-      "react-dom": "16.8.2",
+      "react-dom": "16.14.0",
       "react-redux": "5.1.1",
       "react-router": "5.0.1",
       "react-router-dom": "5.0.1",
@@ -36,7 +36,6 @@
       "@babel/plugin-proposal-decorators": "7.15.8",
       "@babel/preset-env": "7.15.8",
       "@babel/preset-react": "7.14.5",
-      "babel-preset-stage-0": "6.24.1",
       "@babel/register": "7.15.3",
       "chai": "4.2.0",
       "chai-things": "0.2.0",
@@ -121,8 +120,7 @@
   "license": "EPL-2.0",
   "config": {
       "pluginId": "org.zowe.explorer-mvs",
-      "pluginName": "MVS Explorer",
-      "baseuri": "/ui/v1/explorer-mvs"
+      "pluginName": "MVS Explorer"
   },
   "proxy": {
       "target": "https://tvt5011.svl.ibm.com:7554"
