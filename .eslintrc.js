@@ -15,7 +15,10 @@ module.exports = {
         "arrow-body-style": ["error", "always"],
         "arrow-parens": ["error", "as-needed"],
         "react/jsx-boolean-value":["error", "always"],
-        "max-len": ["error", 180],
+        "react/destructuring-assignment": "off",
+        "react/jsx-props-no-spreading": "off",
+        "react/no-unused-state":"off",
+        "max-len": ["error", 200],
         "jsx-a11y/label-has-for": 0,
         "react/require-default-props": 0,
         "no-underscore-dangle":0,
@@ -23,6 +26,7 @@ module.exports = {
         "lines-between-class-members": ["error", "always"],
         "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
         "no-redeclare": [2, {"builtinGlobals": false}]
+        "import/no-cycle": "off"
     },
     "env": {
         "browser": true,

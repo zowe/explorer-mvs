@@ -48,15 +48,6 @@ export default class TreeDatasetMember extends React.Component {
         };
     }
 
-    getDataSetAndMemberName = () => {
-        const { parent, member } = this.props;
-        return `${parent}(${member})`;
-    }
-
-    dialogReturn = () => {
-        this.setState({ dialog: NO_DIALOG });
-    }
-
     handleCreateMember = () => {
         this.setState({ dialog: CREATE_MEMBER });
     }
@@ -70,6 +61,15 @@ export default class TreeDatasetMember extends React.Component {
         if (e.key === 'Enter') {
             this.handleEdit();
         }
+    }
+
+    dialogReturn = () => {
+        this.setState({ dialog: NO_DIALOG });
+    }
+
+    getDataSetAndMemberName = () => {
+        const { parent, member } = this.props;
+        return `${parent}(${member})`;
     }
 
     handleDeleteDataset = () => {
@@ -98,7 +98,8 @@ export default class TreeDatasetMember extends React.Component {
                         DSPath={parent}
                         dialogReturn={this.dialogReturn}
                         isOpenInViewer={TreeDataset.isOpenInViewer(this.getDataSetAndMemberName(), viewerFile)}
-                    />);
+                    />
+                );
             }
             case RENAME_MEMBER: {
                 return (
@@ -108,7 +109,8 @@ export default class TreeDatasetMember extends React.Component {
                         DSPath={parent}
                         dialogReturn={this.dialogReturn}
                         isOpenInViewer={TreeDataset.isOpenInViewer(this.getDataSetAndMemberName(), viewerFile)}
-                    />);
+                    />
+                );
             }
             default:
                 return null;

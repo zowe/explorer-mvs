@@ -76,6 +76,26 @@ export default class CreateDatasetDialog extends React.Component {
         };
     }
 
+    handlePresetChange = event => {
+        this.setState({ preset: event.target.value });
+        this.setState({ type: CreateDatasetDialog.getTypeFromDsorg(PRESETS.get(event.target.value).dataSetOrganization) });
+        this.setState({ allocationUnit: PRESETS.get(event.target.value).allocationUnit });
+        this.setState({ primary: PRESETS.get(event.target.value).primary });
+        this.setState({ secondary: PRESETS.get(event.target.value).secondary });
+        this.setState({ directoryBlocks: PRESETS.get(event.target.value).directoryBlocks });
+        this.setState({ recordFormat: PRESETS.get(event.target.value).recordFormat });
+        this.setState({ blockSize: PRESETS.get(event.target.value).blockSize });
+        this.setState({ recordLength: PRESETS.get(event.target.value).recordLength });
+    }
+
+    handleTypeChange = event => {
+        this.setState({ type: event.target.value });
+    }
+
+    handleInputChange({ target }) {
+        this.setState({ [target.name]: target.value });
+    }
+
     submitAction = () => {
         const { DSPath } = this.props;
         let properties = Map({
@@ -100,34 +120,14 @@ export default class CreateDatasetDialog extends React.Component {
         return createDataset(properties, DSPath);
     }
 
-    handlePresetChange = event => {
-        this.setState({ preset: event.target.value });
-        this.setState({ type: CreateDatasetDialog.getTypeFromDsorg(PRESETS.get(event.target.value).dataSetOrganization) });
-        this.setState({ allocationUnit: PRESETS.get(event.target.value).allocationUnit });
-        this.setState({ primary: PRESETS.get(event.target.value).primary });
-        this.setState({ secondary: PRESETS.get(event.target.value).secondary });
-        this.setState({ directoryBlocks: PRESETS.get(event.target.value).directoryBlocks });
-        this.setState({ recordFormat: PRESETS.get(event.target.value).recordFormat });
-        this.setState({ blockSize: PRESETS.get(event.target.value).blockSize });
-        this.setState({ recordLength: PRESETS.get(event.target.value).recordLength });
-    }
-
-    handleTypeChange = event => {
-        this.setState({ type: event.target.value });
+    handleAlcunitChange = event => {
+        this.setState({ allocationUnit: event.target.value });
     }
 
     updateName(newValue) {
         this.setState({
             dsname: newValue,
         });
-    }
-
-    handleInputChange({ target }) {
-        this.setState({ [target.name]: target.value });
-    }
-
-    handleAlcunitChange = event => {
-        this.setState({ allocationUnit: event.target.value });
     }
 
     render() {
@@ -184,12 +184,16 @@ export default class CreateDatasetDialog extends React.Component {
                                     id={ALLOCATION_UNITS.Tracks}
                                     value={ALLOCATION_UNITS.Tracks}
                                     key={ALLOCATION_UNITS.Tracks}
-                                >{ALLOCATION_UNITS.Tracks}</MenuItem>
+                                >
+                                    {ALLOCATION_UNITS.Tracks}
+                                </MenuItem>
                                 <MenuItem
                                     id={ALLOCATION_UNITS.Cylinders}
                                     value={ALLOCATION_UNITS.Cylinders}
                                     key={ALLOCATION_UNITS.Cylinders}
-                                >{ALLOCATION_UNITS.Cylinders}</MenuItem>
+                                >
+                                    {ALLOCATION_UNITS.Cylinders}
+                                </MenuItem>
                             </Select>
                         </FormControl>
                     </div>
@@ -243,8 +247,8 @@ export default class CreateDatasetDialog extends React.Component {
                         style={{ ...floatRightStyle, ...halfWidthStyle }}
                     />
                 </div>
-            </div>);
-
+            </div>
+        );
 
         return (
             <AtlasDialog

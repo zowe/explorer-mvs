@@ -67,10 +67,6 @@ class Editor extends React.Component {
         document.title = title;
     }
 
-    getContent = content => {
-        this.setState({ currentContent: content });
-    }
-
     handleChangeSyntax(syntax) {
         this.setState({ syntax });
     }
@@ -82,6 +78,10 @@ class Editor extends React.Component {
 
     handleSaveAs() {
         this.setState({ dialog: SAVE_AS_DATASET });
+    }
+
+    getContent = content => {
+        this.setState({ currentContent: content });
     }
 
     dialogReturn = () => {
@@ -100,13 +100,15 @@ class Editor extends React.Component {
         const { dispatch, file, etag } = this.props;
         switch (this.state.dialog) {
             case SAVE_AS_DATASET:
-                return (<DatasetSaveAsDialog
-                    file={file}
-                    content={this.state.currentContent}
-                    etag={etag}
-                    dispatch={dispatch}
-                    dialogReturn={this.dialogReturn}
-                />);
+                return (
+                    <DatasetSaveAsDialog
+                        file={file}
+                        content={this.state.currentContent}
+                        etag={etag}
+                        dispatch={dispatch}
+                        dialogReturn={this.dialogReturn}
+                    />
+                );
             default:
                 return null;
         }
@@ -134,8 +136,8 @@ class Editor extends React.Component {
                             content={content}
                             syntax={this.state.syntax}
                             passContentToParent={this.getContent}
-                            languageFilesHost={location.host}
-                            fullscreen={!!location}
+                            languageFilesHost={window.location.host}
+                            fullscreen={!!window.location}
                             editorTopOffset={48}
                             editorReady={this.editorReady}
                         />

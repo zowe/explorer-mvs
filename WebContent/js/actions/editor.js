@@ -9,8 +9,10 @@
  */
 
 import { fetchDatasetTreeChildren } from './treeDS';
-import { fetchDSMembers } from '../actions/treeDatasets';
-import { atlasGet, atlasPut, atlasPost, encodeURLComponent } from '../utilities/urlUtils';
+import { fetchDSMembers } from './treeDatasets';
+import {
+    atlasGet, atlasPut, atlasPost, encodeURLComponent,
+} from '../utilities/urlUtils';
 import { constructAndPushMessage } from './snackbarNotifications';
 import { checkForValidationFailure } from './validation';
 

@@ -32,8 +32,8 @@ describe('Reducer: jobSubmitter', () => {
             message: new Map({
                 message: `${jobSubmitterResources.receivedJob.get('response').get('jobName')} Submitted, id=${jobSubmitterResources.receivedJob.get('response').get('jobId')}`,
                 messageType: jobSubmitterActions.JOB_MESSAGE_TYPE,
-                messageLink: `/#/filterJobs?owner=${jobSubmitterResources.receivedJob.get('response').get('owner')}` +
-                                `&jobName=${jobSubmitterResources.receivedJob.get('response').get('jobName')}`,
+                messageLink: `/#/filterJobs?owner=${jobSubmitterResources.receivedJob.get('response').get('owner')}`
+                                + `&jobName=${jobSubmitterResources.receivedJob.get('response').get('jobName')}`,
             }),
         };
         expect(jobSubmitter(jobSubmitterResources.submittedJob, action)).toEqual(jobSubmitterResources.receivedJob);

@@ -21,7 +21,8 @@ import {
     INVALIDATE_CONTENT,
     REQUEST_CONTENT,
     RECEIVE_CONTENT,
-    UPDATE_EDITOR_FILE_NAME } from '../actions/editor';
+    UPDATE_EDITOR_FILE_NAME,
+} from '../actions/editor';
 
 import { hasMember, parseFileName } from '../utilities/fileHelper';
 
@@ -81,7 +82,7 @@ export default function editor(state = INITIAL_EDITOR_STATE, action) {
                 etag: action.etag,
             });
         case UPDATE_EDITOR_FILE_NAME: {
-            let newName = action.newName;
+            let { newName } = action;
             const file = state.get('file');
             // Only DSName Updated
             if (hasMember(state.get('file')) && !hasMember(newName)) {

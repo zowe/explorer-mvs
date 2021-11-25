@@ -16,7 +16,8 @@ import {
     RESET_DS_TREE_CHILDREN,
     REMOVE_DATASET,
     RENAME_DATASET,
-    INVALIDATE_DS_TREE_CHILDREN } from '../actions/treeDS';
+    INVALIDATE_DS_TREE_CHILDREN,
+} from '../actions/treeDS';
 
 export const ROOT_TREE_ID = 'treeDS';
 const INITIAL_TREE_STATE = Map({

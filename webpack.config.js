@@ -62,12 +62,11 @@ const rules = [
                 presets: ['@babel/react', '@babel/preset-env'],
                 plugins: [['react-html-attrs'], ['@babel/plugin-proposal-decorators',{ 'legacy': true}]],
             },
-    },
+        },        
         include: [
             path.join(__dirname, 'WebContent'),
             path.join(__dirname, 'tests'),
         ],
-        
     },
     {
         test: /\.(png|jpg|svg)$/,

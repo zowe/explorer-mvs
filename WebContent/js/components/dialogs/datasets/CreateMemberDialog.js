@@ -36,12 +36,14 @@ export default class CreateMemberDialog extends React.Component {
     }
 
     render() {
-        const dialogContent = (<UpperCaseTextField
-            label="New Member Name"
-            fieldChangedCallback={this.updateName}
-            fullWidth={true}
-            autoFocus={true}
-        />);
+        const dialogContent = (
+            <UpperCaseTextField
+                label="New Member Name"
+                fieldChangedCallback={this.updateName}
+                fullWidth={true}
+                autoFocus={true}
+            />
+        );
 
         return (
             <AtlasDialog
