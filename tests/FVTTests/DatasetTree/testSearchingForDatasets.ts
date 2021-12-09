@@ -81,7 +81,6 @@ describe('Test searching for datasets', function () {
         it('Should change refresh icon to loading and then back to refresh when clicking refresh icon', async () => {
             const refreshIcon: WebElement = await driver.findElement(By.id('refresh-icon'));
             await refreshIcon.click();
-            await driver.sleep(500); //Wait for dataset members to start fetching
             expect(await testRefreshIconTransition(driver)).to.be.true;
         });
 
