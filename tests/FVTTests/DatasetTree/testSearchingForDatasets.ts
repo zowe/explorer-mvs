@@ -71,16 +71,15 @@ describe('Test searching for datasets', function () {
             });
             return allQualifiersMatch;
         }
-
-        it('Should show loading icon after changing qualifier field then go back to refresh icon', async () => {
-            const qualifierField: WebElement = await driver.findElement(By.id('datasets-qualifier-field'));
-            await qualifierField.sendKeys('abc');
-            expect(await testRefreshIconTransition(driver)).to.be.true;
-        });
-
         it('Should change refresh icon to loading and then back to refresh when clicking refresh icon', async () => {
             const refreshIcon: WebElement = await driver.findElement(By.id('refresh-icon'));
             await refreshIcon.click();
+            expect(await testRefreshIconTransition(driver)).to.be.true;
+        });
+        
+        it('Should show loading icon after changing qualifier field then go back to refresh icon', async () => {
+            const qualifierField: WebElement = await driver.findElement(By.id('datasets-qualifier-field'));
+            await qualifierField.sendKeys('abc');
             expect(await testRefreshIconTransition(driver)).to.be.true;
         });
 
