@@ -81,16 +81,19 @@ describe('Test searching for datasets', function () {
         it('Should change refresh icon to loading and then back to refresh when clicking refresh icon', async () => {
             const refreshIcon: WebElement = await driver.findElement(By.id('refresh-icon'));
             await refreshIcon.click();
+            console.log("clicked the referesh icon");
             expect(await testRefreshIconTransition(driver)).to.be.true;
         });
 
         async function testRefreshIconTransition(driver) {
             try {
+                console.log("trying to locate the loading-icon");
                 await driver.wait(until.elementLocated(By.id('loading-icon')), 10000);
             } catch(err) {
                 console.log('[testRefreshIconTransition] fail on loading-icon not found');
                 return false;
             }
+            console.log("trying to locate the refresh-icon");
             await driver.wait(until.elementLocated(By.id('refresh-icon')), 30000);
             const newRefreshIcon: WebElement[] = await driver.findElements(By.id('refresh-icon'));
             if (newRefreshIcon.length !== 1) {
