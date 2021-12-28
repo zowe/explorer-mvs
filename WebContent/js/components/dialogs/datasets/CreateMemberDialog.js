@@ -21,6 +21,7 @@ export default class CreateMemberDialog extends React.Component {
 
         this.state = {
             memberName: '',
+            disableSubmit: false,
         };
     }
 
@@ -33,6 +34,14 @@ export default class CreateMemberDialog extends React.Component {
         this.setState({
             memberName: newValue,
         });
+        // disable the Submit, when PDS member name has length more than 8
+        const regex = /^([A-Z#@$][A-Z0-9#@$-]{0,7})/g;
+        const found = newValue.match(regex);
+        if (found != null && found[0] === newValue) {
+            this.state.disableSubmit = false;
+        } else {
+            this.state.disableSubmit = true;
+        }
     }
 
     render() {
@@ -52,6 +61,7 @@ export default class CreateMemberDialog extends React.Component {
                 dialogReturn={this.props.dialogReturn}
                 dispatch={this.props.dispatch}
                 dialogContent={dialogContent}
+                disableSubmit={this.state.disableSubmit}
             />
         );
     }

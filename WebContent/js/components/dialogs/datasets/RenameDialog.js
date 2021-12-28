@@ -21,6 +21,7 @@ export default class RenameDialog extends React.Component {
 
         this.state = {
             newName: props.oldName,
+            disableSubmit: false,
         };
     }
 
@@ -33,6 +34,26 @@ export default class RenameDialog extends React.Component {
         this.setState({
             newName: newValue,
         });
+        // check for the validity of Dataset Member Name
+        if (this.props.title.includes('Rename Dataset Member')) {
+            const newMemeberName = newValue.substring(newValue.indexOf('('), newValue.length);
+            const regex = /^(\([A-Z#@$][A-Z0-9#@$-]{0,7}\))/g;
+            const found = newMemeberName.match(regex);
+            if (found != null && found[0] === newMemeberName) {
+                this.state.disableSubmit = false;
+            } else {
+                this.state.disableSubmit = true;
+            }
+        // check for the validity of Dataset Name
+        } else {
+            const regex = /^([A-Z#@$][A-Z0-9#@$-]{0,7}(\.[A-Z#@$][A-Z0-9#@$-]{0,7}){0,3})/g;
+            const found = newValue.match(regex);
+            if (found != null && found[0] === newValue) {
+                this.state.disableSubmit = false;
+            } else {
+                this.state.disableSubmit = true;
+            }
+        }
     }
 
     render() {
@@ -60,6 +81,7 @@ export default class RenameDialog extends React.Component {
                     dialogContent={dialogContent}
                     oldName={oldName}
                     isOpenInViewer={isOpenInViewer}
+                    disableSubmit={this.state.disableSubmit}
                 />
             </div>
         );

@@ -31,6 +31,7 @@ export default class DatasetSaveAsDialog extends React.Component {
         this.state = {
             newDSName: '',
             newDSMember: '',
+            disableSubmit: false,
         };
     }
 
@@ -49,12 +50,28 @@ export default class DatasetSaveAsDialog extends React.Component {
         this.setState({
             newDSName: newValue,
         });
+        // validate the DataSetName
+        const regex = /^([A-Z#@$][A-Z0-9#@$-]{0,7}(\.[A-Z#@$][A-Z0-9#@$-]{0,7}){0,3})/g;
+        const found = newValue.match(regex);
+        if (found != null && found[0] === newValue) {
+            this.state.disableSubmit = false;
+        } else {
+            this.state.disableSubmit = true;
+        }
     }
 
     updateMember(newValue) {
         this.setState({
             newDSMember: newValue,
         });
+        // disable the Submit, when PDS member name is invalid
+        const regex = /^([A-Z#@$][A-Z0-9#@$-]{0,7})/g;
+        const found = newValue.match(regex);
+        if (found != null && found[0] === newValue) {
+            this.state.disableSubmit = false;
+        } else {
+            this.state.disableSubmit = true;
+        }
     }
 
     render() {
@@ -88,6 +105,7 @@ export default class DatasetSaveAsDialog extends React.Component {
                 dispatch={dispatch}
                 dialogContent={DatasetSaveAsDialog.isMember(file) ? dialogContentMember : dialogContentDataset}
                 bodyStyle={{ overflowY: 'auto' }}
+                disableSubmit={this.state.disableSubmit}
             />
         );
     }
