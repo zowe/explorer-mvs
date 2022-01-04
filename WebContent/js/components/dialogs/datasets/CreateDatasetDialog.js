@@ -73,6 +73,7 @@ export default class CreateDatasetDialog extends React.Component {
             recordFormat: PRESETS.get('JCL').recordFormat,
             blockSize: PRESETS.get('JCL').blockSize,
             recordLength: PRESETS.get('JCL').recordLength,
+            disableSubmit: false,
         };
     }
 
@@ -128,6 +129,14 @@ export default class CreateDatasetDialog extends React.Component {
         this.setState({
             dsname: newValue,
         });
+        // disable the Submit, when DS name length exceeds 44 characters or any level has more than 8 characters
+        const regex = /^([A-Z#@$][A-Z0-9#@$-]{0,7}(\.[A-Z#@$][A-Z0-9#@$-]{0,7})*)/g;
+        const found = newValue.match(regex);
+        if (found != null && found[0] === newValue && newValue.length <= 44) {
+            this.state.disableSubmit = false;
+        } else {
+            this.state.disableSubmit = true;
+        }
     }
 
     render() {
@@ -258,6 +267,7 @@ export default class CreateDatasetDialog extends React.Component {
                 dispatch={this.props.dispatch}
                 dialogContent={dialogContent}
                 bodyStyle={{ overflowY: 'auto' }}
+                disableSubmit={this.state.disableSubmit}
             />
         );
     }

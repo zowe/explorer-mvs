@@ -44,11 +44,14 @@ export default class RenameDialog extends React.Component {
             } else {
                 this.state.disableSubmit = true;
             }
-        // check for the validity of Dataset Name
+        /*
+        * check for the validity of Dataset Name and
+        * disable the Submit, when Dataset name length exceeds 44 characters or any level has more than 8 characters
+        */
         } else {
-            const regex = /^([A-Z#@$][A-Z0-9#@$-]{0,7}(\.[A-Z#@$][A-Z0-9#@$-]{0,7}){0,3})/g;
+            const regex = /^([A-Z#@$][A-Z0-9#@$-]{0,7}(\.[A-Z#@$][A-Z0-9#@$-]{0,7})*)/g;
             const found = newValue.match(regex);
-            if (found != null && found[0] === newValue) {
+            if (found != null && found[0] === newValue && newValue.length <= 44) {
                 this.state.disableSubmit = false;
             } else {
                 this.state.disableSubmit = true;

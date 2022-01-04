@@ -50,10 +50,10 @@ export default class DatasetSaveAsDialog extends React.Component {
         this.setState({
             newDSName: newValue,
         });
-        // validate the DataSetName
-        const regex = /^([A-Z#@$][A-Z0-9#@$-]{0,7}(\.[A-Z#@$][A-Z0-9#@$-]{0,7}){0,3})/g;
+        // disable the Submit, when DS name length exceeds 44 characters or any level has more than 8 characters
+        const regex = /^([A-Z#@$][A-Z0-9#@$-]{0,7}(\.[A-Z#@$][A-Z0-9#@$-]{0,7})*)/g;
         const found = newValue.match(regex);
-        if (found != null && found[0] === newValue) {
+        if (found != null && found[0] === newValue && newValue.length <= 44) {
             this.state.disableSubmit = false;
         } else {
             this.state.disableSubmit = true;
