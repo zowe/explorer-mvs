@@ -4,7 +4,7 @@ All notable changes to the MVS-Explorer will be documented in this file.
 ## <1.0.19>
 
 ### New features and enhancements
-- Enable the submit button in Dialogs when Dataset or Dataset Member name is invalid
+- Diable the submit button & give a warning message, in Dialogs when Dataset or Dataset Member name is invalid
 
 ## <1.0.17>
 
