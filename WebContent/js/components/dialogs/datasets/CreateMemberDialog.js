@@ -22,6 +22,7 @@ export default class CreateMemberDialog extends React.Component {
         this.state = {
             memberName: '',
             disableSubmit: false,
+            warning: '',
         };
     }
 
@@ -39,15 +40,17 @@ export default class CreateMemberDialog extends React.Component {
         const found = newValue.match(regex);
         if (found != null && found[0] === newValue) {
             this.state.disableSubmit = false;
+            this.state.warning = '';
         } else {
             this.state.disableSubmit = true;
+            this.state.warning = ' (WARNING: Invalid Name)';
         }
     }
 
     render() {
         const dialogContent = (
             <UpperCaseTextField
-                label="New Member Name"
+                label={`New Member Name ${this.state.warning}`}
                 fieldChangedCallback={this.updateName}
                 fullWidth={true}
                 autoFocus={true}

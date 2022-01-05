@@ -32,11 +32,12 @@ export default class DatasetSaveAsDialog extends React.Component {
             newDSName: '',
             newDSMember: '',
             disableSubmit: false,
+            warning: '',
         };
     }
 
     componentDidMount() {
-        this.updateName('sr');
+        this.updateName('SR');
     }
 
     submitAction = () => {
@@ -55,8 +56,10 @@ export default class DatasetSaveAsDialog extends React.Component {
         const found = newValue.match(regex);
         if (found != null && found[0] === newValue && newValue.length <= 44) {
             this.state.disableSubmit = false;
+            this.state.warning = '';
         } else {
             this.state.disableSubmit = true;
+            this.state.warning = ' (WARNING: Invalid Name)';
         }
     }
 
@@ -69,8 +72,10 @@ export default class DatasetSaveAsDialog extends React.Component {
         const found = newValue.match(regex);
         if (found != null && found[0] === newValue) {
             this.state.disableSubmit = false;
+            this.state.warning = '';
         } else {
             this.state.disableSubmit = true;
+            this.state.warning = ' (WARNING: Invalid Name)';
         }
     }
 
@@ -79,7 +84,7 @@ export default class DatasetSaveAsDialog extends React.Component {
         const dialogContentMember = (
             <div>
                 <DatasetMemberName
-                    label="New Member Name"
+                    label={`New Member Name ${this.state.warning}`}
                     updateMember={this.updateMember}
                     fullWidth={true}
                     autoFocus={true}
@@ -89,7 +94,7 @@ export default class DatasetSaveAsDialog extends React.Component {
         const dialogContentDataset = (
             <div>
                 <DatasetName
-                    label="New Dataset Name"
+                    label={`New Dataset Name ${this.state.warning}`}
                     updateName={this.updateName}
                     fullWidth={true}
                     autoFocus={true}

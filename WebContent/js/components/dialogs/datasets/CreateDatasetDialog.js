@@ -74,6 +74,7 @@ export default class CreateDatasetDialog extends React.Component {
             blockSize: PRESETS.get('JCL').blockSize,
             recordLength: PRESETS.get('JCL').recordLength,
             disableSubmit: false,
+            warning: '',
         };
     }
 
@@ -134,8 +135,10 @@ export default class CreateDatasetDialog extends React.Component {
         const found = newValue.match(regex);
         if (found != null && found[0] === newValue && newValue.length <= 44) {
             this.state.disableSubmit = false;
+            this.state.warning = '';
         } else {
             this.state.disableSubmit = true;
+            this.state.warning = ' (WARNING: Invalid Name)';
         }
     }
 
@@ -162,7 +165,7 @@ export default class CreateDatasetDialog extends React.Component {
                 </div>
                 <div>
                     <DatasetName
-                        label="Dataset Name"
+                        label={`New Dataset Name ${this.state.warning}`}
                         updateName={this.updateName}
                         fullWidth={true}
                         autoFocus={true}

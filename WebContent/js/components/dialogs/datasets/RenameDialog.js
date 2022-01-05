@@ -22,6 +22,7 @@ export default class RenameDialog extends React.Component {
         this.state = {
             newName: props.oldName,
             disableSubmit: false,
+            warning: '',
         };
     }
 
@@ -41,8 +42,10 @@ export default class RenameDialog extends React.Component {
             const found = newMemeberName.match(regex);
             if (found != null && found[0] === newMemeberName) {
                 this.state.disableSubmit = false;
+                this.state.warning = '';
             } else {
                 this.state.disableSubmit = true;
+                this.state.warning = ' (WARNING: Invalid Name)';
             }
         /*
         * check for the validity of Dataset Name and
@@ -53,8 +56,10 @@ export default class RenameDialog extends React.Component {
             const found = newValue.match(regex);
             if (found != null && found[0] === newValue && newValue.length <= 44) {
                 this.state.disableSubmit = false;
+                this.state.warning = '';
             } else {
                 this.state.disableSubmit = true;
+                this.state.warning = ' (WARNING: Invalid Name)';
             }
         }
     }
@@ -67,6 +72,7 @@ export default class RenameDialog extends React.Component {
         const dialogContent = (
             <UpperCaseTextField
                 placeholder="New name"
+                label={`New Name ${this.state.warning}`}
                 fieldChangedCallback={this.updateName}
                 value={this.state.newName}
                 fullWidth={true}
