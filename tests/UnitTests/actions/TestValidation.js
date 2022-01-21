@@ -39,7 +39,7 @@ describe('Action: validation', () => {
             ];
 
             nock(LOCAL_HOST_SERVER_WITH_PROTOCOL)
-                .get('/api/v1/gateway/auth/query')
+                .get('/gateway/api/v1/auth/query')
                 .reply(200, validationResources.validationQueryResponse);
 
             const store = mockStore();
@@ -60,7 +60,7 @@ describe('Action: validation', () => {
             ];
 
             nock(LOCAL_HOST_SERVER_WITH_PROTOCOL)
-                .get('/api/v1/gateway/auth/query')
+                .get('/gateway/api/v1/auth/query')
                 .reply(401, validationResources.validationQueryInvalidTokenResponse);
 
             const store = mockStore();
@@ -85,7 +85,7 @@ describe('Action: validation', () => {
             ];
 
             nock(LOCAL_HOST_SERVER_WITH_PROTOCOL)
-                .post('/api/v1/gateway/auth/login')
+                .post('/gateway/api/v1/auth/login')
                 .reply(201, '');
 
             const store = mockStore();
@@ -108,7 +108,7 @@ describe('Action: validation', () => {
             ];
 
             nock(LOCAL_HOST_SERVER_WITH_PROTOCOL)
-                .post('/api/v1/gateway/auth/login')
+                .post('/gateway/api/v1/auth/login')
                 .reply(401, validationResources.validationLoginInvalidPasswordResponse);
 
             const store = mockStore();
