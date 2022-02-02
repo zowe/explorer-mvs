@@ -257,16 +257,19 @@ jobs:
         #   CUSTOM_FVT_SERVER_HOSTNAME:
 
       - name: "[Post Test 1] Print container service logs - discovery-service"
+        if: always()
         run: |
           cd .fvt
           docker compose logs discovery-service
       
       - name: "[Post Test 2] Print container service logs - gateway-service"
+        if: always()
         run: |
           cd .fvt
           docker compose logs gateway-service
 
       - name: "[Post Test 3] Print container service logs - explorer-mvs"
+        if: always()
         run: |
           cd .fvt
           docker compose logs explorer-mvs
