@@ -73,7 +73,7 @@ export default class CreateDatasetDialog extends React.Component {
             recordFormat: PRESETS.get('JCL').recordFormat,
             blockSize: PRESETS.get('JCL').blockSize,
             recordLength: PRESETS.get('JCL').recordLength,
-            disableSubmit: false,
+            disableSubmit: true,
             warning: '',
         };
     }

@@ -21,7 +21,7 @@ export default class CreateMemberDialog extends React.Component {
 
         this.state = {
             memberName: '',
-            disableSubmit: false,
+            disableSubmit: true,
             warning: '',
         };
     }
