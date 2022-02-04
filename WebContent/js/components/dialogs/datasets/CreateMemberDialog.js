@@ -11,6 +11,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { createMember } from '../../../actions/treeDatasets';
+import validateName from '../../../utilities/sharedUtils';
 import UpperCaseTextField from '../UpperCaseTextField';
 import AtlasDialog from '../AtlasDialog';
 
@@ -35,9 +36,8 @@ export default class CreateMemberDialog extends React.Component {
         this.setState({
             memberName: newValue,
         });
-        // disable the Submit, when PDS member name has length more than 8
-        const regex = /^([A-Z#@$][A-Z0-9#@$-]{0,7})/g;
-        const found = newValue.match(regex);
+        // disable the Submit, when PDS member name is invalid
+        const found = validateName('datasetMember', newValue);
         if (found != null && found[0] === newValue) {
             this.state.disableSubmit = false;
             this.state.warning = '';

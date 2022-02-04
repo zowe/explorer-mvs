@@ -11,6 +11,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { saveAsDataset, saveAsDatasetMember } from '../../../actions/editor';
+import validateName from '../../../utilities/sharedUtils';
 import DatasetName from './DatasetName';
 import DatasetMemberName from './DatasetMemberName';
 import AtlasDialog from '../AtlasDialog';
@@ -51,9 +52,8 @@ export default class DatasetSaveAsDialog extends React.Component {
         this.setState({
             newDSName: newValue,
         });
-        // disable the Submit, when DS name length exceeds 44 characters or any level has more than 8 characters
-        const regex = /^([A-Z#@$][A-Z0-9#@$-]{0,7}(\.[A-Z#@$][A-Z0-9#@$-]{0,7})*)/g;
-        const found = newValue.match(regex);
+        // disable the Submit, when DS name is invalid
+        const found = validateName('dataset', newValue);
         if (found != null && found[0] === newValue && newValue.length <= 44) {
             this.state.disableSubmit = false;
             this.state.warning = '';
@@ -68,8 +68,7 @@ export default class DatasetSaveAsDialog extends React.Component {
             newDSMember: newValue,
         });
         // disable the Submit, when PDS member name is invalid
-        const regex = /^([A-Z#@$][A-Z0-9#@$-]{0,7})/g;
-        const found = newValue.match(regex);
+        const found = validateName('datasetMember', newValue);
         if (found != null && found[0] === newValue) {
             this.state.disableSubmit = false;
             this.state.warning = '';

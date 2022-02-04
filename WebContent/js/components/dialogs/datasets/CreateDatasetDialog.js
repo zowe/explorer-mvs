@@ -17,6 +17,7 @@ import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import { Map } from 'immutable';
 import { createDataset } from '../../../actions/treeDatasets';
+import validateName from '../../../utilities/sharedUtils';
 import PRESETS from './datasetPresets';
 import AtlasDialog from '../AtlasDialog';
 import DatasetName from './DatasetName';
@@ -130,9 +131,8 @@ export default class CreateDatasetDialog extends React.Component {
         this.setState({
             dsname: newValue,
         });
-        // disable the Submit, when DS name length exceeds 44 characters or any level has more than 8 characters
-        const regex = /^([A-Z#@$][A-Z0-9#@$-]{0,7}(\.[A-Z#@$][A-Z0-9#@$-]{0,7})*)/g;
-        const found = newValue.match(regex);
+        // disable the Submit, when DS name is invalid
+        const found = validateName('dataset', newValue);
         if (found != null && found[0] === newValue && newValue.length <= 44) {
             this.state.disableSubmit = false;
             this.state.warning = '';

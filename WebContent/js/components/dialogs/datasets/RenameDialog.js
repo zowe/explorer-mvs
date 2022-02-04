@@ -12,6 +12,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import AtlasDialog from '../AtlasDialog';
 import { renameDataset } from '../../../actions/treeDatasets';
+import validateName from '../../../utilities/sharedUtils';
 import UpperCaseTextField from '../UpperCaseTextField';
 
 export default class RenameDialog extends React.Component {
@@ -35,11 +36,10 @@ export default class RenameDialog extends React.Component {
         this.setState({
             newName: newValue,
         });
-        // check for the validity of Dataset Member Name
+        // disable the Submit, when DS name is invalid
         if (this.props.title.includes('Rename Dataset Member')) {
             const newMemeberName = newValue.substring(newValue.indexOf('('), newValue.length);
-            const regex = /^(\([A-Z#@$][A-Z0-9#@$-]{0,7}\))/g;
-            const found = newMemeberName.match(regex);
+            const found = validateName('renameDatasetMember', newMemeberName);
             if (found != null && found[0] === newMemeberName) {
                 this.state.disableSubmit = false;
                 this.state.warning = '';
@@ -47,13 +47,9 @@ export default class RenameDialog extends React.Component {
                 this.state.disableSubmit = true;
                 this.state.warning = ' (WARNING: Invalid Name)';
             }
-        /*
-        * check for the validity of Dataset Name and
-        * disable the Submit, when Dataset name length exceeds 44 characters or any level has more than 8 characters
-        */
+        // disable the Submit, when Dataset name is invalid
         } else {
-            const regex = /^([A-Z#@$][A-Z0-9#@$-]{0,7}(\.[A-Z#@$][A-Z0-9#@$-]{0,7})*)/g;
-            const found = newValue.match(regex);
+            const found = validateName('dataset', newValue);
             if (found != null && found[0] === newValue && newValue.length <= 44) {
                 this.state.disableSubmit = false;
                 this.state.warning = '';
