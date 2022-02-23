@@ -133,7 +133,7 @@ export default class CreateDatasetDialog extends React.Component {
         });
         // disable the Submit, when DS name is invalid
         const found = validateName('dataset', newValue);
-        if (found != null && found[0] === newValue && newValue.length <= 44) {
+        if (found != null && found[0] === newValue) {
             this.state.disableSubmit = false;
             this.state.warning = '';
         } else {

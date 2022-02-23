@@ -17,5 +17,5 @@ export default function validateName(type, nameToValidate) {
         default: /* renameDatasetMember */
             regex = /^(\([A-Z#@$][A-Z0-9#@$-]{0,7}\))/g;
     }
-    return nameToValidate.match(regex);
+    return nameToValidate.length <= 44 ? nameToValidate.match(regex) : null;
 }
