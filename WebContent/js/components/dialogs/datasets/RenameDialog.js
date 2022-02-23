@@ -38,9 +38,9 @@ export default class RenameDialog extends React.Component {
         });
         // disable the Submit, when DS name is invalid
         if (this.props.title.includes('Rename Dataset Member')) {
-            const newMemeberName = newValue.substring(newValue.indexOf('('), newValue.length);
-            const found = validateName('renameDatasetMember', newMemeberName);
-            if (found != null && found[0] === newMemeberName) {
+            const newMemberName = newValue.substring(newValue.indexOf('('), newValue.length);
+            const found = validateName('renameDatasetMember', newMemberName);
+            if (found != null && found[0] === newMemberName) {
                 this.state.disableSubmit = false;
                 this.state.warning = '';
             } else {
