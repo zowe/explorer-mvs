@@ -80,7 +80,7 @@
         "webpack-dev-server": "4.7.3"
     },
     "scripts": {
-        "dev": "NODE_ENV='development' webpack serve --config ./webpack.config.js  --hot ",
+        "dev": "cross-env NODE_ENV='development' webpack serve --config ./webpack.config.js  --hot ",
         "start": "npm run build && cross-env NODE_ENV='development' OUTPUT_FOLDER='web' webpack --progress --color --watch ",
         "lint": "eslint ./WebContent/js/ ./tests/",
         "testWatch": "cross-env JUNIT_REPORT_PATH=target/report-fvt.xml mocha --watch --require @babel/register tests/UnitTests --recursive",
