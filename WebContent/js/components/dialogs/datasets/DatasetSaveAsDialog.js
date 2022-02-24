@@ -11,6 +11,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { saveAsDataset, saveAsDatasetMember } from '../../../actions/editor';
+import validateName from '../../../utilities/sharedUtils';
 import DatasetName from './DatasetName';
 import DatasetMemberName from './DatasetMemberName';
 import AtlasDialog from '../AtlasDialog';
@@ -31,11 +32,13 @@ export default class DatasetSaveAsDialog extends React.Component {
         this.state = {
             newDSName: '',
             newDSMember: '',
+            disableSubmit: false,
+            warning: '',
         };
     }
 
     componentDidMount() {
-        this.updateName('sr');
+        this.updateName('SR');
     }
 
     submitAction = () => {
@@ -49,12 +52,30 @@ export default class DatasetSaveAsDialog extends React.Component {
         this.setState({
             newDSName: newValue,
         });
+        // disable the Submit, when DS name is invalid
+        const found = validateName('dataset', newValue);
+        if (found != null && found[0] === newValue) {
+            this.state.disableSubmit = false;
+            this.state.warning = '';
+        } else {
+            this.state.disableSubmit = true;
+            this.state.warning = ' (WARNING: Invalid Name)';
+        }
     }
 
     updateMember(newValue) {
         this.setState({
             newDSMember: newValue,
         });
+        // disable the Submit, when PDS member name is invalid
+        const found = validateName('datasetMember', newValue);
+        if (found != null && found[0] === newValue) {
+            this.state.disableSubmit = false;
+            this.state.warning = '';
+        } else {
+            this.state.disableSubmit = true;
+            this.state.warning = ' (WARNING: Invalid Name)';
+        }
     }
 
     render() {
@@ -62,7 +83,7 @@ export default class DatasetSaveAsDialog extends React.Component {
         const dialogContentMember = (
             <div>
                 <DatasetMemberName
-                    label="New Member Name"
+                    label={`New Member Name ${this.state.warning}`}
                     updateMember={this.updateMember}
                     fullWidth={true}
                     autoFocus={true}
@@ -72,7 +93,7 @@ export default class DatasetSaveAsDialog extends React.Component {
         const dialogContentDataset = (
             <div>
                 <DatasetName
-                    label="New Dataset Name"
+                    label={`New Dataset Name ${this.state.warning}`}
                     updateName={this.updateName}
                     fullWidth={true}
                     autoFocus={true}
@@ -88,6 +109,7 @@ export default class DatasetSaveAsDialog extends React.Component {
                 dispatch={dispatch}
                 dialogContent={DatasetSaveAsDialog.isMember(file) ? dialogContentMember : dialogContentDataset}
                 bodyStyle={{ overflowY: 'auto' }}
+                disableSubmit={this.state.disableSubmit}
             />
         );
     }
