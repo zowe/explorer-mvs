@@ -2,16 +2,16 @@ name: Build and Test Workflow
 on:
   push:
     branches:
-      - master
-      - v2.x/master
+      - v2.x/master 
   pull_request:
     types: [opened, synchronize]
   workflow_dispatch:
     inputs:
       PERFORM_RELEASE:
-        description: '[Release] perform release'
+        description: 'Perform release?'
         required: false
-        default: 'false'
+        default: false
+        type: boolean
 
 env:
   IMAGE_BASE_DIR: container
@@ -24,8 +24,6 @@ jobs:
       - name: check permission
         uses: zowe-actions/shared-actions/permission-check@main
         with:
-          user: ${{ github.actor }}
-          github-repo: ${{ github.repository }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
   validate-package-json:
@@ -218,14 +216,16 @@ jobs:
 
       - name: '[Prep 3] Prepare workflow'
         uses: zowe-actions/shared-actions/prepare-workflow@main
-        with:
-          github-user: ${{ github.actor }}
-          github-email: 'dummy-email@email.com'
 
       - name: '[Prep 4] Setup Node'
         uses: actions/setup-node@v2
         with:
           node-version: 10.18.1
+
+      # - name: '[Prep extra] explorer-mvs exclusive - upgrade npm to v7'
+      #   run: |
+      #     npm install -g npm
+      #     npm -v
 
       - name: '[Setup] NodeJS project setup'
         uses: zowe-actions/nodejs-actions/setup@main
@@ -241,22 +241,7 @@ jobs:
           "${{ needs.build-ubuntu-amd64.outputs.IMAGE_NAME_FULL_REMOTE }}"
           sleep 120
 
-      - name: "[Test 2] Print container service logs - discovery-service"
-        run: |
-          cd .fvt
-          docker compose logs discovery-service
-      
-      - name: "[Test 3] Print container service logs - gateway-service"
-        run: |
-          cd .fvt
-          docker compose logs gateway-service
-
-      - name: "[Test 4] Print container service logs - explorer-mvs"
-        run: |
-          cd .fvt
-          docker compose logs explorer-mvs
-
-      - name: "[Test 5] Start integration test"
+      - name: "[Test 2] Start integration test"
         run: |
           export ZOWE_USERNAME=${{ secrets.SSH_MARIST_USERNAMEP }}
           export ZOWE_PASSWORD=${{ secrets.SSH_MARIST_PASSWORDP }}
@@ -270,6 +255,24 @@ jobs:
         #   CUSTOM_FVT_ZOSMF_HOST:
         #   CUSTOM_FVT_ZOSMF_PORT:
         #   CUSTOM_FVT_SERVER_HOSTNAME:
+
+      - name: "[Post Test 1] Print container service logs - discovery-service"
+        if: always()
+        run: |
+          cd .fvt
+          docker compose logs discovery-service
+      
+      - name: "[Post Test 2] Print container service logs - gateway-service"
+        if: always()
+        run: |
+          cd .fvt
+          docker compose logs gateway-service
+
+      - name: "[Post Test 3] Print container service logs - explorer-mvs"
+        if: always()
+        run: |
+          cd .fvt
+          docker compose logs explorer-mvs
 
   regular-build:
     runs-on: ubuntu-latest
@@ -297,14 +300,16 @@ jobs:
           
       - name: '[Prep 4] Prepare workflow'
         uses: zowe-actions/shared-actions/prepare-workflow@main
-        with:
-          github-user: ${{ github.actor }}
-          github-email: 'dummy-email@email.com'
 
       - name: '[Prep 5] Setup Node'
         uses: actions/setup-node@v2
         with:
           node-version: 10.18.1
+
+      # - name: '[Prep extra] explorer-mvs exclusive - upgrade npm to v7'
+      #   run: |
+      #     npm install -g npm
+      #     npm -v
 
       - name: '[Setup] NodeJS project setup'
         uses: zowe-actions/nodejs-actions/setup@main
@@ -352,4 +357,4 @@ jobs:
         if: ${{ success() && github.event.inputs.PERFORM_RELEASE == 'true' && env.IS_RELEASE_BRANCH == 'true' && env.IS_FORMAL_RELEASE_BRANCH == 'true' && env.PRE_RELEASE_STRING == ''}}
         uses: zowe-actions/nodejs-actions/bump-version@main
         env: 
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.ZOWE_ROBOT_TOKEN }}
