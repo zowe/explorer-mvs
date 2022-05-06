@@ -67,6 +67,7 @@ export default class AtlasDialog extends React.Component {
                         ,
                         <Button
                             onClick={this.handleSubmit}
+                            disabled={this.props.disableSubmit}
                         >
                             Ok
                         </Button>
@@ -90,4 +91,5 @@ AtlasDialog.propTypes = {
     dispatch: PropTypes.func.isRequired,
     submitAction: PropTypes.func.isRequired,
     title: PropTypes.string.isRequired,
+    disableSubmit: PropTypes.bool,
 };

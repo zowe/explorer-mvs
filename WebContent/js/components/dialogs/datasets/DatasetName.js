@@ -12,11 +12,11 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import UpperCaseTextField from '../UpperCaseTextField';
 
-const DatasetName = ({ updateName, ...props }) => {
+const DatasetName = ({ updateName, label, ...props }) => {
     return (
         <UpperCaseTextField
             {...props}
-            label="New Dataset Name"
+            label={label}
             fieldChangedCallback={updateName}
         />
     );
@@ -26,4 +26,5 @@ export default DatasetName;
 
 DatasetName.propTypes = {
     updateName: PropTypes.func.isRequired,
+    label: PropTypes.string.isRequired,
 };

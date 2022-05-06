@@ -12,6 +12,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { createMember } from '../../../actions/treeDatasets';
 import UpperCaseTextField from '../UpperCaseTextField';
+import validateName from '../../../utilities/sharedUtils';
 import AtlasDialog from '../AtlasDialog';
 
 export default class CreateMemberDialog extends React.Component {
@@ -21,6 +22,8 @@ export default class CreateMemberDialog extends React.Component {
 
         this.state = {
             memberName: '',
+            disableSubmit: true,
+            warning: '',
         };
     }
 
@@ -33,12 +36,21 @@ export default class CreateMemberDialog extends React.Component {
         this.setState({
             memberName: newValue,
         });
+        // disable the Submit, when PDS member name is invalid
+        const found = validateName('datasetMember', newValue);
+        if (found != null && found[0] === newValue) {
+            this.state.disableSubmit = false;
+            this.state.warning = '';
+        } else {
+            this.state.disableSubmit = true;
+            this.state.warning = ' (WARNING: Invalid Name)';
+        }
     }
 
     render() {
         const dialogContent = (
             <UpperCaseTextField
-                label="New Member Name"
+                label={`New Member Name ${this.state.warning}`}
                 fieldChangedCallback={this.updateName}
                 fullWidth={true}
                 autoFocus={true}
@@ -52,6 +64,7 @@ export default class CreateMemberDialog extends React.Component {
                 dialogReturn={this.props.dialogReturn}
                 dispatch={this.props.dispatch}
                 dialogContent={dialogContent}
+                disableSubmit={this.state.disableSubmit}
             />
         );
     }

@@ -1,6 +1,9 @@
 # Change Log
 All notable changes to the MVS-Explorer will be documented in this file.
 
+## <2.0.1>
+### New features and enhancements
+- Diable the submit button & give a warning message, in Dialogs when Dataset or Dataset Member name is invalid
 
 ## <2.0.0>
 
