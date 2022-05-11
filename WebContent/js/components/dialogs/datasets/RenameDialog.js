@@ -12,6 +12,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import AtlasDialog from '../AtlasDialog';
 import { renameDataset } from '../../../actions/treeDatasets';
+import validateName from '../../../utilities/sharedUtils';
 import UpperCaseTextField from '../UpperCaseTextField';
 
 export default class RenameDialog extends React.Component {
@@ -21,6 +22,8 @@ export default class RenameDialog extends React.Component {
 
         this.state = {
             newName: props.oldName,
+            disableSubmit: false,
+            warning: '',
         };
     }
 
@@ -33,6 +36,28 @@ export default class RenameDialog extends React.Component {
         this.setState({
             newName: newValue,
         });
+        // disable the Submit, when DS name is invalid
+        if (this.props.title.includes('Rename Dataset Member')) {
+            const newMemberName = newValue.substring(newValue.indexOf('('), newValue.length);
+            const found = validateName('renameDatasetMember', newMemberName);
+            if (found != null && found[0] === newMemberName) {
+                this.state.disableSubmit = false;
+                this.state.warning = '';
+            } else {
+                this.state.disableSubmit = true;
+                this.state.warning = ' (WARNING: Invalid Name)';
+            }
+        // disable the Submit, when Dataset name is invalid
+        } else {
+            const found = validateName('dataset', newValue);
+            if (found != null && found[0] === newValue) {
+                this.state.disableSubmit = false;
+                this.state.warning = '';
+            } else {
+                this.state.disableSubmit = true;
+                this.state.warning = ' (WARNING: Invalid Name)';
+            }
+        }
     }
 
     render() {
@@ -43,6 +68,7 @@ export default class RenameDialog extends React.Component {
         const dialogContent = (
             <UpperCaseTextField
                 placeholder="New name"
+                label={`New Name ${this.state.warning}`}
                 fieldChangedCallback={this.updateName}
                 value={this.state.newName}
                 fullWidth={true}
@@ -60,6 +86,7 @@ export default class RenameDialog extends React.Component {
                     dialogContent={dialogContent}
                     oldName={oldName}
                     isOpenInViewer={isOpenInViewer}
+                    disableSubmit={this.state.disableSubmit}
                 />
             </div>
         );

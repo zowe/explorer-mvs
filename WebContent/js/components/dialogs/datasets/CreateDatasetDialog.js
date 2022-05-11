@@ -17,6 +17,7 @@ import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import { Map } from 'immutable';
 import { createDataset } from '../../../actions/treeDatasets';
+import validateName from '../../../utilities/sharedUtils';
 import PRESETS from './datasetPresets';
 import AtlasDialog from '../AtlasDialog';
 import DatasetName from './DatasetName';
@@ -73,6 +74,8 @@ export default class CreateDatasetDialog extends React.Component {
             recordFormat: PRESETS.get('JCL').recordFormat,
             blockSize: PRESETS.get('JCL').blockSize,
             recordLength: PRESETS.get('JCL').recordLength,
+            disableSubmit: true,
+            warning: '',
         };
     }
 
@@ -128,6 +131,15 @@ export default class CreateDatasetDialog extends React.Component {
         this.setState({
             dsname: newValue,
         });
+        // disable the Submit, when DS name is invalid
+        const found = validateName('dataset', newValue);
+        if (found != null && found[0] === newValue) {
+            this.state.disableSubmit = false;
+            this.state.warning = '';
+        } else {
+            this.state.disableSubmit = true;
+            this.state.warning = ' (WARNING: Invalid Name)';
+        }
     }
 
     render() {
@@ -153,7 +165,7 @@ export default class CreateDatasetDialog extends React.Component {
                 </div>
                 <div>
                     <DatasetName
-                        label="Dataset Name"
+                        label={`New Dataset Name ${this.state.warning}`}
                         updateName={this.updateName}
                         fullWidth={true}
                         autoFocus={true}
@@ -258,6 +270,7 @@ export default class CreateDatasetDialog extends React.Component {
                 dispatch={this.props.dispatch}
                 dialogContent={dialogContent}
                 bodyStyle={{ overflowY: 'auto' }}
+                disableSubmit={this.state.disableSubmit}
             />
         );
     }
