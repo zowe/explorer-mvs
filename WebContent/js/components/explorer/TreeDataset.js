@@ -21,6 +21,7 @@ import { Map } from 'immutable';
 import { fetchDSMembers, toggleDSNode } from '../../actions/treeDatasets';
 import { fetchDS } from '../../actions/editor';
 import { submitJob } from '../../actions/jobSubmitter';
+import { download } from '../../actions/download';
 import CreateMemberDialog from '../dialogs/datasets/CreateMemberDialog';
 import CreateDatasetDialog from '../dialogs/datasets/CreateDatasetDialog';
 import DeleteDatasetDialog from '../dialogs/datasets/DeleteDatasetDialog';
@@ -116,6 +117,11 @@ export class TreeDataset extends React.Component {
         this.setState({ dialog: RENAME_DATASET });
     }
 
+    handleDownload = (e, data) => {
+        const { dispatch } = this.props;
+        dispatch(download(data.action));
+    }
+
     /**
      * If we have a dataset we want to know if it has any children(members)
      */
@@ -167,6 +173,7 @@ export class TreeDataset extends React.Component {
                     handleCreateMember={() => { this.handleCreateMember(); }}
                     handleDeleteDataset={() => { this.handleDeleteDataset(); }}
                     handleRename={() => { this.handleRename(); }}
+                    handleDownload={() => { this.handleDownload(); }}
                 />
             </div>
         );
@@ -188,6 +195,7 @@ export class TreeDataset extends React.Component {
                     handleEdit={() => { this.handleEdit(); }}
                     handleJobSubmit={this.handleJobSubmit}
                     handleRename={this.handleRename}
+                    handleDownload={this.handleDownload}
                 />
             </div>
         );

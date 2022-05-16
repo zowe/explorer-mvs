@@ -15,7 +15,7 @@ import ErrorIcon from '@material-ui/icons/Error';
 import { ContextMenuTrigger } from 'react-contextmenu';
 import { fetchDS } from '../../actions/editor';
 import { submitJob } from '../../actions/jobSubmitter';
-
+import { download } from '../../actions/download';
 import CreateMemberDialog from '../dialogs/datasets/CreateMemberDialog';
 import DeleteDatasetMemberDialog from '../dialogs/datasets/DeleteDatasetMemberDialog';
 import DatasetMemberMenu from '../contextMenus/DatasetMemberMenu';
@@ -85,6 +85,11 @@ export default class TreeDatasetMember extends React.Component {
         this.setState({ dialog: RENAME_MEMBER });
     }
 
+    handleDownload = (e, data) => {
+        const { dispatch } = this.props;
+        dispatch(download(`${data.parent}(${data.action})`));
+    }
+
     renderDialog() {
         const { parent, viewerFile, dispatch } = this.props;
         switch (this.state.dialog) {
@@ -118,7 +123,7 @@ export default class TreeDatasetMember extends React.Component {
     }
 
     render() {
-        const { member } = this.props;
+        const { member , parent } = this.props;
         if (member !== UNAUTHORIZED_MESSAGE) {
             return (
                 <div key={member}>
@@ -137,11 +142,13 @@ export default class TreeDatasetMember extends React.Component {
                     </ContextMenuTrigger>
                     <DatasetMemberMenu
                         member={member}
+                        parent={parent}
                         handleEdit={() => { this.handleEdit(); }}
                         handleJobSubmit={() => { this.handleJobSubmit(); }}
                         handleRename={() => { this.handleRename(); }}
                         handleDeleteDataset={() => { this.handleDeleteDataset(); }}
                         handleCreateMember={() => { this.handleCreateMember(); }}
+                        handleDownload= {this.handleDownload}
                     />
                     {this.renderDialog()}
                 </div>

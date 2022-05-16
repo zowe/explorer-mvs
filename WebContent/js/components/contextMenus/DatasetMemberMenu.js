@@ -14,7 +14,7 @@ import { ContextMenu, MenuItem } from 'react-contextmenu';
 
 const DatasetMenuMember = props => {
     const {
-        member, handleCreateMember, handleEdit, handleDeleteDataset, handleJobSubmit, handleRename,
+        member, parent, handleCreateMember, handleEdit, handleDeleteDataset, handleJobSubmit, handleRename, handleDownload,
     } = props;
     return (
         <ContextMenu id={member}>
@@ -33,6 +33,9 @@ const DatasetMenuMember = props => {
             <MenuItem onClick={handleRename}>
                 Rename
             </MenuItem>
+            <MenuItem data={{ action: member, parent: parent}} onClick={handleDownload}>
+                Download
+            </MenuItem>
         </ContextMenu>
     );
 };
@@ -41,9 +44,11 @@ export default DatasetMenuMember;
 
 DatasetMenuMember.propTypes = {
     member: PropTypes.string.isRequired,
+    parent: PropTypes.string.isRequired,
     handleEdit: PropTypes.func.isRequired,
     handleCreateMember: PropTypes.func.isRequired,
     handleDeleteDataset: PropTypes.func.isRequired,
     handleJobSubmit: PropTypes.func.isRequired,
     handleRename: PropTypes.func.isRequired,
+    handleDownload: PropTypes.func.isRequired,
 };
