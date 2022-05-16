@@ -87,7 +87,7 @@ export default class TreeDatasetMember extends React.Component {
 
     handleDownload = (e, data) => {
         const { dispatch } = this.props;
-        dispatch(download(`${data.parent}(${data.action})`));
+        dispatch(download(`${data.actionParent}(${data.action})`));
     }
 
     renderDialog() {
@@ -123,7 +123,7 @@ export default class TreeDatasetMember extends React.Component {
     }
 
     render() {
-        const { member , parent } = this.props;
+        const { member, parent } = this.props;
         if (member !== UNAUTHORIZED_MESSAGE) {
             return (
                 <div key={member}>
@@ -148,7 +148,7 @@ export default class TreeDatasetMember extends React.Component {
                         handleRename={() => { this.handleRename(); }}
                         handleDeleteDataset={() => { this.handleDeleteDataset(); }}
                         handleCreateMember={() => { this.handleCreateMember(); }}
-                        handleDownload= {this.handleDownload}
+                        handleDownload={this.handleDownload}
                     />
                     {this.renderDialog()}
                 </div>

@@ -33,7 +33,7 @@ const DatasetMenuMember = props => {
             <MenuItem onClick={handleRename}>
                 Rename
             </MenuItem>
-            <MenuItem data={{ action: member, parent: parent}} onClick={handleDownload}>
+            <MenuItem data={{ action: member, actionParent: parent }} onClick={handleDownload}>
                 Download
             </MenuItem>
         </ContextMenu>
