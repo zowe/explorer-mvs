@@ -13,7 +13,9 @@ import React from 'react';
 import { ContextMenu, MenuItem } from 'react-contextmenu';
 
 const DatasetPartitionedMenu = props => {
-    const { childId, handleCreateDataset, handleCreateMember, handleDeleteDataset, handleRename } = props;
+    const {
+        childId, handleCreateDataset, handleCreateMember, handleDeleteDataset, handleRename,
+    } = props;
 
     return (
         <ContextMenu id={childId}>

@@ -9,8 +9,10 @@
  */
 
 import { fetchDatasetTreeChildren } from './treeDS';
-import { fetchDSMembers } from '../actions/treeDatasets';
-import { atlasGet, atlasPut, atlasPost, encodeURLComponent } from '../utilities/urlUtils';
+import { fetchDSMembers } from './treeDatasets';
+import {
+    atlasGet, atlasPut, atlasPost, encodeURLComponent,
+} from '../utilities/urlUtils';
 import { constructAndPushMessage } from './snackbarNotifications';
 import { checkForValidationFailure } from './validation';
 
@@ -38,25 +40,6 @@ const SAVE_FAIL_MESSAGE = 'Save failed for';
 const SAVE_SUCCESS_MESSAGE = 'Save success for';
 const GET_CONTENT_FAIL_MESSAGE = 'Get content failed for';
 
-
-function replaceAll(str, find, replace) {
-    return str.replace(new RegExp(find, 'g'), replace);
-}
-
-function encodeContentString(content) {
-    let newContent = replaceAll(content, /\\/, '\\\\'); // Escape backslashes
-    newContent = replaceAll(newContent, /"/, '\\"'); // Escape double quotes
-    // The new server interface is unable to accept setings with hex values
-    newContent = replaceAll(newContent, '\x0a', '\\n'); // Escape line feed
-    newContent = replaceAll(newContent, '\x0d', '\\r'); // Escape return
-    newContent = replaceAll(newContent, '\x09', '\\t'); // Escape tab
-    return newContent;
-}
-
-export function makeRecordsFromContent(content) {
-    return `{"records": "${encodeContentString(content)}"}`;
-}
-
 function requestDSContent(file) {
     return {
         type: REQUEST_CONTENT,
@@ -82,7 +65,7 @@ export function invalidateContent() {
 export function fetchDS(file) {
     return dispatch => {
         dispatch(requestDSContent(file));
-        const endpoint = `datasets/${encodeURIComponent(file)}/content`;
+        const endpoint = `/restfiles/ds/${encodeURIComponent(file)}`;
         let etag;
         return atlasGet(endpoint, {})
             .then(response => {
@@ -99,10 +82,10 @@ export function fetchDS(file) {
                 return response;
             })
             .then(response => {
-                return response.json();
+                return response.text();
             })
-            .then(json => {
-                return dispatch(receiveDSContent(file, json.records, etag));
+            .then(text => {
+                return dispatch(receiveDSContent(file, text, etag));
             })
             .catch(err => {
                 let { message } = err;
@@ -160,7 +143,7 @@ function invalidateEtagChange() {
 function getNewDatasetEtag(file) {
     return dispatch => {
         dispatch(requestEtag(file));
-        const endpoint = `datasets/${encodeURLComponent(file)}/content`;
+        const endpoint = `/restfiles/ds/${encodeURLComponent(file)}`;
         return atlasGet(endpoint)
             .then(response => {
                 return dispatch(checkForValidationFailure(response));
@@ -203,8 +186,8 @@ function invalidateSave() {
 export function saveDataset(file, content, etag) {
     return dispatch => {
         dispatch(requestSave(file));
-        const endpoint = `datasets/${encodeURLComponent(file)}/content`;
-        return atlasPut(endpoint, makeRecordsFromContent(content), etag)
+        const endpoint = `/restfiles/ds/${encodeURLComponent(file)}`;
+        return atlasPut(endpoint, content, etag)
             .then(response => {
                 return dispatch(checkForValidationFailure(response));
             })
@@ -242,8 +225,8 @@ function invalidateSaveAs() {
 export function saveAsDataset(file, newFile, newContent) {
     return dispatch => {
         dispatch(requestSaveAs(file, newFile));
-        return atlasPost(`datasets/${newFile}`,
-            `{"basedsn": "${file}", "records": "${encodeContentString(newContent)}"}`)
+        return atlasPost(`/restfiles/ds/${encodeURIComponent(newFile)}`,
+            `{"basedsn": "${file}", "records": "${newContent}"}`)
             .then(response => {
                 return dispatch(checkForValidationFailure(response));
             })
@@ -270,7 +253,7 @@ export function saveAsDatasetMember(DSName, newDSMember, newContent) {
     return dispatch => {
         const newDS = `${DSName}(${newDSMember})`;
         dispatch(requestSaveAs(newDS));
-        return atlasPut(`datasets/${newDS}/content`, makeRecordsFromContent(newContent), null)
+        return atlasPut(`/restfiles/ds/${encodeURIComponent(newDS)}`, newContent, null)
             .then(response => {
                 return dispatch(checkForValidationFailure(response));
             })
@@ -311,7 +294,7 @@ function receiveDSAttributes(path, data) {
 export function fetchDatasetAttributes(path) {
     return dispatch => {
         dispatch(requestDSAttributes(path));
-        const contentURL = `datasets/${encodeURIComponent(path)}`;
+        const contentURL = `/restfiles/ds/${encodeURIComponent(path)}`;
         return atlasGet(contentURL)
             .then(response => {
                 return dispatch(checkForValidationFailure(response));

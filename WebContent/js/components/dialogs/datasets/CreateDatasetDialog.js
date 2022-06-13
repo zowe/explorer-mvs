@@ -17,6 +17,7 @@ import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import { Map } from 'immutable';
 import { createDataset } from '../../../actions/treeDatasets';
+import validateName from '../../../utilities/sharedUtils';
 import PRESETS from './datasetPresets';
 import AtlasDialog from '../AtlasDialog';
 import DatasetName from './DatasetName';
@@ -73,31 +74,9 @@ export default class CreateDatasetDialog extends React.Component {
             recordFormat: PRESETS.get('JCL').recordFormat,
             blockSize: PRESETS.get('JCL').blockSize,
             recordLength: PRESETS.get('JCL').recordLength,
+            disableSubmit: true,
+            warning: '',
         };
-    }
-
-    submitAction = () => {
-        const { DSPath } = this.props;
-        let properties = Map({
-            name: this.state.dsname,
-            dataSetOrganization: CreateDatasetDialog.getDsorgFromType(this.state.type),
-            allocationUnit: this.state.allocationUnit,
-            primary: parseInt(this.state.primary, 10),
-            secondary: parseInt(this.state.secondary, 10),
-            directoryBlocks: parseInt(this.state.directoryBlocks, 10),
-            recordFormat: this.state.recordFormat,
-            blockSize: parseInt(this.state.blockSize, 10),
-            recordLength: parseInt(this.state.recordLength, 10),
-        });
-        if (properties.get('dataSetOrganization') === SEQUENTIAL.Dsorg) {
-            properties = properties.delete('directoryBlocks');
-        }
-        properties.forEach((value, key) => {
-            if (!value) {
-                properties = properties.delete(key);
-            }
-        });
-        return createDataset(properties, DSPath);
     }
 
     handlePresetChange = event => {
@@ -116,18 +95,51 @@ export default class CreateDatasetDialog extends React.Component {
         this.setState({ type: event.target.value });
     }
 
-    updateName(newValue) {
-        this.setState({
-            dsname: newValue,
-        });
-    }
-
     handleInputChange({ target }) {
         this.setState({ [target.name]: target.value });
     }
 
+    submitAction = () => {
+        const { DSPath } = this.props;
+        let properties = Map({
+            name: this.state.dsname,
+            dsorg: CreateDatasetDialog.getDsorgFromType(this.state.type),
+            alcunit: this.state.allocationUnit,
+            primary: parseInt(this.state.primary, 10),
+            secondary: parseInt(this.state.secondary, 10),
+            dirblk: parseInt(this.state.directoryBlocks, 10),
+            recfm: this.state.recordFormat,
+            blksize: parseInt(this.state.blockSize, 10),
+            lrecl: parseInt(this.state.recordLength, 10),
+        });
+        if (properties.get('dsorg') === SEQUENTIAL.Dsorg) {
+            properties = properties.delete('dirblk');
+        }
+        properties.forEach((value, key) => {
+            if (!value) {
+                properties = properties.delete(key);
+            }
+        });
+        return createDataset(properties, DSPath);
+    }
+
     handleAlcunitChange = event => {
         this.setState({ allocationUnit: event.target.value });
+    }
+
+    updateName(newValue) {
+        this.setState({
+            dsname: newValue,
+        });
+        // disable the Submit, when DS name is invalid
+        const found = validateName('dataset', newValue);
+        if (found != null && found[0] === newValue) {
+            this.state.disableSubmit = false;
+            this.state.warning = '';
+        } else {
+            this.state.disableSubmit = true;
+            this.state.warning = ' (WARNING: Invalid Name)';
+        }
     }
 
     render() {
@@ -153,7 +165,7 @@ export default class CreateDatasetDialog extends React.Component {
                 </div>
                 <div>
                     <DatasetName
-                        label="Dataset Name"
+                        label={`New Dataset Name ${this.state.warning}`}
                         updateName={this.updateName}
                         fullWidth={true}
                         autoFocus={true}
@@ -184,12 +196,16 @@ export default class CreateDatasetDialog extends React.Component {
                                     id={ALLOCATION_UNITS.Tracks}
                                     value={ALLOCATION_UNITS.Tracks}
                                     key={ALLOCATION_UNITS.Tracks}
-                                >{ALLOCATION_UNITS.Tracks}</MenuItem>
+                                >
+                                    {ALLOCATION_UNITS.Tracks}
+                                </MenuItem>
                                 <MenuItem
                                     id={ALLOCATION_UNITS.Cylinders}
                                     value={ALLOCATION_UNITS.Cylinders}
                                     key={ALLOCATION_UNITS.Cylinders}
-                                >{ALLOCATION_UNITS.Cylinders}</MenuItem>
+                                >
+                                    {ALLOCATION_UNITS.Cylinders}
+                                </MenuItem>
                             </Select>
                         </FormControl>
                     </div>
@@ -243,8 +259,8 @@ export default class CreateDatasetDialog extends React.Component {
                         style={{ ...floatRightStyle, ...halfWidthStyle }}
                     />
                 </div>
-            </div>);
-
+            </div>
+        );
 
         return (
             <AtlasDialog
@@ -254,6 +270,7 @@ export default class CreateDatasetDialog extends React.Component {
                 dispatch={this.props.dispatch}
                 dialogContent={dialogContent}
                 bodyStyle={{ overflowY: 'auto' }}
+                disableSubmit={this.state.disableSubmit}
             />
         );
     }

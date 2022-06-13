@@ -65,7 +65,7 @@ describe('Action: treeDatasets', () => {
     describe('fetchDSMembers', () => {
         it('Should create an action to request and then receive children', () => {
             const DSName = 'ATLAS.TEST.JCL';
-            const childData = treeDatasetsData.fetchDSMembersData;
+            let childData = treeDatasetsData.trimmedDSMemberData;
             const expectedActions = [{
                 type: treeDatasets.REQUEST_TREE_DS_CHILD_MEMBERS,
                 DSName,
@@ -75,8 +75,9 @@ describe('Action: treeDatasets', () => {
                 DSName,
                 childData,
             }];
+            childData = treeDatasetsData.fetchDSMembersData;
             nock(BASE_URL)
-                .get(`/datasets/${DSName}/members`)
+                .get(`/restfiles/ds/${DSName}/member`)
                 .reply(200, childData);
 
             const store = mockStore();
@@ -89,7 +90,7 @@ describe('Action: treeDatasets', () => {
 
         it('Should create an action to request and then receive a large set of children', () => {
             const DSName = 'ATLAS.TEST.JCL';
-            const childData = treeDatasetsData.fetchDSMembersLargeData;
+            let childData = treeDatasetsData.trimmedDSMemberData;
             const expectedActions = [{
                 type: treeDatasets.REQUEST_TREE_DS_CHILD_MEMBERS,
                 DSName,
@@ -99,8 +100,9 @@ describe('Action: treeDatasets', () => {
                 DSName,
                 childData,
             }];
+            childData = treeDatasetsData.fetchDSMembersData;
             nock(BASE_URL)
-                .get(`/datasets/${DSName}/members`)
+                .get(`/restfiles/ds/${DSName}/member`)
                 .reply(200, childData);
 
             const store = mockStore();
@@ -142,7 +144,7 @@ describe('Action: treeDatasets', () => {
     describe('createDataset', () => {
         it('Should create an action to request and then receive a new dataset, then refresh the datasets via fetchDatasetTreeChildren', () => {
             const DSName = treeDatasetsData.DSProperties.get('name');
-            const DSProperties = treeDatasetsData.DSProperties;
+            const { DSProperties } = treeDatasetsData;
             const path = 'ATLAS';
             const newTreeData = treeData.DatasetFetchChildrenLargeDataPlusOne;
             const expectedActions = [{
@@ -170,10 +172,10 @@ describe('Action: treeDatasets', () => {
             }];
 
             nock(BASE_URL)
-                .post('/datasets')
+                .post(`/restfiles/ds/${DSName}`)
                 .reply(201, '');
             nock(BASE_URL)
-                .get(`/datasets/${path}`)
+                .get(`/restfiles/ds?dslevel=${path}`)
                 .reply(200, newTreeData);
 
             const store = mockStore();
@@ -186,7 +188,7 @@ describe('Action: treeDatasets', () => {
 
         it('Should create an action to request and then invalidate', () => {
             const DSName = treeDatasetsData.DSProperties.get('name');
-            const DSProperties = treeDatasetsData.DSProperties;
+            const { DSProperties } = treeDatasetsData;
             const path = 'ATLAS';
             const expectedActions = [{
                 type: treeDatasets.REQUEST_NEW_DATASET,
@@ -220,7 +222,8 @@ describe('Action: treeDatasets', () => {
         it('Should create an action to request and then recieve a new member, then refresh members via fetchDSMembers', () => {
             const DSName = 'ATLAS.TEST.JCL';
             const memberName = 'NEWMEM';
-            const childData = treeDatasetsData.fetchDSNewMembersData;
+            const childData = treeDatasetsData.processedDSNewMembersData;
+            const responseData = treeDatasetsData.responseForFetchDSNewMembersData;
             const expectedActions = [{
                 type: treeDatasets.REQUEST_NEW_MEMBER,
                 DSName,
@@ -248,11 +251,11 @@ describe('Action: treeDatasets', () => {
             }];
 
             nock(BASE_URL)
-                .put(`/datasets/${DSName}(${memberName})/content`)
-                .reply(200, '');
+                .put(`/restfiles/ds/${DSName}(${memberName})`)
+                .reply(201, '');
             nock(BASE_URL)
-                .get(`/datasets/${DSName}/members`)
-                .reply(200, childData);
+                .get(`/restfiles/ds/${DSName}/member`)
+                .reply(200, responseData);
 
             const store = mockStore();
 
@@ -318,8 +321,8 @@ describe('Action: treeDatasets', () => {
             }];
 
             nock(BASE_URL)
-                .delete(`/datasets/${DSName}`)
-                .reply(200, '');
+                .delete(`/restfiles/ds/${DSName}`)
+                .reply(204, '');
 
             const store = mockStore();
 
@@ -364,8 +367,12 @@ describe('Action: treeDatasets', () => {
             const oldName = 'ATLAS.TEST.JCL';
             const newName = 'ATLAS.NEW.JCL';
             const isOpenInViewer = false;
-            const body = `{"newName":"${newName}"}`;
-
+            const body = `{
+                "request": "rename",
+                "from-dataset": {
+                    "dsn": "${oldName}"
+                }
+            }`;
             const expectedActions = [{
                 type: treeDatasets.REQUEST_RENAME_DATASET,
                 oldName,
@@ -390,8 +397,8 @@ describe('Action: treeDatasets', () => {
             nock(BASE_URL)
                 // .persist()
                 // .log(console.log)
-                .put(`/datasets/${oldName}/rename`, body)
-                .reply(204, '');
+                .put(`/restfiles/ds/${newName}`, body)
+                .reply(200, '');
 
             const store = mockStore();
 
@@ -405,7 +412,12 @@ describe('Action: treeDatasets', () => {
             const oldName = 'ATLAS.TEST.JCL';
             const newName = 'ATLAS.NEW.JCL';
             const isOpenInViewer = true;
-            const body = `{"newName":"${newName}"}`;
+            const body = `{
+                "request": "rename",
+                "from-dataset": {
+                    "dsn": "${oldName}"
+                }
+            }`;
 
             const expectedActions = [{
                 type: treeDatasets.REQUEST_RENAME_DATASET,
@@ -435,8 +447,8 @@ describe('Action: treeDatasets', () => {
             nock(BASE_URL)
                 // .persist()
                 // .log(console.log)
-                .put(`/datasets/${oldName}/rename`, body)
-                .reply(204, '');
+                .put(`/restfiles/ds/${newName}`, body)
+                .reply(200, '');
 
             const store = mockStore();
 
@@ -447,10 +459,16 @@ describe('Action: treeDatasets', () => {
         });
 
         it('Should create an action to request and receive rename dataset member, isOpenInViewer false', () => {
-            const oldName = 'ATLAS.TEST(OLD.JCL)';
-            const newName = 'ATLAS.NEW(NEW.JCL)';
+            const oldName = 'ATLAS.TEST.DS(OLD)';
+            const newName = 'ATLAS.TEST.DS(NEW)';
             const isOpenInViewer = false;
-            const body = `{"newName":"${newName}"}`;
+            const body = `{
+                "request": "rename",
+                "from-dataset": {
+                  "dsn": "${oldName.substring(0, oldName.indexOf('('))}",
+                  "member": "${oldName.substring(oldName.lastIndexOf('(') + 1, oldName.length - 1)}"
+                }
+              }`;
 
             const expectedActions = [{
                 type: treeDatasets.REQUEST_RENAME_DATASET,
@@ -467,7 +485,7 @@ describe('Action: treeDatasets', () => {
                 oldName,
             },
             {
-                DSName: 'ATLAS.TEST',
+                DSName: 'ATLAS.TEST.DS',
                 type: 'REQUEST_TREE_DS_CHILD_MEMBERS',
             },
             {
@@ -480,8 +498,8 @@ describe('Action: treeDatasets', () => {
             nock(BASE_URL)
                 // .persist()
                 // .log(console.log)
-                .put(`/datasets/${oldName}/rename`, body)
-                .reply(204, '');
+                .put(`/restfiles/ds/${newName}`, body)
+                .reply(200, '');
 
             const store = mockStore();
 
@@ -492,10 +510,16 @@ describe('Action: treeDatasets', () => {
         });
 
         it('Should create an action to request and receive rename dataset member  and update filename in editor, isOpenInViewer true', () => {
-            const oldName = 'ATLAS.TEST(OLD.JCL)';
-            const newName = 'ATLAS.TEST(NEW.JCL)';
+            const oldName = 'ATLAS.TEST.TEST(OLD)';
+            const newName = 'ATLAS.TEST.TEST(NEW)';
             const isOpenInViewer = true;
-            const body = `{"newName":"${newName}"}`;
+            const body = `{
+                "request": "rename",
+                "from-dataset": {
+                  "dsn": "${oldName.substring(0, oldName.indexOf('('))}",
+                  "member": "${oldName.substring(oldName.lastIndexOf('(') + 1, oldName.length - 1)}"
+                }
+              }`;
 
             const expectedActions = [{
                 type: treeDatasets.REQUEST_RENAME_DATASET,
@@ -512,7 +536,7 @@ describe('Action: treeDatasets', () => {
                 oldName,
             },
             {
-                DSName: 'ATLAS.TEST',
+                DSName: 'ATLAS.TEST.TEST',
                 type: 'REQUEST_TREE_DS_CHILD_MEMBERS',
             },
             {
@@ -521,7 +545,7 @@ describe('Action: treeDatasets', () => {
                 newName,
             },
             {
-                newName: 'ATLAS.TEST(NEW.JCL)',
+                newName: 'ATLAS.TEST.TEST(NEW)',
                 type: 'UPDATE_EDITOR_FILE_NAME',
             },
             ];
@@ -529,8 +553,8 @@ describe('Action: treeDatasets', () => {
             nock(BASE_URL)
                 // .persist()
                 // .log(console.log)
-                .put(`/datasets/${oldName}/rename`, body)
-                .reply(204, '');
+                .put(`/restfiles/ds/${newName}`, body)
+                .reply(200, '');
 
             const store = mockStore();
 

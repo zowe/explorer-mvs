@@ -40,7 +40,6 @@ describe('Reducer: editor', () => {
         expect(editor(editorResources.baseContent, action)).toEqual(editorResources.invalidatedContent);
     });
 
-
     it('Should handle INVALIDATE_CONTENT with ReceivedContent', () => {
         const action = { type: editorActions.INVALIDATE_CONTENT };
         expect(editor(editorResources.receivedContent, action)).toEqual(editorResources.invalidatedContent);
@@ -112,7 +111,7 @@ describe('Reducer: editor', () => {
     it('Should handle RECEIVE_ATTRIBUTES, process child data isToggled to true and isFetching to false', () => {
         const action = {
             type: editorActions.RECEIVE_ATTRIBUTES,
-            data: treeResources.DSChildData.items.slice(1),
+            data: treeResources.DSChildData.items,
         };
         expect(editor(editorResources.requestDataset, action)).toEqual(editorResources.recievedDatasetAttributes);
     });

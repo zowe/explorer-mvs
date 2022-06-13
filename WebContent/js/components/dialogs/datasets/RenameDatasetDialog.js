@@ -26,7 +26,8 @@ const RenameDatasetDialog = props => {
             oldName={oldName}
             isOpenInViewer={isOpenInViewer}
             {...props}
-        />);
+        />
+    );
 };
 
 export default RenameDatasetDialog;

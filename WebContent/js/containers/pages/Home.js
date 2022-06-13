@@ -73,7 +73,6 @@ const HomeView = props => {
         }
     };
 
-
     if (validated) {
         return (
             <div className="row group">

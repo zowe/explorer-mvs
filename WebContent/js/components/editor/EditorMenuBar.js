@@ -56,7 +56,9 @@ export default class EditorMenuBar extends React.Component {
     };
 
     render() {
-        const { file, handleSave, handleSaveAs, initialSyntax, isFetching } = this.props;
+        const {
+            file, handleSave, handleSaveAs, initialSyntax, isFetching,
+        } = this.props;
         return (
             <div>
                 <RaisedButton

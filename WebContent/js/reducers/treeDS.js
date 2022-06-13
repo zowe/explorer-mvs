@@ -16,7 +16,8 @@ import {
     RESET_DS_TREE_CHILDREN,
     REMOVE_DATASET,
     RENAME_DATASET,
-    INVALIDATE_DS_TREE_CHILDREN } from '../actions/treeDS';
+    INVALIDATE_DS_TREE_CHILDREN,
+} from '../actions/treeDS';
 
 export const ROOT_TREE_ID = 'treeDS';
 const INITIAL_TREE_STATE = Map({
@@ -29,10 +30,7 @@ const INITIAL_TREE_STATE = Map({
 function getDSChildrenFromJSON(childData) {
     let children = Map({});
     childData.items.forEach(child => {
-        // If dataSetOrganization is undefined we dont want to display as it's just the root qualifier
-        if (child.dataSetOrganization) {
-            children = children.set(child.name, child.dataSetOrganization);
-        }
+        children = children.set(child.dsname, child.dsorg ? child.dsorg : '');
     });
     return children;
 }

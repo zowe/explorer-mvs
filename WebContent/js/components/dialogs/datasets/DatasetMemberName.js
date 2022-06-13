@@ -13,13 +13,17 @@ import React from 'react';
 import UpperCaseTextField from '../UpperCaseTextField';
 
 const DatasetMemberName = props => {
-    const { updateMember, fullWidth, label, autoFocus } = props;
-    return (<UpperCaseTextField
-        fieldChangedCallback={updateMember}
-        fullWidth={fullWidth}
-        label={label}
-        autoFocus={autoFocus}
-    />);
+    const {
+        updateMember, fullWidth, label, autoFocus,
+    } = props;
+    return (
+        <UpperCaseTextField
+            fieldChangedCallback={updateMember}
+            fullWidth={fullWidth}
+            label={label}
+            autoFocus={autoFocus}
+        />
+    );
 };
 
 export default DatasetMemberName;

@@ -13,30 +13,38 @@ export function encodeURLComponent(URL) {
 }
 
 export function whichServer() {
-    let server = location.host;
-    if (location.hostname === 'tester.test.com') {
+    let server = global.location.host;
+    if (global.location.hostname === 'tester.test.com') {
         server = 'tester.test.com:7443';
     }
     return server;
 }
 
 export function atlasAction(endpoint, content) {
-    return fetch(`https://${whichServer()}/api/v2/${endpoint}`, content);
+    return fetch(`https://${whichServer()}/ibmzosmf/api/v1/zosmf${endpoint}`, content);
 }
 
 export function atlasGet(endpoint) {
     const fetchParams = {
         method: 'GET',
-        headers: { 'Content-Type': 'application/json', 'Access-Control-Expose-Headers': 'ETag' },
-        credentials: 'include' };
+        headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Expose-Headers': 'ETag',
+            'X-IBM-Attributes': 'base',
+            'X-CSRF-ZOSMF-HEADER': '*',
+            'X-IBM-Response-Timeout': 60,
+        },
+        credentials: 'include',
+    };
     return atlasAction(endpoint, fetchParams);
 }
 
 export function atlasDelete(endpoint) {
     const fetchParams = {
         method: 'DELETE',
-        headers: { },
-        credentials: 'include' };
+        headers: { 'X-CSRF-ZOSMF-HEADER': '*' },
+        credentials: 'include',
+    };
     return atlasAction(endpoint, fetchParams);
 }
 
@@ -44,13 +52,19 @@ export function atlasPost(endpoint, body) {
     const fetchParams = {
         method: 'POST',
         body,
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include' };
+        headers: { 'Content-Type': 'application/json', 'X-CSRF-ZOSMF-HEADER': '*' },
+        credentials: 'include',
+    };
     return atlasAction(endpoint, fetchParams);
 }
 
 export function atlasPut(endpoint, body, etag) {
-    const header = { 'Content-Type': 'application/json' };
+    let header;
+    if (body.includes('"request": "rename"') || body.includes('"request":"Submit Job"')) {
+        header = { 'Content-Type': 'application/json', 'X-CSRF-ZOSMF-HEADER': '*' };
+    } else {
+        header = { 'Content-Type': 'text/plain', 'X-IBM-Data-Type': 'text', 'X-CSRF-ZOSMF-HEADER': '*' };
+    }
     if (etag) {
         header['If-Match'] = etag;
     }
@@ -58,6 +72,7 @@ export function atlasPut(endpoint, body, etag) {
         method: 'PUT',
         body,
         headers: header,
-        credentials: 'include' };
+        credentials: 'include',
+    };
     return atlasAction(endpoint, fetchParams);
 }

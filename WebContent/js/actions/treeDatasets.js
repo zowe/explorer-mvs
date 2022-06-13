@@ -10,8 +10,10 @@
 
 import HTTPStatusCodes from '../constants/HTTPStatusCodeConstants';
 import { fetchDatasetTreeChildren, removeDataset, renameDataset as renameDatasetRefresh } from './treeDS';
-import { invalidateContent, updateEditorFileName, makeRecordsFromContent } from './editor';
-import { atlasGet, atlasPost, atlasPut, atlasDelete } from '../utilities/urlUtils';
+import { invalidateContent, updateEditorFileName } from './editor';
+import {
+    atlasGet, atlasPost, atlasPut, atlasDelete,
+} from '../utilities/urlUtils';
 import { constructAndPushMessage } from './snackbarNotifications';
 import { checkForValidationFailure } from './validation';
 
@@ -166,7 +168,7 @@ export function createDataset(DSProperties, path) {
     const name = DSProperties.get('name');
     return dispatch => {
         dispatch(requestNewDataset(DSProperties));
-        return atlasPost('datasets', JSON.stringify(DSProperties))
+        return atlasPost(`/restfiles/ds/${encodeURIComponent(name)}`, JSON.stringify(DSProperties))
             .then(response => {
                 return dispatch(checkForValidationFailure(response));
             })
@@ -193,19 +195,26 @@ export function createDataset(DSProperties, path) {
 export function fetchDSMembers(DSName) {
     return dispatch => {
         dispatch(requestChildMembers(DSName));
-        return atlasGet(`datasets/${encodeURIComponent(DSName)}/members`)
+        return atlasGet(`/restfiles/ds/${encodeURIComponent(DSName)}/member`)
             .then(response => {
                 return dispatch(checkForValidationFailure(response));
             })
             .then(response => {
                 if (response.ok) {
                     return response.json();
-                } else if (response.status === HTTPStatusCodes.Forbidden) {
+                } if (response.status === HTTPStatusCodes.Forbidden) {
                     throw Error(UNAUTHORIZED_MESSAGE);
                 }
                 throw Error(response.statusText);
             }).then(json => {
-                dispatch(receiveChildMembers(DSName, json));
+                /**
+                 * Create a json object with key 'items' with value as array of all child memeber names
+                 */
+                const modifiedJson = { items: [] };
+                Object.keys(json.items).forEach(key => {
+                    modifiedJson.items[key] = json.items[key].member;
+                });
+                dispatch(receiveChildMembers(DSName, modifiedJson));
             })
             .catch(response => {
                 if (response.message === UNAUTHORIZED_MESSAGE) {
@@ -218,11 +227,10 @@ export function fetchDSMembers(DSName) {
     };
 }
 
-
 export function createMember(DSName, member) {
     return dispatch => {
         dispatch(requestNewMember(DSName, member));
-        return atlasPut(`datasets/${encodeURIComponent(DSName)}(${encodeURIComponent(member)})/content`, makeRecordsFromContent(''))
+        return atlasPut(`/restfiles/ds/${encodeURIComponent(DSName)}(${encodeURIComponent(member)})`, '')
             .then(response => {
                 return dispatch(checkForValidationFailure(response));
             })
@@ -271,7 +279,6 @@ function cleanupStateAfterDelete(DSName, isOpenInViewer) {
     };
 }
 
-
 function cleanupStateAfterRename(oldName, newName, isOpenInViewer) {
     return dispatch => {
         // Now refresh the datasets members
@@ -285,11 +292,10 @@ function cleanupStateAfterRename(oldName, newName, isOpenInViewer) {
     };
 }
 
-
 export function deleteDataset(DSName, isOpenInViewer) {
     return dispatch => {
         dispatch(requestDeleteDataset(DSName));
-        return atlasDelete(`datasets/${encodeURIComponent(DSName)}`)
+        return atlasDelete(`/restfiles/ds/${encodeURIComponent(DSName)}`)
             .then(response => {
                 return dispatch(checkForValidationFailure(response));
             })
@@ -315,9 +321,26 @@ export function deleteDataset(DSName, isOpenInViewer) {
 
 export function renameDataset(oldName, newName, isOpenInViewer) {
     return dispatch => {
+        let renameBody;
         dispatch(requestRenameDataset(oldName));
-        const renameBody = `{"newName":"${newName}"}`;
-        return atlasPut(`datasets/${encodeURIComponent(oldName)}/rename`, renameBody)
+        /** Check if we are renaming the Dataset or Dataser Member and create the renameBody accordinly */
+        if (oldName.indexOf(')') === oldName.length - 1) {
+            renameBody = `{
+                "request": "rename",
+                "from-dataset": {
+                  "dsn": "${oldName.substring(0, oldName.indexOf('('))}",
+                  "member": "${oldName.substring(oldName.lastIndexOf('(') + 1, oldName.length - 1)}"
+                }
+              }`;
+        } else {
+            renameBody = `{
+                "request": "rename",
+                "from-dataset": {
+                    "dsn": "${oldName}"
+                }
+            }`;
+        }
+        return atlasPut(`/restfiles/ds/${encodeURIComponent(newName)}`, renameBody)
             .then(response => {
                 return dispatch(checkForValidationFailure(response));
             })
@@ -343,4 +366,3 @@ export function renameDataset(oldName, newName, isOpenInViewer) {
             });
     };
 }
-
