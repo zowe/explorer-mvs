@@ -1,6 +1,6 @@
 {
     "name": "explorer-mvs",
-    "version": "2.0.1",
+    "version": "2.0.2",
     "directories": {
         "test": "tests"
     },
@@ -54,7 +54,7 @@
         "eslint-plugin-node": "5.1.1",
         "eslint-plugin-react": "7.24.0",
         "expect": "1.20.2",
-        "explorer-fvt-utilities": "1.0.9",
+        "explorer-fvt-utilities": "2.0.2",
         "file-loader": "6.2.0",
         "html-webpack-plugin": "5.1.0",
         "isomorphic-fetch": "3.0.0",
@@ -118,10 +118,6 @@
     "description": "MVS Explorer",
     "author": "IBM",
     "license": "EPL-2.0",
-    "config": {
-        "pluginId": "org.zowe.explorer-mvs",
-        "pluginName": "MVS Explorer"
-    },
     "proxy": {
         "target": "https://tvt5011.svl.ibm.com:7554"
     }
