@@ -34,7 +34,7 @@ jobs:
         with:
           registry-user: ${{ secrets.ARTIFACTORY_X_USERNAME }}
           registry-password: ${{ secrets.ARTIFACTORY_X_PASSWORD }}
-          release: ${{ github.event.inputs.PERFORM_RELEASE }}
+          release: ${{ github.event.inputs.release }}
           base-directory: ${{ env.IMAGE_BASE_DIR }}
           image-name: explorer-mvs
           linux-distro: ubuntu
@@ -56,7 +56,7 @@ jobs:
         with:
           registry-user: ${{ secrets.ARTIFACTORY_X_USERNAME }}
           registry-password: ${{ secrets.ARTIFACTORY_X_PASSWORD }}
-          release: ${{ github.event.inputs.PERFORM_RELEASE }}
+          release: ${{ github.event.inputs.release }}
           base-directory: ${{ env.IMAGE_BASE_DIR }}
           image-name: explorer-mvs
           linux-distro: ubuntu
@@ -85,7 +85,7 @@ jobs:
         with:
           registry-user: ${{ secrets.ARTIFACTORY_X_USERNAME }}
           registry-password: ${{ secrets.ARTIFACTORY_X_PASSWORD }}
-          release: ${{ github.event.inputs.PERFORM_RELEASE }}
+          release: ${{ github.event.inputs.release }}
           base-directory: ${{ env.IMAGE_BASE_DIR }}
           image-name: explorer-mvs
           linux-distro: ubuntu
@@ -107,7 +107,7 @@ jobs:
         with:
           registry-user: ${{ secrets.ARTIFACTORY_X_USERNAME }}
           registry-password: ${{ secrets.ARTIFACTORY_X_PASSWORD }}
-          release: ${{ github.event.inputs.PERFORM_RELEASE }}
+          release: ${{ github.event.inputs.release }}
           base-directory: ${{ env.IMAGE_BASE_DIR }}
           image-name: explorer-mvs
           linux-distro: ubi
@@ -132,7 +132,7 @@ jobs:
         with:
           registry-user: ${{ secrets.ARTIFACTORY_X_USERNAME }}
           registry-password: ${{ secrets.ARTIFACTORY_X_PASSWORD }}
-          release: ${{ github.event.inputs.PERFORM_RELEASE }}
+          release: ${{ github.event.inputs.release }}
           base-directory: ${{ env.IMAGE_BASE_DIR }}
           image-name: explorer-mvs
           linux-distro: ubi
@@ -164,7 +164,7 @@ jobs:
         with:
           registry-user: ${{ secrets.ARTIFACTORY_X_USERNAME }}
           registry-password: ${{ secrets.ARTIFACTORY_X_PASSWORD }}
-          release: ${{ github.event.inputs.PERFORM_RELEASE }}
+          release: ${{ github.event.inputs.release }}
           base-directory: ${{ env.IMAGE_BASE_DIR }}
           image-name: explorer-mvs
           linux-distro: ubi
