@@ -22,8 +22,8 @@ jobs:
     steps:
       - name: RANDOM_DISPATCH_EVENT_ID is ${{ github.event.inputs.RANDOM_DISPATCH_EVENT_ID }}
         run: echo "prints random dispatch event id sent from workflow dispatch event"
+
   build-ubuntu-amd64:
-    needs: validate-package-json
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -34,7 +34,7 @@ jobs:
         with:
           registry-user: ${{ secrets.ARTIFACTORY_X_USERNAME }}
           registry-password: ${{ secrets.ARTIFACTORY_X_PASSWORD }}
-          release: ${{ github.event.inputs.PERFORM_RELEASE }}
+          release: ${{ github.event.inputs.release }}
           base-directory: ${{ env.IMAGE_BASE_DIR }}
           image-name: explorer-mvs
           linux-distro: ubuntu
@@ -44,11 +44,8 @@ jobs:
         with:
           build-arg-list: ZOWE_BASE_IMAGE=latest-ubuntu
         timeout-minutes: 5
-    outputs:
-      IMAGE_NAME_FULL_REMOTE: ${{ env.IMAGE_NAME_FULL_REMOTE }}
 
   build-ubuntu-s390x:
-    needs: validate-package-json
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -59,7 +56,7 @@ jobs:
         with:
           registry-user: ${{ secrets.ARTIFACTORY_X_USERNAME }}
           registry-password: ${{ secrets.ARTIFACTORY_X_PASSWORD }}
-          release: ${{ github.event.inputs.PERFORM_RELEASE }}
+          release: ${{ github.event.inputs.release }}
           base-directory: ${{ env.IMAGE_BASE_DIR }}
           image-name: explorer-mvs
           linux-distro: ubuntu
@@ -88,7 +85,7 @@ jobs:
         with:
           registry-user: ${{ secrets.ARTIFACTORY_X_USERNAME }}
           registry-password: ${{ secrets.ARTIFACTORY_X_PASSWORD }}
-          release: ${{ github.event.inputs.PERFORM_RELEASE }}
+          release: ${{ github.event.inputs.release }}
           base-directory: ${{ env.IMAGE_BASE_DIR }}
           image-name: explorer-mvs
           linux-distro: ubuntu
@@ -100,7 +97,6 @@ jobs:
         timeout-minutes: 2
 
   build-ubi-amd64:
-    needs: validate-package-json
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -111,7 +107,7 @@ jobs:
         with:
           registry-user: ${{ secrets.ARTIFACTORY_X_USERNAME }}
           registry-password: ${{ secrets.ARTIFACTORY_X_PASSWORD }}
-          release: ${{ github.event.inputs.PERFORM_RELEASE }}
+          release: ${{ github.event.inputs.release }}
           base-directory: ${{ env.IMAGE_BASE_DIR }}
           image-name: explorer-mvs
           linux-distro: ubi
@@ -126,7 +122,6 @@ jobs:
         timeout-minutes: 5
 
   build-ubi-s390x:
-    needs: validate-package-json
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -137,7 +132,7 @@ jobs:
         with:
           registry-user: ${{ secrets.ARTIFACTORY_X_USERNAME }}
           registry-password: ${{ secrets.ARTIFACTORY_X_PASSWORD }}
-          release: ${{ github.event.inputs.PERFORM_RELEASE }}
+          release: ${{ github.event.inputs.release }}
           base-directory: ${{ env.IMAGE_BASE_DIR }}
           image-name: explorer-mvs
           linux-distro: ubi
@@ -169,7 +164,7 @@ jobs:
         with:
           registry-user: ${{ secrets.ARTIFACTORY_X_USERNAME }}
           registry-password: ${{ secrets.ARTIFACTORY_X_PASSWORD }}
-          release: ${{ github.event.inputs.PERFORM_RELEASE }}
+          release: ${{ github.event.inputs.release }}
           base-directory: ${{ env.IMAGE_BASE_DIR }}
           image-name: explorer-mvs
           linux-distro: ubi
