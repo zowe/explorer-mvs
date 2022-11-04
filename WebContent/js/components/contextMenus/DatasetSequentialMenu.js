@@ -11,6 +11,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { ContextMenu, MenuItem } from 'react-contextmenu';
+import * as MENU from './DatasetMenu';
 
 const DatasetSequentialMenu = props => {
     const {
@@ -21,26 +22,28 @@ const DatasetSequentialMenu = props => {
         handleJobSubmit,
         handleRename,
         handleDownload,
+        onHide,
+        onShow,
     } = props;
     return (
-        <ContextMenu id={childId}>
+        <ContextMenu id={childId} onShow={onShow} onHide={onHide}>
             <MenuItem onClick={handleCreateDataset}>
-                New Dataset...
+                {MENU.NEW_DATASET}
             </MenuItem>
             <MenuItem onClick={handleEdit}>
-                Open
+                {MENU.OPEN}
             </MenuItem>
             <MenuItem onClick={handleDeleteDataset}>
-                Delete
+                {MENU.DELETE}
             </MenuItem>
             <MenuItem data={{ action: childId }} onClick={handleJobSubmit}>
-                Submit as Job
+                {MENU.SUBMIT}
             </MenuItem>
             <MenuItem data={{ action: childId }} onClick={handleRename}>
-                Rename
+                {MENU.RENAME}
             </MenuItem>
             <MenuItem data={{ action: childId }} onClick={handleDownload}>
-                Download
+                {MENU.DOWNLOAD}
             </MenuItem>
         </ContextMenu>
     );
@@ -56,4 +59,6 @@ DatasetSequentialMenu.propTypes = {
     handleJobSubmit: PropTypes.func.isRequired,
     handleRename: PropTypes.func.isRequired,
     handleDownload: PropTypes.func.isRequired,
+    onHide: PropTypes.func.isRequired,
+    onShow: PropTypes.func.isRequired,
 };

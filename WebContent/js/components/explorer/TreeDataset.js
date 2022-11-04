@@ -18,6 +18,7 @@ import ContentIcon from '@material-ui/icons/Description';
 import UnsupportedIcon from '@material-ui/icons/Dns';
 import { ContextMenuTrigger } from 'react-contextmenu';
 import { Map } from 'immutable';
+import { hideMenu } from 'react-contextmenu/modules/actions';
 import { fetchDSMembers, toggleDSNode } from '../../actions/treeDatasets';
 import { fetchDS } from '../../actions/editor';
 import { submitJob } from '../../actions/jobSubmitter';
@@ -53,6 +54,8 @@ export class TreeDataset extends React.Component {
 
         this.state = {
             dialog: NO_DIALOG,
+            menuShortCuts: true,
+            menuVisible: false,
         };
     }
 
@@ -70,8 +73,38 @@ export class TreeDataset extends React.Component {
     }
 
     handleKeyDown(e) {
-        if (e.key === 'Enter') {
+        const { childId, dataSetOrganization } = this.props;
+        const data = { action: childId };
+        if (e.metaKey || e.altKey || e.ctrlKey) {
+            return;
+        }
+        if (e.key === 'Enter' && this.state.menuVisible === false) {
             this.handleToggle();
+            return;
+        }
+        const MENU_ACTIONS = [
+            [[DATASET_ORG_PARTITIONED, DATASET_ORG_VSAM, DATASET_ORG_SEQUENTIAL], 'd', this.handleCreateDataset],
+            [[DATASET_ORG_PARTITIONED], 'n', this.handleCreateMember],
+            [[DATASET_ORG_SEQUENTIAL, DATASET_ORG_PARTITIONED], 'delete', this.handleDeleteDataset],
+            [[DATASET_ORG_SEQUENTIAL, DATASET_ORG_PARTITIONED], 'f2', this.handleRename],
+            [[DATASET_ORG_SEQUENTIAL], 'o', this.handleEdit],
+            [[DATASET_ORG_SEQUENTIAL], 's', this.handleJobSubmit],
+            [[DATASET_ORG_SEQUENTIAL], 'w', this.handleDownload],
+        ];
+        if (this.state.menuVisible && this.state.menuShortCuts) {
+            for (let action = 0; action < MENU_ACTIONS.length; action++) {
+                if (MENU_ACTIONS[action][0].find(dsOrg => { return dsOrg === dataSetOrganization.substring(0, 2); })) {
+                    if (e.key.toLowerCase() === MENU_ACTIONS[action][1]) {
+                        e.preventDefault();
+                        if (e.key.toLowerCase() === 'w' || e.key.toLowerCase() === 's') {
+                            MENU_ACTIONS[action][2](e, data);
+                        } else {
+                            MENU_ACTIONS[action][2]();
+                        }
+                        this.hideContextMenu();
+                    }
+                }
+            }
         }
     }
 
@@ -120,6 +153,11 @@ export class TreeDataset extends React.Component {
     handleDownload = (e, data) => {
         const { dispatch } = this.props;
         dispatch(download(data.action));
+    }
+
+    hideContextMenu() {
+        hideMenu();
+        this.setState({ menuVisible: false });
     }
 
     /**
@@ -174,6 +212,8 @@ export class TreeDataset extends React.Component {
                     handleDeleteDataset={() => { this.handleDeleteDataset(); }}
                     handleRename={() => { this.handleRename(); }}
                     handleDownload={() => { this.handleDownload(); }}
+                    onShow={() => { this.setState({ menuVisible: true }); }}
+                    onHide={() => { this.setState({ menuVisible: false }); }}
                 />
             </div>
         );
@@ -196,6 +236,8 @@ export class TreeDataset extends React.Component {
                     handleJobSubmit={this.handleJobSubmit}
                     handleRename={this.handleRename}
                     handleDownload={this.handleDownload}
+                    onShow={() => { this.setState({ menuVisible: true }); }}
+                    onHide={() => { this.setState({ menuVisible: false }); }}
                 />
             </div>
         );
@@ -207,11 +249,13 @@ export class TreeDataset extends React.Component {
             <div>
                 <ContextMenuTrigger id={childId}>
                     <UnsupportedIcon className="node-icon" />
-                    <span className="node-label">{childId}</span>
+                    <span className="node-label" tabIndex="0" onKeyDown={this.handleKeyDown}>{childId}</span>
                 </ContextMenuTrigger>
                 <DatasetUnsupportedMenu
                     childId={childId}
                     handleCreateDataset={() => { this.handleCreateDataset(); }}
+                    onShow={() => { this.setState({ menuVisible: true }); }}
+                    onHide={() => { this.setState({ menuVisible: false }); }}
                 />
             </div>
         );
