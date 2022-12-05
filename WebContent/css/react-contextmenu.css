@@ -29,6 +29,10 @@
     pointer-events: auto;
 }
 
+.react-contextmenu-right {
+    float: right;
+}
+
 .react-contextmenu-item {
     padding: 3px 20px;
     font-weight: 400;

@@ -11,25 +11,26 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { ContextMenu, MenuItem } from 'react-contextmenu';
+import * as MENU from './DatasetMenu';
 
 const DatasetPartitionedMenu = props => {
     const {
-        childId, handleCreateDataset, handleCreateMember, handleDeleteDataset, handleRename,
+        childId, handleCreateDataset, handleCreateMember, handleDeleteDataset, handleRename, onHide, onShow,
     } = props;
 
     return (
-        <ContextMenu id={childId}>
+        <ContextMenu id={childId} onShow={onShow} onHide={onHide}>
             <MenuItem onClick={handleCreateDataset}>
-                New Dataset...
+                {MENU.NEW_DATASET}
             </MenuItem>
             <MenuItem onClick={handleCreateMember}>
-                New Dataset Member...
+                {MENU.NEW_MEMBER}
             </MenuItem>
             <MenuItem onClick={handleDeleteDataset}>
-                Delete
+                {MENU.DELETE}
             </MenuItem>
             <MenuItem onClick={handleRename}>
-                Rename
+                {MENU.RENAME}
             </MenuItem>
         </ContextMenu>
     );
@@ -43,4 +44,6 @@ DatasetPartitionedMenu.propTypes = {
     handleCreateMember: PropTypes.func.isRequired,
     handleDeleteDataset: PropTypes.func.isRequired,
     handleRename: PropTypes.func.isRequired,
+    onHide: PropTypes.func.isRequired,
+    onShow: PropTypes.func.isRequired,
 };
