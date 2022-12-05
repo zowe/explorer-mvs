@@ -11,30 +11,31 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { ContextMenu, MenuItem } from 'react-contextmenu';
+import * as MENU from './DatasetMenu';
 
 const DatasetMenuMember = props => {
     const {
-        member, parent, handleCreateMember, handleEdit, handleDeleteDataset, handleJobSubmit, handleRename, handleDownload,
+        member, parent, handleCreateMember, handleEdit, handleDeleteDataset, handleJobSubmit, handleRename, handleDownload, onHide, onShow,
     } = props;
     return (
-        <ContextMenu id={member}>
+        <ContextMenu id={member} onShow={onShow} onHide={onHide}>
             <MenuItem onClick={handleCreateMember}>
-                New Dataset Member...
+                {MENU.NEW_MEMBER}
             </MenuItem>
             <MenuItem onClick={handleEdit}>
-                Open
+                {MENU.OPEN}
             </MenuItem>
             <MenuItem onClick={handleDeleteDataset}>
-                Delete Member
+                {MENU.DELETE}
             </MenuItem>
             <MenuItem onClick={handleJobSubmit}>
-                Submit as Job
+                {MENU.SUBMIT}
             </MenuItem>
             <MenuItem onClick={handleRename}>
-                Rename
+                {MENU.RENAME}
             </MenuItem>
             <MenuItem data={{ action: member, actionParent: parent }} onClick={handleDownload}>
-                Download
+                {MENU.DOWNLOAD}
             </MenuItem>
         </ContextMenu>
     );
@@ -51,4 +52,6 @@ DatasetMenuMember.propTypes = {
     handleJobSubmit: PropTypes.func.isRequired,
     handleRename: PropTypes.func.isRequired,
     handleDownload: PropTypes.func.isRequired,
+    onHide: PropTypes.func.isRequired,
+    onShow: PropTypes.func.isRequired,
 };

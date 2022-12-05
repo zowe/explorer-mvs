@@ -12,6 +12,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import ContentIcon from '@material-ui/icons/Description';
 import ErrorIcon from '@material-ui/icons/Error';
+import { hideMenu } from 'react-contextmenu/modules/actions';
 import { ContextMenuTrigger } from 'react-contextmenu';
 import { fetchDS } from '../../actions/editor';
 import { submitJob } from '../../actions/jobSubmitter';
@@ -45,6 +46,8 @@ export default class TreeDatasetMember extends React.Component {
 
         this.state = {
             dialog: NO_DIALOG,
+            menuShortCuts: true,
+            menuVisible: false,
         };
     }
 
@@ -58,8 +61,33 @@ export default class TreeDatasetMember extends React.Component {
     }
 
     handleKeyDown(e) {
-        if (e.key === 'Enter') {
+        const data = { actionParent: this.props.parent, action: this.props.member };
+        if (e.metaKey || e.altKey || e.ctrlKey) {
+            return;
+        }
+        if (e.key === 'Enter' && this.state.menuVisible === false) {
             this.handleEdit();
+        }
+        const MENU_ACTIONS = [
+            ['n', this.handleCreateMember],
+            ['delete', this.handleDeleteDataset],
+            ['f2', this.handleRename],
+            ['o', this.handleEdit],
+            ['s', this.handleJobSubmit],
+            ['w', this.handleDownload],
+        ];
+        if (this.state.menuShortCuts && this.state.menuVisible) {
+            for (let action = 0; action < MENU_ACTIONS.length; action++) {
+                if (e.key.toLowerCase() === MENU_ACTIONS[action][0]) {
+                    e.preventDefault();
+                    if (e.key.toLowerCase() === 'w') {
+                        MENU_ACTIONS[action][1](e, data);
+                    } else {
+                        MENU_ACTIONS[action][1]();
+                    }
+                    this.hideContextMenu();
+                }
+            }
         }
     }
 
@@ -88,6 +116,11 @@ export default class TreeDatasetMember extends React.Component {
     handleDownload = (e, data) => {
         const { dispatch } = this.props;
         dispatch(download(`${data.actionParent}(${data.action})`));
+    }
+
+    hideContextMenu() {
+        hideMenu();
+        this.setState({ menuVisible: false });
     }
 
     renderDialog() {
@@ -130,8 +163,7 @@ export default class TreeDatasetMember extends React.Component {
                     <ContextMenuTrigger id={member}>
                         <div
                             onClick={() => { this.handleEdit(); }}
-                            // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
-                            tabIndex="0"
+                            tabIndex="0"  /* eslint-disable-line */ 
                             onKeyDown={this.handleKeyDown}
                         >
                             <li>
@@ -149,6 +181,8 @@ export default class TreeDatasetMember extends React.Component {
                         handleDeleteDataset={() => { this.handleDeleteDataset(); }}
                         handleCreateMember={() => { this.handleCreateMember(); }}
                         handleDownload={this.handleDownload}
+                        onShow={() => { this.setState({ menuVisible: true }); }}
+                        onHide={() => { this.setState({ menuVisible: false }); }}
                     />
                     {this.renderDialog()}
                 </div>
