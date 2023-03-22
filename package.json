@@ -35,7 +35,7 @@
         "@types/mocha": "9.0.0",
         "@types/node": "13.7.1",
         "@types/selenium-webdriver": "4.0.8",
-        "babel-loader": "8.0.0",
+        "babel-loader": "8.3.0",
         "babel-plugin-react-html-attrs": "2.0.0",
         "babel-preset-stage-0": "6.24.1",
         "chai": "4.2.0",
