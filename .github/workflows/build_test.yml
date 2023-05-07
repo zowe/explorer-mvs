@@ -48,7 +48,7 @@ jobs:
       - name: '[Prep 2] Cache node modules'
         uses: actions/cache@v2
         with:
-          # npm cache files are stored in `~/.npm` on Linux/macOS
+          #  npm cache files are stored in `~/.npm` on Linux/macOS
           path: |
             ~/.npm
             ~/.nvm/.cache
