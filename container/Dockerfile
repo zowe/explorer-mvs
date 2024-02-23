@@ -17,12 +17,12 @@ FROM zowe-docker-release.jfrog.io/ompzowe/base-node:${ZOWE_BASE_IMAGE} AS builde
 ##################################
 # labels
 LABEL name="MVS Explorer" \
-      maintainer="jack-tiefeng.jia@ibm.com" \
-      vendor="Zowe" \
-      version="0.0.0" \
-      release="0" \
-      summary="IBM z/OS Unix Datasets UI service" \
-      description="This Zowe UI component can display MVS datasets on z/OS"
+    maintainer="jack-tiefeng.jia@ibm.com" \
+    vendor="Zowe" \
+    version="0.0.0" \
+    release="0" \
+    summary="IBM z/OS Unix Datasets UI service" \
+    description="This Zowe UI component can display MVS datasets on z/OS"
 
 ##################################
 # switch context
@@ -39,7 +39,7 @@ COPY --chown=zowe:zowe component .
 # pretty same as .pax/prepare-workspace.sh. any way we can merge?
 RUN mkdir -p ~/.npm-global \
     && npm config set prefix '~/.npm-global' \
-    && npm install -g npm \
+    && npm install -g npm@7.24.2 \
     && ~/.npm-global/bin/npm install --no-audit --ignore-scripts --no-optional --legacy-peer-deps \
     && ~/.npm-global/bin/npm run prod \
     && mkdir -p final/web \
