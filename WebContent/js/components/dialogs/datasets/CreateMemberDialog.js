@@ -30,7 +30,7 @@ export default class CreateMemberDialog extends React.Component {
     submitAction = () => {
         const { DSName } = this.props;
         return createMember(DSName, this.state.memberName);
-    }
+    };
 
     updateName(newValue) {
         this.setState({

@@ -30,7 +30,7 @@ export default class RenameDialog extends React.Component {
     submitAction = () => {
         const { oldName, isOpenInViewer } = this.props;
         return renameDataset(oldName, this.state.newName, isOpenInViewer);
-    }
+    };
 
     updateName(newValue) {
         this.setState({

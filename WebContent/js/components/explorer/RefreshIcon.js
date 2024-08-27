@@ -17,13 +17,13 @@ export default class RefreshIcon extends React.Component {
     handleSubmit = () => {
         const { submitAction } = this.props;
         submitAction();
-    }
+    };
 
     handleKeyDown = e => {
         if (e.key === 'Enter') {
             this.handleSubmit();
         }
-    }
+    };
 
     render() {
         const { isFetching } = this.props;

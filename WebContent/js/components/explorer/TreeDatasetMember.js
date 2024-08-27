@@ -50,12 +50,12 @@ export default class TreeDatasetMember extends React.Component {
 
     handleCreateMember = () => {
         this.setState({ dialog: CREATE_MEMBER });
-    }
+    };
 
     handleEdit = () => {
         const { dispatch } = this.props;
         dispatch(fetchDS(this.getDataSetAndMemberName()));
-    }
+    };
 
     handleKeyDown(e) {
         if (e.key === 'Enter') {
@@ -65,30 +65,30 @@ export default class TreeDatasetMember extends React.Component {
 
     dialogReturn = () => {
         this.setState({ dialog: NO_DIALOG });
-    }
+    };
 
     getDataSetAndMemberName = () => {
         const { parent, member } = this.props;
         return `${parent}(${member})`;
-    }
+    };
 
     handleDeleteDataset = () => {
         this.setState({ dialog: DELETE_MEMBER });
-    }
+    };
 
     handleJobSubmit = () => {
         const { dispatch } = this.props;
         dispatch(submitJob(this.getDataSetAndMemberName()));
-    }
+    };
 
     handleRename = () => {
         this.setState({ dialog: RENAME_MEMBER });
-    }
+    };
 
     handleDownload = (e, data) => {
         const { dispatch } = this.props;
         dispatch(download(`${data.actionParent}(${data.action})`));
-    }
+    };
 
     renderDialog() {
         const { parent, viewerFile, dispatch } = this.props;

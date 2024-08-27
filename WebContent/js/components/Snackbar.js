@@ -44,7 +44,7 @@ class AtlasSnackbar extends React.Component {
         this.state.timeout = clearTimeout(this.state.timeout);
         this.setState({ open: false });
         dispatch(popMessage());
-    }
+    };
 
     registerMessageWithSnackbar() {
         const { dispatch } = this.props;

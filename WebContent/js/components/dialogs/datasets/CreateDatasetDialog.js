@@ -49,14 +49,14 @@ export default class CreateDatasetDialog extends React.Component {
             return type.Dsorg === dataSetOrganization;
         });
         return selectedType.Name;
-    }
+    };
 
     static getDsorgFromType = typeName => {
         const selectedType = DATA_SET_TYPES.find(type => {
             return type.Name === typeName;
         });
         return selectedType.Dsorg;
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -89,11 +89,11 @@ export default class CreateDatasetDialog extends React.Component {
         this.setState({ recordFormat: PRESETS.get(event.target.value).recordFormat });
         this.setState({ blockSize: PRESETS.get(event.target.value).blockSize });
         this.setState({ recordLength: PRESETS.get(event.target.value).recordLength });
-    }
+    };
 
     handleTypeChange = event => {
         this.setState({ type: event.target.value });
-    }
+    };
 
     handleInputChange({ target }) {
         this.setState({ [target.name]: target.value });
@@ -121,11 +121,11 @@ export default class CreateDatasetDialog extends React.Component {
             }
         });
         return createDataset(properties, DSPath);
-    }
+    };
 
     handleAlcunitChange = event => {
         this.setState({ allocationUnit: event.target.value });
-    }
+    };
 
     updateName(newValue) {
         this.setState({

@@ -8,8 +8,6 @@
  * Copyright IBM Corporation 2016, 2020
  */
 
-import 'whatwg-fetch';
-
 import { Map } from 'immutable';
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -31,8 +29,7 @@ if (window.localStorage.getItem('enableReduxLogger') === 'true') {
     appMiddleware = applyMiddleware(thunk);
 }
 
-const store = appMiddleware(createStore)(rootReducer, Map({}),
-    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
+const store = appMiddleware(createStore)(rootReducer, Map({}), window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 
 ReactDOM.render(
     <Provider store={store}>

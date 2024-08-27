@@ -35,7 +35,7 @@ export default class AtlasDialog extends React.Component {
         const { dispatch, submitAction } = this.props;
         dispatch(submitAction());
         this.handleClose();
-    }
+    };
 
     handleNameChange({ target }) {
         this.setState({ [target.name]: target.value });

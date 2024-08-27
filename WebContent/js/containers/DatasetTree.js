@@ -91,7 +91,7 @@ class DatasetTree extends React.Component {
         clearTimeout(this.state.timeout);
         dispatch(resetDSChildren());
         dispatch(fetchDatasetTreeChildren(DSPath));
-    }
+    };
 
     refreshDSTree() {
         const { DSPath, DSChildren, dispatch } = this.props;
