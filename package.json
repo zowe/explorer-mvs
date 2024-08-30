@@ -53,6 +53,7 @@
         "expect": "1.20.2",
         "explorer-fvt-utilities": "2.0.4",
         "file-loader": "6.2.0",
+        "node-fetch-cjs": "3.2.1",
         "html-webpack-plugin": "5.6.0",
         "mocha": "10.7.3",
         "mocha-jenkins-reporter": "0.4.8",
