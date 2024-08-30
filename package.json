@@ -8,6 +8,7 @@
         "@material-ui/core": "4.12.4",
         "@material-ui/icons": "4.11.3",
         "immutable": "4.3.7",
+        "node-fetch": "^3.3.2",
         "orion-editor-component": "0.0.16",
         "prop-types": "15.8.1",
         "query-string": "9.1.0",
@@ -25,9 +26,9 @@
     "devDependencies": {
         "@babel/eslint-parser": "7.25.1",
         "@babel/plugin-proposal-decorators": "7.24.7",
-        "@babel/preset-stage-0": "7.8.3",
         "@babel/preset-env": "7.25.4",
         "@babel/preset-react": "7.24.7",
+        "@babel/preset-stage-0": "7.8.3",
         "@babel/register": "7.24.6",
         "@types/chai": "4.3.18",
         "@types/mocha": "10.0.7",
@@ -53,7 +54,6 @@
         "expect": "1.20.2",
         "explorer-fvt-utilities": "2.0.4",
         "file-loader": "6.2.0",
-        "node-fetch-cjs": "3.2.1",
         "html-webpack-plugin": "5.6.0",
         "mocha": "10.7.3",
         "mocha-jenkins-reporter": "0.4.8",
@@ -113,9 +113,9 @@
         "registry": "https://zowe.jfrog.io/zowe/api/npm/npm-local-release/"
     },
     "browserslist": [
-      "last 2 years"
+        "last 2 years"
     ],
-   "description": "MVS Explorer",
+    "description": "MVS Explorer",
     "author": "IBM",
     "license": "EPL-2.0",
     "proxy": {
