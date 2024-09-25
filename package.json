@@ -1,6 +1,6 @@
 {
     "name": "explorer-mvs",
-    "version": "3.0.0",
+    "version": "3.0.1",
     "directories": {
         "test": "tests"
     },
@@ -112,9 +112,9 @@
         "registry": "https://zowe.jfrog.io/zowe/api/npm/npm-local-release/"
     },
     "browserslist": [
-      "last 2 years"
+        "last 2 years"
     ],
-   "description": "MVS Explorer",
+    "description": "MVS Explorer",
     "author": "IBM",
     "license": "EPL-2.0",
     "proxy": {
