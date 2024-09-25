@@ -46,7 +46,7 @@ export default class DatasetSaveAsDialog extends React.Component {
         return DatasetSaveAsDialog.isMember(file)
             ? saveAsDatasetMember(DatasetSaveAsDialog.getDatasetFromFile(file), this.state.newDSMember, content)
             : saveAsDataset(file, this.state.newDSName, content, etag);
-    }
+    };
 
     updateName(newValue) {
         this.setState({

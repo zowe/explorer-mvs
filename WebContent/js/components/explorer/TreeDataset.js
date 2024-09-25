@@ -43,7 +43,7 @@ const RENAME_DATASET = 'RENAME_DATASET';
 export class TreeDataset extends React.Component {
     static isOpenInViewer = (childId, file) => {
         return childId === file || parseFileName(file).DSName === childId;
-    }
+    };
 
     constructor(props) {
         super(props);
@@ -83,44 +83,44 @@ export class TreeDataset extends React.Component {
 
     dialogReturn = () => {
         this.setState({ dialog: NO_DIALOG });
-    }
+    };
 
     handleCreateDataset = () => {
         this.setState({ dialog: CREATE_DATASET });
-    }
+    };
 
     handleCreateMember = () => {
         this.setState({ dialog: CREATE_MEMBER });
-    }
+    };
 
     handleAllocateLike = () => {
         this.setState({ dialog: ALLOCATE_LIKE });
-    }
+    };
 
     handleEdit = () => {
         const { childId, dispatch, dataSetOrganization } = this.props;
         if (dataSetOrganization.startsWith(DATASET_ORG_SEQUENTIAL)) {
             dispatch(fetchDS(childId));
         }
-    }
+    };
 
     handleDeleteDataset = () => {
         this.setState({ dialog: DELETE_DATASET });
-    }
+    };
 
     handleJobSubmit = (e, data) => {
         const { dispatch } = this.props;
         dispatch(submitJob(data.action));
-    }
+    };
 
     handleRename = () => {
         this.setState({ dialog: RENAME_DATASET });
-    }
+    };
 
     handleDownload = (e, data) => {
         const { dispatch } = this.props;
         dispatch(download(data.action));
-    }
+    };
 
     /**
      * If we have a dataset we want to know if it has any children(members)

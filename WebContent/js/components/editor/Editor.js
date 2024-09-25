@@ -82,11 +82,11 @@ class Editor extends React.Component {
 
     getContent = content => {
         this.setState({ currentContent: content });
-    }
+    };
 
     dialogReturn = () => {
         this.setState({ dialog: NO_DIALOG });
-    }
+    };
 
     editorReady = () => {
         const { location, dispatch } = this.props;
@@ -94,7 +94,7 @@ class Editor extends React.Component {
             const urlQueryParams = queryString.parse(location.search);
             dispatch(fetchDS(urlQueryParams.dataset));
         }
-    }
+    };
 
     renderDialog() {
         const { dispatch, file, etag } = this.props;

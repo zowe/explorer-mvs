@@ -17,7 +17,7 @@ export default class DeleteDialog extends React.Component {
     submitAction = () => {
         const { resource, isOpenInViewer } = this.props;
         return deleteDataset(resource, isOpenInViewer);
-    }
+    };
 
     render() {
         const { title, dialogReturn, dispatch } = this.props;
