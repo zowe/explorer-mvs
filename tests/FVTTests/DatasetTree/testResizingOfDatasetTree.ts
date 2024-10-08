@@ -31,18 +31,20 @@ describe('MVS explorer page load', function () {
         }
     });
 
-    describe.skip('Sidebar resizing', () => {
+    describe('Sidebar resizing', () => {
         before('Initialise', async () => {
             await loadPage(driver, BASE_URL_WITH_PATH);
-            await driver.wait(until.elementLocated(By.id('refresh-icon')));
+            await driver.wait(until.elementLocated(By.id('collapse-button')));
             await driver.manage().window().setRect({ width: 1600, height: 800 });
+            await resizeSidebar(300);
         })
         it('Should be able to resize sidebar component (explorer-sidebar)', async () => {
-            await resizeSidebar(1000);
-            expect(parseInt(await getSidebarCSSValue('width'))).to.equal(992);
+            await resizeSidebar(500);
+            expect(parseInt(await getSidebarCSSValue('width'))).to.be.above(300);
         });
         it('Should not be able to make sidebar component too small (explorer-sidebar)', async () => {
             await resizeSidebar(100);
+            expect(parseInt(await getSidebarCSSValue('width'))).to.be.below(300);
             expect(parseInt(await getSidebarCSSValue('width'))).to.be.above(250);
         });
     });
@@ -65,6 +67,7 @@ describe('MVS explorer page load', function () {
         const resizeBar = await driver.findElement(By.id('resize-bar'));
         const actions = driver.actions({async: true});
         await actions.move({origin: resizeBar, y: 200}).press().move({x: x}).release().perform();
+        return driver.sleep(500);
     }
 
     async function getSidebarCSSValue(value: string) {
