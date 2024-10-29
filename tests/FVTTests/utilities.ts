@@ -137,3 +137,6 @@ export async function editDatasetQualifierField(driver: WebDriver, searchQualifi
     await driver.sleep(500);
     await driver.wait(until.elementLocated(By.id('refresh-icon')), 20000);
 }
+
+
+export { createTestPartitionedDataset, createTestSequentialDataset, createTestDatasetMember, cleanupDatasets, deleteDataset, editDatasetQualifierField };
