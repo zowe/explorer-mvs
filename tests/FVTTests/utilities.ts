@@ -21,7 +21,7 @@ import {
 } from './environment';
 import { WebDriver, WebElement, By, until, Key } from 'selenium-webdriver';
 
-export async function createTestPartitionedDataset() {
+async function createTestPartitionedDataset() {
     await deleteDataset(TEST_PARTITIONED_DATASET, true);
     await createDataset({
         primary: 300,
@@ -35,7 +35,7 @@ export async function createTestPartitionedDataset() {
     });
 }
 
-export async function createTestSequentialDataset() {
+async function createTestSequentialDataset() {
     await deleteDataset(TEST_SEQUENTIAL_DATASET, true);
     await createDataset({
         primary: 300,
@@ -80,7 +80,7 @@ async function createDataset(requestBody: DatasetCreationParams) {
     }
 }
 
-export async function createTestDatasetMember() {
+async function createTestDatasetMember() {
     const fullDatasetAndMemberName = `${TEST_PARTITIONED_DATASET}(${TEST_DATASET_MEMBER})`;
     const response = await fetch(`https://${SERVER_HOST}:${SERVER_PORT}/ibmzosmf/api/v1/zosmf/restfiles/ds/${fullDatasetAndMemberName}`, {
         method: 'PUT',
@@ -103,12 +103,12 @@ export async function createTestDatasetMember() {
     }
 }
 
-export async function cleanupDatasets(failOk = false) {
+async function cleanupDatasets(failOk = false) {
     await deleteDataset(TEST_PARTITIONED_DATASET, true);
     await deleteDataset(TEST_SEQUENTIAL_DATASET, true);
 }
 
-export async function deleteDataset(dataset: string, failOk = false) {
+async function deleteDataset(dataset: string, failOk = false) {
     const response = await fetch(`https://${SERVER_HOST}:${SERVER_PORT}/ibmzosmf/api/v1/zosmf/restfiles/ds/${dataset}`, {
         method: 'DELETE',
         headers: { 
@@ -128,7 +128,7 @@ export async function deleteDataset(dataset: string, failOk = false) {
     }
 }
 
-export async function editDatasetQualifierField(driver: WebDriver, searchQualifier: string) {
+async function editDatasetQualifierField(driver: WebDriver, searchQualifier: string) {
     const qualifierField: WebElement = await driver.findElement(By.id("datasets-qualifier-field"));
     await qualifierField.clear();
     await qualifierField.sendKeys(searchQualifier);
