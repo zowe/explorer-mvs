@@ -8,7 +8,7 @@
  * Copyright IBM Corporation 2020
  */
 
-import https from 'https';
+import * as https from 'https';
 import fetch from 'node-fetch';
 
 import { 
@@ -21,7 +21,7 @@ import {
 } from './environment';
 import { WebDriver, WebElement, By, until, Key } from 'selenium-webdriver';
 
-async function createTestPartitionedDataset() {
+export async function createTestPartitionedDataset() {
     await deleteDataset(TEST_PARTITIONED_DATASET, true);
     await createDataset({
         primary: 300,
@@ -35,7 +35,7 @@ async function createTestPartitionedDataset() {
     });
 }
 
-async function createTestSequentialDataset() {
+export async function createTestSequentialDataset() {
     await deleteDataset(TEST_SEQUENTIAL_DATASET, true);
     await createDataset({
         primary: 300,
@@ -139,4 +139,11 @@ export async function editDatasetQualifierField(driver: WebDriver, searchQualifi
 }
 
 
-export { createTestPartitionedDataset, createTestSequentialDataset, createTestDatasetMember, cleanupDatasets, deleteDataset, editDatasetQualifierField };
+export { 
+    createTestPartitionedDataset, 
+    createTestSequentialDataset, 
+    createTestDatasetMember, 
+    cleanupDatasets, 
+    deleteDataset, 
+    editDatasetQualifierField 
+};
