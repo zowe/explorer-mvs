@@ -67,7 +67,6 @@ interface DatasetCreationParams {
     dirblk?: number;
     secondary: number;
     lrecl: number;
-	alcunit: string;
 	volser: string;
 	unit: number;
 	avgblk: number;
