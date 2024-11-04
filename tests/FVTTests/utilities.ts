@@ -11,6 +11,8 @@
 import * as https from 'https';
 import fetch from 'node-fetch';
 
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+
 import { 
     SERVER_HOST, 
     SERVER_PORT,
@@ -25,6 +27,10 @@ async function createTestPartitionedDataset() {
     await deleteDataset(TEST_PARTITIONED_DATASET, true);
     await createDataset({
         primary: 300,
+		volser: "zmf046",
+		unit: 3390,
+		avgblk: 500,
+		blksize: 400,
         alcunit: "TRK",
         recfm: "FB",
         dsorg: "PO",
@@ -40,6 +46,10 @@ async function createTestSequentialDataset() {
     await createDataset({
         primary: 300,
         alcunit: "TRK",
+		volser: "zmf046",
+		unit: 3390,
+		avgblk: 500,
+		blksize: 400,
         recfm: "FB",
         dsorg: "PS",
         name: `${TEST_SEQUENTIAL_DATASET}`,
@@ -57,6 +67,11 @@ interface DatasetCreationParams {
     dirblk?: number;
     secondary: number;
     lrecl: number;
+	alcunit: string;
+	volser: string;
+	unit: number;
+	avgblk: number;
+	blksize: number;
 }
 
 async function createDataset(requestBody: DatasetCreationParams) {
