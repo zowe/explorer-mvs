@@ -13,6 +13,7 @@ import fetch from 'node-fetch';
 
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
+
 import { 
     SERVER_HOST, 
     SERVER_PORT,
@@ -26,35 +27,35 @@ import { WebDriver, WebElement, By, until, Key } from 'selenium-webdriver';
 async function createTestPartitionedDataset() {
     await deleteDataset(TEST_PARTITIONED_DATASET, true);
     await createDataset({
-        primary: 300,
+        name: `${TEST_PARTITIONED_DATASET}`,		
 		volser: "zmf046",
-		unit: 3390,
+		unit: "3390",
+		dsorg: "PO",
+		alcunit: "TRK",
+		primary: 10,
+		secondary: 5,
+		dirblk: 10,
 		avgblk: 500,
+		recfm: "FB",
 		blksize: 400,
-        alcunit: "TRK",
-        recfm: "FB",
-        dsorg: "PO",
-        name: `${TEST_PARTITIONED_DATASET}`,
-        dirblk: 20,
-        secondary: 100,
-        lrecl: 80
+		lrecl: 80
     });
 }
 
 async function createTestSequentialDataset() {
     await deleteDataset(TEST_SEQUENTIAL_DATASET, true);
     await createDataset({
-        primary: 300,
-        alcunit: "TRK",
-		volser: "zmf046",
-		unit: 3390,
+        volser: "zmf046",
+		name: `${TEST_SEQUENTIAL_DATASET}`,
+		unit: "3390",
+		dsorg: "PS",
+		alcunit: "TRK",
+		primary: 10,
+		secondary: 5,
 		avgblk: 500,
+		recfm: "FB",
 		blksize: 400,
-        recfm: "FB",
-        dsorg: "PS",
-        name: `${TEST_SEQUENTIAL_DATASET}`,
-        secondary: 100,
-        lrecl: 80
+		lrecl: 80
     });
 }
 
@@ -63,14 +64,14 @@ interface DatasetCreationParams {
     alcunit: string;
     recfm: string;
     dsorg: string;
-    name?: string;
-    dirblk?: number;
     secondary: number;
     lrecl: number;
 	volser: string;
-	unit: number;
+	unit: string;
 	avgblk: number;
 	blksize: number;
+	dirblk?: number;
+	name?: string;
 }
 
 async function createDataset(requestBody: DatasetCreationParams) {
