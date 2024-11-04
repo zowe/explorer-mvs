@@ -27,10 +27,6 @@ async function createTestPartitionedDataset() {
     await deleteDataset(TEST_PARTITIONED_DATASET, true);
     await createDataset({
         primary: 300,
-		volser: "zmf046",
-		unit: 3390,
-		avgblk: 500,
-		blksize: 400,
         alcunit: "TRK",
         recfm: "FB",
         dsorg: "PO",
@@ -45,11 +41,6 @@ async function createTestSequentialDataset() {
     await deleteDataset(TEST_SEQUENTIAL_DATASET, true);
     await createDataset({
         primary: 300,
-        alcunit: "TRK",
-		volser: "zmf046",
-		unit: 3390,
-		avgblk: 500,
-		blksize: 400,
         recfm: "FB",
         dsorg: "PS",
         name: `${TEST_SEQUENTIAL_DATASET}`,
