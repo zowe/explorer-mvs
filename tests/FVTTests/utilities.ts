@@ -58,10 +58,6 @@ interface DatasetCreationParams {
     dirblk?: number;
     secondary: number;
     lrecl: number;
-	volser: string;
-	unit: number;
-	avgblk: number;
-	blksize: number;
 }
 
 async function createDataset(requestBody: DatasetCreationParams) {
