@@ -72,7 +72,7 @@ jobs:
       - name: '[Prep 4] Setup Node'
         uses: actions/setup-node@v3
         with:
-          node-version: 18
+          node-version: 22
 
       # - name: '[Prep extra] explorer-mvs exclusive - upgrade npm to v7'
       #   run: |
