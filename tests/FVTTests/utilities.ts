@@ -8,7 +8,11 @@
  * Copyright IBM Corporation 2020
  */
 
-import https = require('https');
+import * as https from 'https';
+import fetch from 'node-fetch';
+
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+
 
 import { 
     SERVER_HOST, 
@@ -16,84 +20,84 @@ import {
     b64Credentials,
     TEST_PARTITIONED_DATASET,
     TEST_SEQUENTIAL_DATASET, 
-    TEST_DATASET_MEMBER} from './environment';
+    TEST_DATASET_MEMBER 
+} from './environment';
 import { WebDriver, WebElement, By, until, Key } from 'selenium-webdriver';
 
-function getHttpsAgent() :https.Agent {
-    return new https.Agent({
-        rejectUnauthorized: false,
+async function createTestPartitionedDataset() {
+    await deleteDataset(TEST_PARTITIONED_DATASET, true);
+    await createDataset({
+        name: `${TEST_PARTITIONED_DATASET}`,		
+		volser: "zmf046",
+		unit: "3390",
+		dsorg: "PO",
+		alcunit: "TRK",
+		primary: 10,
+		secondary: 5,
+		dirblk: 10,
+		avgblk: 500,
+		recfm: "FB",
+		blksize: 400,
+		lrecl: 80
     });
 }
 
-export async function createTestPartitionedDataset() {
-    await deleteDataset(TEST_PARTITIONED_DATASET, true);    //try to delete dataset if it didn't get cleaned up last time
+async function createTestSequentialDataset() {
+    await deleteDataset(TEST_SEQUENTIAL_DATASET, true);
     await createDataset({
-        primary: 300,
-        alcunit: "TRK",
-        recfm: "FB",
-        dsorg: "PO",
-        name:`${TEST_PARTITIONED_DATASET}`,
-        dirblk: 20,
-        secondary: 100,
-        lrecl: 80
-    })
-}
-
-
-export async function createTestSequentialDataset() {
-    await deleteDataset(TEST_SEQUENTIAL_DATASET, true) //try to delete dataset if it didn't get cleaned up last time
-    await createDataset({
-            primary:300,
-            alcunit: "TRK",
-            recfm:"FB",
-            dsorg:"PS",
-            name:`${TEST_SEQUENTIAL_DATASET}`,
-            secondary:100,
-            lrecl:80
-        })
+        volser: "zmf046",
+		name: `${TEST_SEQUENTIAL_DATASET}`,
+		unit: "3390",
+		dsorg: "PS",
+		alcunit: "TRK",
+		primary: 10,
+		secondary: 5,
+		avgblk: 500,
+		recfm: "FB",
+		blksize: 400,
+		lrecl: 80
+    });
 }
 
 interface DatasetCreationParams {
-    primary :number,
-    alcunit :string,
-    recfm :string,
-    dsorg :string,
-    name? :string,
-    dirblk? :number,
-    secondary :number,
-    lrecl :number,
+    primary: number;
+    alcunit: string;
+    recfm: string;
+    dsorg: string;
+    secondary: number;
+    lrecl: number;
+	volser: string;
+	unit: string;
+	avgblk: number;
+	blksize: number;
+	dirblk?: number;
+	name?: string;
 }
 
-async function createDataset(requestBody :DatasetCreationParams) {
-    const agent :https.Agent = getHttpsAgent();
-    await fetch(`https://${SERVER_HOST}:${SERVER_PORT}/ibmzosmf/api/v1/zosmf/restfiles/ds/${requestBody.name}`, {
+async function createDataset(requestBody: DatasetCreationParams) {
+    const response = await fetch(`https://${SERVER_HOST}:${SERVER_PORT}/ibmzosmf/api/v1/zosmf/restfiles/ds/${requestBody.name}`, {
         method: 'POST',
         headers: {
             authorization: b64Credentials,
             'Content-Type': 'application/json',
             'X-CSRF-ZOSMF-HEADER': '*',
         },
-        agent,
         body: JSON.stringify(requestBody),
-    }).then(
-        async response => {
-            if (response.ok) {
-                console.log(`${requestBody.name}, created succesfully`);
-            } else {
-                console.log(`${requestBody.name}, create failed`);
-                return response.json().then(e => { 
-                    console.log(e.message);
-                    throw Error(e.message); 
-                });
-            }
-        },
-    )
+    });
+
+    if (response.ok) {
+        console.log(`${requestBody.name}, created successfully`);
+    } else {
+        console.log(`${requestBody.name}, create failed`);
+        const error = await response.json();
+        console.log(error.message);
+        throw new Error(error.message);
+    }
 }
 
-export async function createTestDatasetMember() {
-    const agent :https.Agent = getHttpsAgent();
+async function createTestDatasetMember() {
     const fullDatasetAndMemberName = `${TEST_PARTITIONED_DATASET}(${TEST_DATASET_MEMBER})`;
-    await fetch(`https://${SERVER_HOST}:${SERVER_PORT}/ibmzosmf/api/v1/zosmf/restfiles/ds/${fullDatasetAndMemberName}`, {
+    const response = await fetch(`https://${SERVER_HOST}:${SERVER_PORT}/ibmzosmf/api/v1/zosmf/restfiles/ds/${fullDatasetAndMemberName}`, {
         method: 'PUT',
         headers: { 
             authorization: b64Credentials,
@@ -102,55 +106,44 @@ export async function createTestDatasetMember() {
             'X-CSRF-ZOSMF-HEADER': '*',
         },
         body: '',
-        agent,
-    }).then (
-        async response => {
-            if(response.ok) {
-                console.log(`${fullDatasetAndMemberName}, created succesfully`);
-            } else {
-                console.log(`${fullDatasetAndMemberName}, create failed`);
-                return response.json().then(e => { 
-                    console.log(e.message);
-                    throw Error(e.message); 
-                });
-            }
-        }
-    )
+    });
+
+    if (response.ok) {
+        console.log(`${fullDatasetAndMemberName}, created successfully`);
+    } else {
+        console.log(`${fullDatasetAndMemberName}, create failed`);
+        const error = await response.json();
+        console.log(error.message);
+        throw new Error(error.message);
+    }
 }
 
-
-export async function cleanupDatasets(failOk = false){
+async function cleanupDatasets(failOk = false) {
     await deleteDataset(TEST_PARTITIONED_DATASET, true);
     await deleteDataset(TEST_SEQUENTIAL_DATASET, true);
 }
 
-/**
- * 
- * @param failOk If you're unsure if the dataset exists set this to true to avoid failing a test 
- */
-export async function deleteDataset(dataset :string, failOk = false) {
-    const agent :https.Agent = getHttpsAgent();
-    await fetch(`https://${SERVER_HOST}:${SERVER_PORT}/ibmzosmf/api/v1/zosmf/restfiles/ds/${dataset}`, {
+async function deleteDataset(dataset: string, failOk = false) {
+    const response = await fetch(`https://${SERVER_HOST}:${SERVER_PORT}/ibmzosmf/api/v1/zosmf/restfiles/ds/${dataset}`, {
         method: 'DELETE',
-        headers: { authorization: b64Credentials, 'X-CSRF-ZOSMF-HEADER': '*' },
-        agent
-    }).then(
-        async response => {
-            if (response.ok) {
-                console.log(`${dataset}, deleted succesfully`);
-            } else {
-                console.log(`${dataset}, delete failed`);
-                console.log(`${response.status} : ${response.statusText}`);
-                //failOk can be set when you're not sure if the dataset exists that you're trying to delete
-                if(!failOk) {
-                    throw Error(`Delete dataset failed - ${response.status} : ${response.statusText}`);
-                }
-            }
+        headers: { 
+            authorization: b64Credentials, 
+            'X-CSRF-ZOSMF-HEADER': '*' 
         },
-    );
+    });
+
+    if (response.ok) {
+        console.log(`${dataset}, deleted successfully`);
+    } else {
+        console.log(`${dataset}, delete failed`);
+        console.log(`${response.status} : ${response.statusText}`);
+        if (!failOk) {
+            throw new Error(`Delete dataset failed - ${response.status} : ${response.statusText}`);
+        }
+    }
 }
 
-export async function editDatasetQualifierField(driver :WebDriver, searchQualifier :string) {
+async function editDatasetQualifierField(driver: WebDriver, searchQualifier: string) {
     const qualifierField: WebElement = await driver.findElement(By.id("datasets-qualifier-field"));
     await qualifierField.clear();
     await qualifierField.sendKeys(searchQualifier);
@@ -159,3 +152,13 @@ export async function editDatasetQualifierField(driver :WebDriver, searchQualifi
     await driver.sleep(500);
     await driver.wait(until.elementLocated(By.id('refresh-icon')), 20000);
 }
+
+
+export { 
+    createTestPartitionedDataset, 
+    createTestSequentialDataset, 
+    createTestDatasetMember, 
+    cleanupDatasets, 
+    deleteDataset, 
+    editDatasetQualifierField 
+};
