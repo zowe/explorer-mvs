@@ -8,6 +8,7 @@
  * Copyright IBM Corporation 2020
  */
 
+import fetch from 'node-fetch';
 import https = require('https');
 
 import { 
