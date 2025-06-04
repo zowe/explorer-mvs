@@ -8,6 +8,7 @@
  * Copyright IBM Corporation 2020
  */
 
+import fetch from 'node-fetch';
 import https = require('https');
 
 import { 
@@ -82,8 +83,8 @@ async function createDataset(requestBody :DatasetCreationParams) {
             } else {
                 console.log(`${requestBody.name}, create failed`);
                 return response.json().then(e => { 
-                    console.log(e.message);
-                    throw Error(e.message); 
+                    console.log((e as any).message);
+                    throw Error((e as any).message); 
                 });
             }
         },
@@ -110,8 +111,8 @@ export async function createTestDatasetMember() {
             } else {
                 console.log(`${fullDatasetAndMemberName}, create failed`);
                 return response.json().then(e => { 
-                    console.log(e.message);
-                    throw Error(e.message); 
+                    console.log((e as any).message);
+                    throw Error((e as any).message); 
                 });
             }
         }
