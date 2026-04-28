@@ -1,9 +1,13 @@
 # Change Log
 All notable changes to the MVS-Explorer will be documented in this file.
 
+## <3.4.0>
+### New features and enhancements
+- Upgraded `react-contextmenu` and `react-redux`. [(#282)](https://github.com/zowe/explorer-mvs/pull/282)
+
 ## <2.0.1>
 ### New features and enhancements
-- Diable the submit button & give a warning message, in Dialogs when Dataset or Dataset Member name is invalid
+- Disable the submit button & give a warning message, in Dialogs when Dataset or Dataset Member name is invalid
 
 ## <2.0.0>
 
@@ -22,7 +26,7 @@ All notable changes to the MVS-Explorer will be documented in this file.
 ## <1.0.10>
 
 ### New features and enhancements
-- Refactor MVS packagaing & installation scripts, and folder renames, to accomodate new iframe capability in ZLUX. Thanks @NakulManchanda
+- Refactor MVS packaging & installation scripts, and folder renames, to accommodate new iframe capability in ZLUX. Thanks @NakulManchanda
 - Added manifest for API ML & App Framework installation using new plugin installation process. Thanks @JadinLuong, @jackjia-ibm
 
 ## <1.0.9>
@@ -61,5 +65,5 @@ All notable changes to the MVS-Explorer will be documented in this file.
 ### Bug fixes
 <!--- - Format: Fixed <xx>. (Issue/PR number) [Doc link if any] [Thanks @contributor] --->
 - Fixed bug where user could end up in infinite authorization loop due to z/OSMF Ltps and APIML JWT not expiring at same time (https://github.com/zowe/api-layer/issues/615), Thanks @jordanCain
-- Added accesibility improvements in the form of an announcer for notification to alert screen readers and
+- Added accessibility improvements in the form of an announcer for notification to alert screen readers and
 page title updates on page loads. (https://github.com/zowe/explorer-mvs/pull/116), Thanks @jordanCain
