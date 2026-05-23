@@ -40,14 +40,14 @@ export const INVALIDATE_RENAME_DATASET = 'INVALIDATE_RENAME_DATASET';
 
 export const UNAUTHORIZED_MESSAGE = 'UNAUTHORIZED';
 
-const DATASET_CREATE_SUCCESS_MESSAGE = 'Create successful for';
-const DATASET_CREATE_FAIL_MESSAGE = 'Create failed for';
-const DATASET_DELETE_SUCCESS_MESSAGE = 'Delete successful for';
-const DATASET_DELETE_FAIL_MESSAGE = 'Delete failed for';
-const DATASET_RENAME_SUCCESS_MESSAGE = 'Rename successful ';
-const DATASET_RENAME_FAIL_MESSAGE = 'Rename failed for';
+export const DATASET_CREATE_SUCCESS_MESSAGE = 'Create successful for';
+export const DATASET_CREATE_FAIL_MESSAGE = 'Create failed for';
+export const DATASET_DELETE_SUCCESS_MESSAGE = 'Delete successful for';
+export const DATASET_DELETE_FAIL_MESSAGE = 'Delete failed for';
+export const DATASET_RENAME_SUCCESS_MESSAGE = 'Rename successful ';
+export const DATASET_RENAME_FAIL_MESSAGE = 'Rename failed for';
 
-const DATASET_FETCH_MEMBERS_FAIL = 'Fetch members failed for';
+export const DATASET_FETCH_MEMBERS_FAIL = 'Fetch members failed for';
 
 function requestChildMembers(DSName: string) {
     return {

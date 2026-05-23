@@ -39,9 +39,9 @@ export const SET_NOT_FULLSCREEN = 'SET_NOT_FULLSCREEN';
 export const REQUEST_ATTRIBUTES = 'REQUEST_ATTRIBUTES';
 export const RECEIVE_ATTRIBUTES = 'RECEIVE_ATTRIBUTES';
 
-const SAVE_FAIL_MESSAGE = 'Save failed for';
-const SAVE_SUCCESS_MESSAGE = 'Save success for';
-const GET_CONTENT_FAIL_MESSAGE = 'Get content failed for';
+export const SAVE_FAIL_MESSAGE = 'Save failed for';
+export const SAVE_SUCCESS_MESSAGE = 'Save success for';
+export const GET_CONTENT_FAIL_MESSAGE = 'Get content failed for';
 
 function requestDSContent(file) {
     return {
@@ -143,7 +143,7 @@ function invalidateEtagChange() {
     };
 }
 
-function getNewDatasetEtag(file) {
+export function getNewDatasetEtag(file) {
     return dispatch => {
         dispatch(requestEtag(file));
         const endpoint = `/restfiles/ds/${encodeURLComponent(file)}`;

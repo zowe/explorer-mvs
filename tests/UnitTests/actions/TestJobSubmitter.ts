@@ -12,7 +12,6 @@ import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import nock from 'nock';
 import expect from 'expect';
-import rewire from 'rewire';
 import { Map } from 'immutable';
 import * as jobSubmitter from '../../../WebContent/js/actions/jobSubmitter';
 import * as jobSubmitterData from '../testResources/actions/jobSubmitter';
@@ -26,7 +25,6 @@ describe('Action: jobSubmitter', () => {
 
     const middlewares = [thunk];
     const mockStore = configureMockStore(middlewares);
-    const rewiredJobSubmitter = rewire('../../../WebContent/js/actions/jobSubmitter');
 
     describe('resetResponse', () => {
         it('Should create an action to reset the response and requested', () => {
@@ -37,7 +35,7 @@ describe('Action: jobSubmitter', () => {
 
     describe('submitJob', () => {
         it('Should create an action to request and receive a job submit', () => {
-            const rewiredSuccessMessage = rewiredJobSubmitter.__get__('JOB_SUBMIT_SUCCESS_MESSAGE');
+            const rewiredSuccessMessage = jobSubmitter.JOB_SUBMIT_SUCCESS_MESSAGE;
             const job = 'ATLAS.TEST.JCL(TSTJ0001)';
             nock(BASE_URL)
                 .put('/restjobs/jobs', {
@@ -71,7 +69,7 @@ describe('Action: jobSubmitter', () => {
         });
 
         it('Should create an action to request and invalidate a job submit', () => {
-            const rewiredFailureMessage = rewiredJobSubmitter.__get__('JOB_SUBMIT_FAIL_MESSAGE');
+            const rewiredFailureMessage = jobSubmitter.JOB_SUBMIT_FAIL_MESSAGE;
             const job = 'SPDIF';
             nock(BASE_URL)
                 .post('/jobs', {
