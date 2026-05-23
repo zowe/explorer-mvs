@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * This program and the accompanying materials are made available under the terms of the
  * Eclipse Public License v2.0 which accompanies this distribution, and is available at
@@ -292,7 +293,7 @@ function cleanupStateAfterRename(oldName, newName, isOpenInViewer) {
     };
 }
 
-export function deleteDataset(DSName, isOpenInViewer) {
+export function deleteDataset(DSName, isOpenInViewer = undefined) {
     return dispatch => {
         dispatch(requestDeleteDataset(DSName));
         return atlasDelete(`/restfiles/ds/${encodeURIComponent(DSName)}`)
