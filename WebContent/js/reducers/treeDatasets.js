@@ -33,7 +33,7 @@ function getMembersFromJSON(childData, DSName) {
 
 function updateNodeToggle(state, DSName, isToggled) {
     const dataset = Map({});
-    return dataset.set(DSName, state.get('datasets').get(DSName).set('isToggled', isToggled));
+    return dataset.set(DSName, Map({ isToggled }));
 }
 
 export default function TreeDatasets(state = INITIAL_TREE_DS_NODE_STATE, action) {

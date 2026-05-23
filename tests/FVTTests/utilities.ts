@@ -8,9 +8,6 @@
  * Copyright IBM Corporation 2020
  */
 
-import fetch from 'node-fetch';
-import https = require('https');
-
 import { 
     SERVER_HOST, 
     SERVER_PORT,
@@ -19,12 +16,6 @@ import {
     TEST_SEQUENTIAL_DATASET, 
     TEST_DATASET_MEMBER} from './environment';
 import { WebDriver, WebElement, By, until, Key } from 'selenium-webdriver';
-
-function getHttpsAgent() :https.Agent {
-    return new https.Agent({
-        rejectUnauthorized: false,
-    });
-}
 
 export async function createTestPartitionedDataset() {
     await deleteDataset(TEST_PARTITIONED_DATASET, true);    //try to delete dataset if it didn't get cleaned up last time
@@ -66,7 +57,6 @@ interface DatasetCreationParams {
 }
 
 async function createDataset(requestBody :DatasetCreationParams) {
-    const agent :https.Agent = getHttpsAgent();
     await fetch(`https://${SERVER_HOST}:${SERVER_PORT}/ibmzosmf/api/v1/zosmf/restfiles/ds/${requestBody.name}`, {
         method: 'POST',
         headers: {
@@ -74,7 +64,6 @@ async function createDataset(requestBody :DatasetCreationParams) {
             'Content-Type': 'application/json',
             'X-CSRF-ZOSMF-HEADER': '*',
         },
-        agent,
         body: JSON.stringify(requestBody),
     }).then(
         async response => {
@@ -92,7 +81,6 @@ async function createDataset(requestBody :DatasetCreationParams) {
 }
 
 export async function createTestDatasetMember() {
-    const agent :https.Agent = getHttpsAgent();
     const fullDatasetAndMemberName = `${TEST_PARTITIONED_DATASET}(${TEST_DATASET_MEMBER})`;
     await fetch(`https://${SERVER_HOST}:${SERVER_PORT}/ibmzosmf/api/v1/zosmf/restfiles/ds/${fullDatasetAndMemberName}`, {
         method: 'PUT',
@@ -103,7 +91,6 @@ export async function createTestDatasetMember() {
             'X-CSRF-ZOSMF-HEADER': '*',
         },
         body: '',
-        agent,
     }).then (
         async response => {
             if(response.ok) {
@@ -130,11 +117,9 @@ export async function cleanupDatasets(failOk = false){
  * @param failOk If you're unsure if the dataset exists set this to true to avoid failing a test 
  */
 export async function deleteDataset(dataset :string, failOk = false) {
-    const agent :https.Agent = getHttpsAgent();
     await fetch(`https://${SERVER_HOST}:${SERVER_PORT}/ibmzosmf/api/v1/zosmf/restfiles/ds/${dataset}`, {
         method: 'DELETE',
         headers: { authorization: b64Credentials, 'X-CSRF-ZOSMF-HEADER': '*' },
-        agent
     }).then(
         async response => {
             if (response.ok) {

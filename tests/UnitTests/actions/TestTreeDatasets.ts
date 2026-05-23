@@ -65,7 +65,7 @@ describe('Action: treeDatasets', () => {
     describe('fetchDSMembers', () => {
         it('Should create an action to request and then receive children', () => {
             const DSName = 'ATLAS.TEST.JCL';
-            let childData = treeDatasetsData.trimmedDSMemberData;
+            let childData: any = treeDatasetsData.trimmedDSMemberData;
             const expectedActions = [{
                 type: treeDatasets.REQUEST_TREE_DS_CHILD_MEMBERS,
                 DSName,
@@ -90,7 +90,7 @@ describe('Action: treeDatasets', () => {
 
         it('Should create an action to request and then receive a large set of children', () => {
             const DSName = 'ATLAS.TEST.JCL';
-            let childData = treeDatasetsData.trimmedDSMemberData;
+            let childData: any = treeDatasetsData.trimmedDSMemberData;
             const expectedActions = [{
                 type: treeDatasets.REQUEST_TREE_DS_CHILD_MEMBERS,
                 DSName,
@@ -121,7 +121,7 @@ describe('Action: treeDatasets', () => {
             },
             {
                 type: snackbarActions.PUSH_NOTIFICATION_MESSAGE,
-                message: new Map({
+                message: Map({
                     message: `${fetchMembersFail} ${DSName}`,
                 }),
             },
@@ -153,7 +153,7 @@ describe('Action: treeDatasets', () => {
             },
             {
                 type: snackbarActions.PUSH_NOTIFICATION_MESSAGE,
-                message: new Map({
+                message: Map({
                     message: `${createSuccess} ${DSName}`,
                 }),
             },
@@ -196,7 +196,7 @@ describe('Action: treeDatasets', () => {
             },
             {
                 type: snackbarActions.PUSH_NOTIFICATION_MESSAGE,
-                message: new Map({
+                message: Map({
                     message: `${createFail} ${DSName}`,
                 }),
             },
@@ -231,7 +231,7 @@ describe('Action: treeDatasets', () => {
             },
             {
                 type: snackbarActions.PUSH_NOTIFICATION_MESSAGE,
-                message: new Map({
+                message: Map({
                     message: `${createSuccess} ${DSName}(${memberName})`,
                 }),
             },
@@ -275,7 +275,7 @@ describe('Action: treeDatasets', () => {
             },
             {
                 type: snackbarActions.PUSH_NOTIFICATION_MESSAGE,
-                message: new Map({
+                message: Map({
                     message: `${createFail} ${DSName}(${memberName})`,
                 }),
             },
@@ -307,7 +307,7 @@ describe('Action: treeDatasets', () => {
             },
             {
                 type: snackbarActions.PUSH_NOTIFICATION_MESSAGE,
-                message: new Map({
+                message: Map({
                     message: `${deleteSuccess} ${DSName}`,
                 }),
             },
@@ -340,7 +340,7 @@ describe('Action: treeDatasets', () => {
             },
             {
                 type: snackbarActions.PUSH_NOTIFICATION_MESSAGE,
-                message: new Map({
+                message: Map({
                     message: `${deleteFail} ${DSName}`,
                 }),
             },
@@ -379,7 +379,7 @@ describe('Action: treeDatasets', () => {
             },
             {
                 type: snackbarActions.PUSH_NOTIFICATION_MESSAGE,
-                message: new Map({
+                message: Map({
                     message: `${renameSuccess} from '${oldName}' to '${newName}'`,
                 }),
             },
@@ -425,7 +425,7 @@ describe('Action: treeDatasets', () => {
             },
             {
                 type: snackbarActions.PUSH_NOTIFICATION_MESSAGE,
-                message: new Map({
+                message: Map({
                     message: `${renameSuccess} from '${oldName}' to '${newName}'`,
                 }),
             },
@@ -476,7 +476,7 @@ describe('Action: treeDatasets', () => {
             },
             {
                 type: snackbarActions.PUSH_NOTIFICATION_MESSAGE,
-                message: new Map({
+                message: Map({
                     message: `${renameSuccess} from '${oldName}' to '${newName}'`,
                 }),
             },
@@ -527,7 +527,7 @@ describe('Action: treeDatasets', () => {
             },
             {
                 type: snackbarActions.PUSH_NOTIFICATION_MESSAGE,
-                message: new Map({
+                message: Map({
                     message: `${renameSuccess} from '${oldName}' to '${newName}'`,
                 }),
             },
@@ -576,7 +576,7 @@ describe('Action: treeDatasets', () => {
             },
             {
                 type: snackbarActions.PUSH_NOTIFICATION_MESSAGE,
-                message: new Map({
+                message: Map({
                     message: `${renameFail} '${oldName}'`,
                 }),
             },

@@ -12,7 +12,6 @@ import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import nock from 'nock';
 import expect from 'expect';
-import rewire from 'rewire';
 import { Map } from 'immutable';
 import * as tree from '../../../WebContent/js/actions/treeDS';
 import * as treeData from '../testResources/actions/treeDS';
@@ -27,8 +26,7 @@ describe('Action: treeDS', () => {
     const middlewares = [thunk];
     const mockStore = configureMockStore(middlewares);
 
-    const rewiredTreeDs = rewire('../../../WebContent/js/actions/treeDS');
-    const fatchFail = rewiredTreeDs.__get__('DATASET_FETCH_FAIL');
+    const fatchFail = tree.DATASET_FETCH_FAIL;
 
     describe('toggleTree', () => {
         it('Should create an action to toggle the tree open', () => {

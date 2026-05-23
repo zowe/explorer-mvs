@@ -17,6 +17,8 @@ import { constructAndPushMessage } from './snackbarNotifications';
 import { checkForValidationFailure } from './validation';
 
 export const REQUEST_CONTENT = 'REQUEST_CONTENT';
+export const EDITOR_MESSAGE_TYPE = 'EDITOR';
+export const SAVE_FAILURE_MESSAGE = 'Save failure';
 export const RECEIVE_CONTENT = 'RECEIVE_CONTENT';
 export const INVALIDATE_CONTENT = 'INVALIDATE_CONTENT';
 export const UPDATE_EDITOR_CONTENT = 'UPDATE_EDITOR_CONTENT';

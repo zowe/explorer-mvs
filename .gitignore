@@ -38,3 +38,6 @@ web
 # apiml cache
 .ehcache*
 *.data
+
+# TypeScript test compilation output
+dist-test/

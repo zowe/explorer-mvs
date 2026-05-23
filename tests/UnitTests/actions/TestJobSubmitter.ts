@@ -51,7 +51,7 @@ describe('Action: jobSubmitter', () => {
                 },
                 {
                     type: snackbarActions.PUSH_NOTIFICATION_MESSAGE,
-                    message: new Map({
+                    message: Map({
                         message: `${jobSubmitterData.jobSubmitResponse.jobname} ${rewiredSuccessMessage}, id=${jobSubmitterData.jobSubmitResponse.jobid}`,
                     }),
                 },
@@ -84,7 +84,7 @@ describe('Action: jobSubmitter', () => {
                 },
                 {
                     type: snackbarActions.PUSH_NOTIFICATION_MESSAGE,
-                    message: new Map({
+                    message: Map({
                         message: `${job} ${rewiredFailureMessage}`,
                     }),
                 },

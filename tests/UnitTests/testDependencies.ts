@@ -13,19 +13,7 @@ import {
     LOCAL_HOSTNAME,
 } from './testResources/hostConstants';
 
-require.extensions['.css'] = () => {
-    return null;
-};
-require.extensions['.png'] = () => {
-    return null;
-};
-require.extensions['.jpg'] = () => {
-    return null;
-};
-
-require('@babel/register')();
-
-global.location = {
+(global as any).location = {
     hostname: LOCAL_HOSTNAME,
     origin: `${LOCAL_SERVER}`,
 };

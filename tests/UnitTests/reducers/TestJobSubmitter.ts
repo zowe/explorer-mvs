@@ -25,15 +25,16 @@ describe('Reducer: jobSubmitter', () => {
     });
 
     it('Should handle RECEIVE_JOB_SUBMIT_RESPONSE, set requested to false, success to true and update response', () => {
+        const response = jobSubmitterResources.receivedJob.get('response') as Map<string, string>;
         const action = {
             type: jobSubmitterActions.RECEIVE_JOB_SUBMIT_RESPONSE,
             success: true,
-            response: jobSubmitterResources.receivedJob.get('response'),
-            message: new Map({
-                message: `${jobSubmitterResources.receivedJob.get('response').get('jobName')} Submitted, id=${jobSubmitterResources.receivedJob.get('response').get('jobId')}`,
+            response,
+            message: Map({
+                message: `${response.get('jobName')} Submitted, id=${response.get('jobId')}`,
                 messageType: jobSubmitterActions.JOB_MESSAGE_TYPE,
-                messageLink: `/#/filterJobs?owner=${jobSubmitterResources.receivedJob.get('response').get('owner')}`
-                                + `&jobName=${jobSubmitterResources.receivedJob.get('response').get('jobName')}`,
+                messageLink: `/#/filterJobs?owner=${response.get('owner')}`
+                                + `&jobName=${response.get('jobName')}`,
             }),
         };
         expect(jobSubmitter(jobSubmitterResources.submittedJob, action)).toEqual(jobSubmitterResources.receivedJob);
@@ -44,7 +45,7 @@ describe('Reducer: jobSubmitter', () => {
             type: jobSubmitterActions.RECEIVE_JOB_SUBMIT_RESPONSE,
             success: false,
             response: jobSubmitterResources.receivedJobFailure.get('response'),
-            message: new Map({
+            message: Map({
                 message: 'Bad Request',
                 messageType: jobSubmitterActions.JOB_MESSAGE_TYPE,
             }),

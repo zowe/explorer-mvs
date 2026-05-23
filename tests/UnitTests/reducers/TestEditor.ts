@@ -22,7 +22,7 @@ describe('Reducer: editor', () => {
 
     it('Should handle REQUEST_CONTENT', () => {
         const action = { type: editorActions.REQUEST_CONTENT, file: editorResources.dataset };
-        expect(editor(editorResources.baseContent, action)).toEqual(editorResources.requestedContent);
+        expect(editor(editorResources.baseEditor, action)).toEqual(editorResources.requestedContent);
     });
 
     it('Should handle RECEIVE_CONTENT', () => {
@@ -32,12 +32,12 @@ describe('Reducer: editor', () => {
             content: editorResources.receivedContent.get('content'),
             etag: editorResources.receivedContent.get('etag'),
         };
-        expect(editor(editorResources.baseContent, action)).toEqual(editorResources.receivedContent);
+        expect(editor(editorResources.baseEditor, action)).toEqual(editorResources.receivedContent);
     });
 
     it('Should handle INVALIDATE_CONTENT with baseContent', () => {
         const action = { type: editorActions.INVALIDATE_CONTENT };
-        expect(editor(editorResources.baseContent, action)).toEqual(editorResources.invalidatedContent);
+        expect(editor(editorResources.baseEditor, action)).toEqual(editorResources.invalidatedContent);
     });
 
     it('Should handle INVALIDATE_CONTENT with ReceivedContent', () => {
@@ -93,7 +93,7 @@ describe('Reducer: editor', () => {
     it('Should handle INVALIDATE_SAVE', () => {
         const action = {
             type: editorActions.INVALIDATE_SAVE,
-            message: new Map({
+            message: Map({
                 messageType: editorActions.EDITOR_MESSAGE_TYPE,
                 message: `${editorActions.SAVE_FAILURE_MESSAGE}: Precondition failed`,
             }),
