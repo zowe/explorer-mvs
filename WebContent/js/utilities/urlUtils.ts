@@ -9,7 +9,7 @@
  * Copyright IBM Corporation 2018, 2020
  */
 
-export function encodeURLComponent(URL) {
+export function encodeURLComponent(URL: string) {
     return encodeURIComponent(URL);
 }
 
@@ -21,11 +21,11 @@ export function whichServer() {
     return server;
 }
 
-export function atlasAction(endpoint, content) {
+export function atlasAction(endpoint: string, content) {
     return fetch(`https://${whichServer()}/ibmzosmf/api/v1/zosmf${endpoint}`, content);
 }
 
-export function atlasGet(endpoint) {
+export function atlasGet(endpoint: string) {
     const fetchParams = {
         method: 'GET',
         headers: {
@@ -40,7 +40,7 @@ export function atlasGet(endpoint) {
     return atlasAction(endpoint, fetchParams);
 }
 
-export function atlasDelete(endpoint) {
+export function atlasDelete(endpoint: string) {
     const fetchParams = {
         method: 'DELETE',
         headers: { 'X-CSRF-ZOSMF-HEADER': '*' },
@@ -49,7 +49,7 @@ export function atlasDelete(endpoint) {
     return atlasAction(endpoint, fetchParams);
 }
 
-export function atlasPost(endpoint, body) {
+export function atlasPost(endpoint: string, body) {
     const fetchParams = {
         method: 'POST',
         body,
@@ -59,7 +59,7 @@ export function atlasPost(endpoint, body) {
     return atlasAction(endpoint, fetchParams);
 }
 
-export function atlasPut(endpoint, body, etag) {
+export function atlasPut(endpoint: string, body: string, etag) {
     let header;
     if (body.includes('"request": "rename"') || body.includes('"request":"Submit Job"')) {
         header = { 'Content-Type': 'application/json', 'X-CSRF-ZOSMF-HEADER': '*' };

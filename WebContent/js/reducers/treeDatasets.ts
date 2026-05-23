@@ -31,7 +31,7 @@ function getMembersFromJSON(childData, DSName) {
     return datasets.set(DSName, member);
 }
 
-function updateNodeToggle(state, DSName, isToggled) {
+function updateNodeToggle(state, DSName: string, isToggled: boolean) {
     const dataset = Map({});
     return dataset.set(DSName, Map({ isToggled }));
 }

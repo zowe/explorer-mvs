@@ -49,14 +49,14 @@ const DATASET_RENAME_FAIL_MESSAGE = 'Rename failed for';
 
 const DATASET_FETCH_MEMBERS_FAIL = 'Fetch members failed for';
 
-function requestChildMembers(DSName) {
+function requestChildMembers(DSName: string) {
     return {
         type: REQUEST_TREE_DS_CHILD_MEMBERS,
         DSName,
     };
 }
 
-function receiveChildMembers(DSName, childData) {
+function receiveChildMembers(DSName: string, childData) {
     return {
         type: RECEIVE_TREE_DS_CHILD_MEMBERS,
         DSName,
@@ -70,7 +70,7 @@ function invalidateMembers() {
     };
 }
 
-export function toggleDSNode(DSName, isToggled) {
+export function toggleDSNode(DSName: string, isToggled: boolean) {
     return {
         type: TOGGLE_TREE_DS_NODE,
         DSName,
@@ -99,7 +99,7 @@ function invalidateNewDataset(DSProperties) {
     };
 }
 
-function requestNewMember(DSName, member) {
+function requestNewMember(DSName: string, member: string) {
     return {
         type: REQUEST_NEW_MEMBER,
         DSName,
@@ -107,7 +107,7 @@ function requestNewMember(DSName, member) {
     };
 }
 
-function receiveNewMember(DSName, member) {
+function receiveNewMember(DSName: string, member: string) {
     return {
         type: RECEIVE_NEW_MEMBER,
         DSName,
@@ -115,7 +115,7 @@ function receiveNewMember(DSName, member) {
     };
 }
 
-function invalidateCreateNewMember(DSName, member) {
+function invalidateCreateNewMember(DSName: string, member: string) {
     return {
         type: INVALIDATE_NEW_MEMBER,
         DSName,
@@ -123,42 +123,42 @@ function invalidateCreateNewMember(DSName, member) {
     };
 }
 
-function requestDeleteDataset(DSName) {
+function requestDeleteDataset(DSName: string) {
     return {
         type: REQUEST_DELETE_DATASET,
         DSName,
     };
 }
 
-function requestRenameDataset(oldName) {
+function requestRenameDataset(oldName: string) {
     return {
         type: REQUEST_RENAME_DATASET,
         oldName,
     };
 }
 
-function receiveDeleteDataset(DSName) {
+function receiveDeleteDataset(DSName: string) {
     return {
         type: RECEIVE_DELETE_DATASET,
         DSName,
     };
 }
 
-function receiveRenameDataset(oldName) {
+function receiveRenameDataset(oldName: string) {
     return {
         type: RECEIVE_RENAME_DATASET,
         oldName,
     };
 }
 
-function invalidateDeleteDataset(DSName) {
+function invalidateDeleteDataset(DSName: string) {
     return {
         type: INVALIDATE_DELETE_DATASET,
         DSName,
     };
 }
 
-function invalidateRenameDataset(oldName) {
+function invalidateRenameDataset(oldName: string) {
     return {
         type: INVALIDATE_RENAME_DATASET,
         oldName,
@@ -193,7 +193,7 @@ export function createDataset(DSProperties, path) {
     };
 }
 
-export function fetchDSMembers(DSName) {
+export function fetchDSMembers(DSName: string) {
     return dispatch => {
         dispatch(requestChildMembers(DSName));
         return atlasGet(`/restfiles/ds/${encodeURIComponent(DSName)}/member`)
@@ -228,7 +228,7 @@ export function fetchDSMembers(DSName) {
     };
 }
 
-export function createMember(DSName, member) {
+export function createMember(DSName: string, member: string) {
     return dispatch => {
         dispatch(requestNewMember(DSName, member));
         return atlasPut(`/restfiles/ds/${encodeURIComponent(DSName)}(${encodeURIComponent(member)})`, '')
@@ -256,7 +256,7 @@ export function createMember(DSName, member) {
     };
 }
 
-function isDatasetMember(DSName) {
+function isDatasetMember(DSName: string) {
     return DSName.includes('(');
 }
 
@@ -267,7 +267,7 @@ function refreshDatasetMembers(dispatch, name) {
     }
 }
 
-function cleanupStateAfterDelete(DSName, isOpenInViewer) {
+function cleanupStateAfterDelete(DSName: string, isOpenInViewer: boolean) {
     return dispatch => {
         // Now refresh the datasets members
         refreshDatasetMembers(dispatch, DSName);
@@ -280,7 +280,7 @@ function cleanupStateAfterDelete(DSName, isOpenInViewer) {
     };
 }
 
-function cleanupStateAfterRename(oldName, newName, isOpenInViewer) {
+function cleanupStateAfterRename(oldName: string, newName: string, isOpenInViewer: boolean) {
     return dispatch => {
         // Now refresh the datasets members
         refreshDatasetMembers(dispatch, oldName);
@@ -293,7 +293,7 @@ function cleanupStateAfterRename(oldName, newName, isOpenInViewer) {
     };
 }
 
-export function deleteDataset(DSName, isOpenInViewer = undefined) {
+export function deleteDataset(DSName: string, isOpenInViewer: boolean = undefined) {
     return dispatch => {
         dispatch(requestDeleteDataset(DSName));
         return atlasDelete(`/restfiles/ds/${encodeURIComponent(DSName)}`)
@@ -320,7 +320,7 @@ export function deleteDataset(DSName, isOpenInViewer = undefined) {
     };
 }
 
-export function renameDataset(oldName, newName, isOpenInViewer) {
+export function renameDataset(oldName: string, newName: string, isOpenInViewer: boolean) {
     return dispatch => {
         let renameBody;
         dispatch(requestRenameDataset(oldName));
