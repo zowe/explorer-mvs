@@ -42,7 +42,6 @@
         "html-webpack-plugin": "5.6.7",
         "mocha": "10.7.3",
         "mocha-jenkins-reporter": "0.4.8",
-        "node-fetch": "3.3.2",
         "nock": "14.0.15",
         "redux-mock-store": "1.5.4",
         "selenium-webdriver": "4.14.0",
