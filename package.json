@@ -7,7 +7,7 @@
     "dependencies": {
         "@material-ui/core": "4.12.4",
         "@material-ui/icons": "4.11.3",
-        "immutable": "4.3.7",
+        "immutable": "4.3.8",
         "orion-editor-component": "0.0.16",
         "prop-types": "15.8.1",
         "react": "16.14.0",
@@ -42,6 +42,7 @@
         "html-webpack-plugin": "5.6.7",
         "mocha": "10.7.3",
         "mocha-jenkins-reporter": "0.4.8",
+        "node-fetch": "3.3.2",
         "nock": "14.0.15",
         "redux-mock-store": "1.5.4",
         "selenium-webdriver": "4.23.0",
