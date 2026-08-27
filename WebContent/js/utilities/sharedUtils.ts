@@ -4,7 +4,7 @@
 * Data set names must not exceed 44 characters, including all name segments and periods.
 * https://www.ibm.com/docs/en/zos/2.1.0?topic=sets-data-set-names
 */
-export default function validateName(type, nameToValidate) {
+export default function validateName(type: string, nameToValidate: string) {
     let regex = '';
 
     switch (type) {

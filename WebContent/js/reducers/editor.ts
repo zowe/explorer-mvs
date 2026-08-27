@@ -85,7 +85,7 @@ export default function editor(state = INITIAL_EDITOR_STATE, action) {
             let { newName } = action;
             const file = state.get('file');
             // Only DSName Updated
-            if (hasMember(state.get('file')) && !hasMember(newName)) {
+            if (hasMember(state.get('file') as string) && !hasMember(newName)) {
                 newName = updateDSName(file, newName);
             }
             return state.merge({

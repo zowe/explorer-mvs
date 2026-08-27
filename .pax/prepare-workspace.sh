@@ -45,7 +45,7 @@ cp package-lock.json "${PAX_WORKSPACE_DIR}/content/web"
 cp -r dist/. "${PAX_WORKSPACE_DIR}/content/web"
 cp -r schemas "${PAX_WORKSPACE_DIR}/content"
 cp manifest.yaml "${PAX_WORKSPACE_DIR}/content"
-cp pluginDefinition.prod.json "${PAX_WORKSPACE_DIR}/content/pluginDefinition.json"
+cp pluginDefinition.json "${PAX_WORKSPACE_DIR}/content/pluginDefinition.json"
 
 # update build information
 # GITHUB_REF_NAME and GITHUB_RUN_NUMBER are github actions build-in environment variables

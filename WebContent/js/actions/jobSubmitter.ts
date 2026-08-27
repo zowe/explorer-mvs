@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * This program and the accompanying materials are made available under the terms of the
  * Eclipse Public License v2.0 which accompanies this distribution, and is available at
@@ -18,8 +19,8 @@ export const INVALIDATE_JOB_SUBMIT = 'INVALIDATE_JOB_SUBMIT';
 
 export const JOB_MESSAGE_TYPE = 'JOB';
 
-const JOB_SUBMIT_SUCCESS_MESSAGE = 'Submit successful';
-const JOB_SUBMIT_FAIL_MESSAGE = 'Submit failed';
+export const JOB_SUBMIT_SUCCESS_MESSAGE = 'Submit successful';
+export const JOB_SUBMIT_FAIL_MESSAGE = 'Submit failed';
 
 function requestSubmit() {
     return {

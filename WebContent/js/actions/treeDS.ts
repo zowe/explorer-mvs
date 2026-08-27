@@ -23,21 +23,21 @@ export const RENAME_DATASET = 'RENAME_DATASET';
 
 export const DATASET_FETCH_FAIL = 'Fetch Datasets failed for';
 
-export function toggleDSTree(isToggled) {
+export function toggleDSTree(isToggled: boolean) {
     return {
         type: TOGGLE_DS_TREE,
         isToggled,
     };
 }
 
-function requestDSChildren(path) {
+function requestDSChildren(path: string) {
     return {
         type: REQUEST_DS_TREE_CHILDREN,
         DSPath: path,
     };
 }
 
-function receiveDSChildren(path, childData) {
+function receiveDSChildren(path: string, childData) {
     return {
         type: RECEIVE_DS_TREE_CHILDREN,
         DSPath: path,
@@ -45,14 +45,14 @@ function receiveDSChildren(path, childData) {
     };
 }
 
-function invalidateDSChildren(path) {
+function invalidateDSChildren(path: string) {
     return {
         type: INVALIDATE_DS_TREE_CHILDREN,
         DSPath: path,
     };
 }
 
-export function setDSPath(path) {
+export function setDSPath(path: string) {
     return {
         type: SET_DS_TREE_PATH,
         DSPath: path,
@@ -65,14 +65,14 @@ export function resetDSChildren() {
     };
 }
 
-export function removeDataset(DSName) {
+export function removeDataset(DSName: string) {
     return {
         type: REMOVE_DATASET,
         DSName,
     };
 }
 
-export function renameDataset(oldName, newName) {
+export function renameDataset(oldName: string, newName: string) {
     return {
         type: RENAME_DATASET,
         oldName,
@@ -80,7 +80,7 @@ export function renameDataset(oldName, newName) {
     };
 }
 
-export function fetchDatasetTreeChildren(path) {
+export function fetchDatasetTreeChildren(path: string) {
     return dispatch => {
         dispatch(requestDSChildren(path));
         const endpoint = `/restfiles/ds?dslevel=${encodeURIComponent(path)}`;

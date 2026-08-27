@@ -8,7 +8,7 @@
  * Copyright IBM Corporation 2020
  */
 
-export function parseFileName(file) {
+export function parseFileName(file: string) {
     if (file === '') {
         return { DSName: '', DSMember: '' };
     }
@@ -23,6 +23,6 @@ export function parseFileName(file) {
     };
 }
 
-export function hasMember(file) {
+export function hasMember(file: string) {
     return file !== undefined && file.indexOf('(') > 1;
 }

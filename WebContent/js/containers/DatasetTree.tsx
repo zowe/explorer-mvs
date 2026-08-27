@@ -159,7 +159,7 @@ class DatasetTree extends React.Component {
             ? (
                 <Card
                     id="dataset-tree-card"
-                    class="tree-card"
+                    className="tree-card"
                     style={{ paddingBottom: '0px' }}
                 >
                     <CardContent>

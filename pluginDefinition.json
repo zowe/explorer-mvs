@@ -6,7 +6,6 @@
   "webContent": {
     "framework": "iframe",
     "startingPage": "index.html",
-    "destination": "https://localhost:8080",
     "launchDefinition": {
       "pluginShortNameKey": "MVS Explorer",
       "pluginShortNameDefault": "MVS Explorer", 

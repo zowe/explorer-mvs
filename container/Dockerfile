@@ -49,7 +49,7 @@ RUN mkdir -p ~/.npm-global \
     && cp package-lock.json final/web \
     && cp -r dist/. final/web \
     && cp manifest.yaml final \
-    && cp pluginDefinition.prod.json final/pluginDefinition.json
+    && cp pluginDefinition.json final/pluginDefinition.json
 
 ##################################
 # second stage

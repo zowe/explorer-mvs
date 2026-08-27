@@ -15,19 +15,12 @@ import { Provider } from 'react-redux';
 import { Route, HashRouter } from 'react-router-dom';
 import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
-import { createLogger } from 'redux-logger';
 import rootReducer from './reducers';
 
 import ConnectedHomeView from './containers/pages/Home';
 import ConnectedFullScreenEditor from './containers/pages/FullScreenEditor';
 
-// redux dev tool extension enabled
-let appMiddleware;
-if (window.localStorage.getItem('enableReduxLogger') === 'true') {
-    appMiddleware = applyMiddleware(thunk, createLogger());
-} else {
-    appMiddleware = applyMiddleware(thunk);
-}
+const appMiddleware = applyMiddleware(thunk);
 
 const store = appMiddleware(createStore)(rootReducer, Map({}), window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 

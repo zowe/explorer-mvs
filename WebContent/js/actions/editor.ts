@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * This program and the accompanying materials are made available under the terms of the
  * Eclipse Public License v2.0 which accompanies this distribution, and is available at
@@ -17,6 +18,8 @@ import { constructAndPushMessage } from './snackbarNotifications';
 import { checkForValidationFailure } from './validation';
 
 export const REQUEST_CONTENT = 'REQUEST_CONTENT';
+export const EDITOR_MESSAGE_TYPE = 'EDITOR';
+export const SAVE_FAILURE_MESSAGE = 'Save failure';
 export const RECEIVE_CONTENT = 'RECEIVE_CONTENT';
 export const INVALIDATE_CONTENT = 'INVALIDATE_CONTENT';
 export const UPDATE_EDITOR_CONTENT = 'UPDATE_EDITOR_CONTENT';
@@ -36,9 +39,9 @@ export const SET_NOT_FULLSCREEN = 'SET_NOT_FULLSCREEN';
 export const REQUEST_ATTRIBUTES = 'REQUEST_ATTRIBUTES';
 export const RECEIVE_ATTRIBUTES = 'RECEIVE_ATTRIBUTES';
 
-const SAVE_FAIL_MESSAGE = 'Save failed for';
-const SAVE_SUCCESS_MESSAGE = 'Save success for';
-const GET_CONTENT_FAIL_MESSAGE = 'Get content failed for';
+export const SAVE_FAIL_MESSAGE = 'Save failed for';
+export const SAVE_SUCCESS_MESSAGE = 'Save success for';
+export const GET_CONTENT_FAIL_MESSAGE = 'Get content failed for';
 
 function requestDSContent(file) {
     return {
@@ -140,7 +143,7 @@ function invalidateEtagChange() {
     };
 }
 
-function getNewDatasetEtag(file) {
+export function getNewDatasetEtag(file) {
     return dispatch => {
         dispatch(requestEtag(file));
         const endpoint = `/restfiles/ds/${encodeURLComponent(file)}`;

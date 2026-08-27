@@ -12,8 +12,6 @@ import configureMockStore from 'redux-mock-store';
 import nock from 'nock';
 import thunk from 'redux-thunk';
 import expect from 'expect';
-import rewire from 'rewire';
-import sinon from 'sinon';
 import { fromJS, Map } from 'immutable';
 import { LOCAL_HOST_ENDPOINT as BASE_URL } from '../testResources/hostConstants';
 import * as editorActions from '../../../WebContent/js/actions/editor';
@@ -23,32 +21,27 @@ import * as treeDatasetActions from '../../../WebContent/js/actions/treeDatasets
 import * as snackbarActions from '../../../WebContent/js/actions/snackbarNotifications';
 
 describe('Action: editor', () => {
-    let sandbox;
+    const stubs: Array<{ obj: Record<string, unknown>; method: string; original: unknown }> = [];
 
     afterEach(() => {
+        stubs.forEach(({ obj, method, original }) => { obj[method] = original; });
+        stubs.length = 0;
         nock.cleanAll();
-        sandbox.restore();
     });
 
-    beforeEach(() => {
-        sandbox = sinon.sandbox.create();
-    });
-
-    function mockVoidFunction(object, method) {
-        sandbox.stub(object, method).callsFake(() => {
-            return (() => { });
-        });
+    function mockVoidFunction(object: Record<string, unknown>, method: string) {
+        stubs.push({ obj: object, method, original: object[method] });
+        object[method] = () => () => {};
     }
 
     const middlewares = [thunk];
     const mockStore = configureMockStore(middlewares);
 
-    const rewiredEditor = rewire('../../../WebContent/js/actions/editor');
-    const rewiredSaveMessage = rewiredEditor.__get__('SAVE_SUCCESS_MESSAGE');
-    const rewiredSaveFailMessage = rewiredEditor.__get__('SAVE_FAIL_MESSAGE');
+    const rewiredSaveMessage = editorActions.SAVE_SUCCESS_MESSAGE;
+    const rewiredSaveFailMessage = editorActions.SAVE_FAIL_MESSAGE;
 
     describe('fetchDS', () => {
-        const rewiredGetContentFail = rewiredEditor.__get__('GET_CONTENT_FAIL_MESSAGE');
+        const rewiredGetContentFail = editorActions.GET_CONTENT_FAIL_MESSAGE;
         it('Should create actions to request and receive DS content', () => {
             const dataset = 'DUMMY.DATASET';
             const expectedActions = [
@@ -219,7 +212,7 @@ describe('Action: editor', () => {
 
     describe('getNewDatasetEtag', () => {
         it('Should create an action to request a etag then update editor etag', () => {
-            const rewiredGetNewDatasetEtag = rewiredEditor.__get__('getNewDatasetEtag');
+            const rewiredGetNewDatasetEtag = editorActions.getNewDatasetEtag;
 
             const expectedActions = [
                 {
@@ -255,7 +248,7 @@ describe('Action: editor', () => {
         });
 
         it('Should create an action to request a etag and then invalide due to api error', () => {
-            const rewiredGetNewDatasetEtag = rewiredEditor.__get__('getNewDatasetEtag');
+            const rewiredGetNewDatasetEtag = editorActions.getNewDatasetEtag;
 
             const expectedActions = [
                 {
