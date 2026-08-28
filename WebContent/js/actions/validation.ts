@@ -9,8 +9,6 @@
  * Copyright IBM Corporation 2016, 2020
  */
 
-import { whichServer } from '../utilities/urlUtils';
-
 export const REQUEST_VALIDATION = 'REQUEST_VALIDATION';
 export const RECEIVE_VALIDATION = 'RECEIVE_VALIDATION';
 export const INVALIDATE_VALIDATION = 'INVALIDATE_VALIDATION';
@@ -62,7 +60,7 @@ function checkResponse(response) {
 export function validateUser() {
     return dispatch => {
         dispatch(requestValidation());
-        return fetch(`https://${whichServer()}/gateway/api/v1/auth/query`,
+        return fetch(`https://${global.location.host}/gateway/api/v1/auth/query`,
             { credentials: 'include', 'Access-Control-Allow-Credentials': 'true' })
             .then(response => {
                 return checkResponse(response);
@@ -79,7 +77,7 @@ export function validateUser() {
 export function loginUser(username, password) {
     return dispatch => {
         dispatch(requestValidation());
-        return fetch(`https://${whichServer()}/gateway/api/v1/auth/login`,
+        return fetch(`https://${global.location.host}/gateway/api/v1/auth/login`,
             {
                 method: 'POST',
                 credentials: 'include',
