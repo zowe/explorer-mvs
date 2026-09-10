@@ -59,13 +59,10 @@ export function atlasPost(endpoint: string, body) {
     return atlasAction(endpoint, fetchParams);
 }
 
-export function atlasPut(endpoint: string, body: string, etag) {
-    let header;
-    if (body.includes('"request": "rename"') || body.includes('"request":"Submit Job"')) {
-        header = { 'Content-Type': 'application/json', 'X-CSRF-ZOSMF-HEADER': '*' };
-    } else {
-        header = { 'Content-Type': 'text/plain', 'X-IBM-Data-Type': 'text', 'X-CSRF-ZOSMF-HEADER': '*' };
-    }
+// Raw dataset/member content write. Content-Type is fixed, never inferred from body, so a
+// malicious buffer can't be relabelled as a z/OSMF utility request (see atlasPutJson).
+export function atlasPutText(endpoint: string, body: string, etag) {
+    const header = { 'Content-Type': 'text/plain', 'X-IBM-Data-Type': 'text', 'X-CSRF-ZOSMF-HEADER': '*' };
     if (etag) {
         header['If-Match'] = etag;
     }
@@ -73,6 +70,34 @@ export function atlasPut(endpoint: string, body: string, etag) {
         method: 'PUT',
         body,
         headers: header,
+        credentials: 'include',
+    };
+    return atlasAction(endpoint, fetchParams);
+}
+
+// z/OSMF "rename" utility request, see restfiles data set REST interface docs.
+interface RenameDatasetRequest {
+    request: 'rename';
+    'from-dataset': {
+        dsn: string;
+        member?: string;
+    };
+}
+
+// z/OSMF "Submit Job" utility request, see restjobs REST interface docs.
+interface SubmitJobRequest {
+    request: 'Submit Job';
+    file: string;
+}
+
+type AtlasJsonRequestBody = RenameDatasetRequest | SubmitJobRequest;
+
+// z/OSMF utility request (rename, submit job); body shape is restricted to known request types, never raw editor content.
+export function atlasPutJson(endpoint: string, body: AtlasJsonRequestBody) {
+    const fetchParams = {
+        method: 'PUT',
+        body: JSON.stringify(body),
+        headers: { 'Content-Type': 'application/json', 'X-CSRF-ZOSMF-HEADER': '*' },
         credentials: 'include',
     };
     return atlasAction(endpoint, fetchParams);
