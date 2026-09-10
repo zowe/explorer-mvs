@@ -229,7 +229,7 @@ export function saveAsDataset(file, newFile, newContent) {
     return dispatch => {
         dispatch(requestSaveAs(file, newFile));
         return atlasPost(`/restfiles/ds/${encodeURIComponent(newFile)}`,
-            `{"basedsn": "${file}", "records": "${newContent}"}`)
+            JSON.stringify({ basedsn: file, records: newContent }))
             .then(response => {
                 return dispatch(checkForValidationFailure(response));
             })
