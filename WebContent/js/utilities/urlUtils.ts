@@ -14,7 +14,7 @@ export function encodeURLComponent(URL: string) {
 }
 
 export function whichServer() {
-    let server = global.location.host;    
+    const server = global.location.host;    
     return server;
 }
 
