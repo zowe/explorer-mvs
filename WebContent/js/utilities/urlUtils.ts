@@ -14,10 +14,7 @@ export function encodeURLComponent(URL: string) {
 }
 
 export function whichServer() {
-    let server = global.location.host;
-    if (global.location.hostname === 'tester.test.com') {
-        server = 'tester.test.com:7443';
-    }
+    let server = global.location.host;    
     return server;
 }
 
