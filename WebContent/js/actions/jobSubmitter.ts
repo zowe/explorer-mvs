@@ -10,7 +10,7 @@
  */
 
 import { constructAndPushMessage } from './snackbarNotifications';
-import { atlasPut } from '../utilities/urlUtils';
+import { atlasPutJson } from '../utilities/urlUtils';
 import { checkForValidationFailure } from './validation';
 
 export const REQUEST_JOB_SUBMIT = 'REQUEST_JOB_SUBMIT';
@@ -52,7 +52,7 @@ export function resetResponse() {
 export function submitJob(job) {
     return dispatch => {
         dispatch(requestSubmit());
-        return atlasPut('/restjobs/jobs', JSON.stringify({ request: 'Submit Job', file: `//'${job}'` }))
+        return atlasPutJson('/restjobs/jobs', { request: 'Submit Job', file: `//'${job}'` })
             .then(response => {
                 return dispatch(checkForValidationFailure(response));
             })

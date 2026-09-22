@@ -13,7 +13,7 @@ import HTTPStatusCodes from '../constants/HTTPStatusCodeConstants';
 import { fetchDatasetTreeChildren, removeDataset, renameDataset as renameDatasetRefresh } from './treeDS';
 import { invalidateContent, updateEditorFileName } from './editor';
 import {
-    atlasGet, atlasPost, atlasPut, atlasDelete,
+    atlasGet, atlasPost, atlasPutText, atlasPutJson, atlasDelete,
 } from '../utilities/urlUtils';
 import { constructAndPushMessage } from './snackbarNotifications';
 import { checkForValidationFailure } from './validation';
@@ -231,7 +231,7 @@ export function fetchDSMembers(DSName: string) {
 export function createMember(DSName: string, member: string) {
     return dispatch => {
         dispatch(requestNewMember(DSName, member));
-        return atlasPut(`/restfiles/ds/${encodeURIComponent(DSName)}(${encodeURIComponent(member)})`, '')
+        return atlasPutText(`/restfiles/ds/${encodeURIComponent(DSName)}(${encodeURIComponent(member)})`, '')
             .then(response => {
                 return dispatch(checkForValidationFailure(response));
             })
@@ -326,22 +326,22 @@ export function renameDataset(oldName: string, newName: string, isOpenInViewer: 
         dispatch(requestRenameDataset(oldName));
         /** Check if we are renaming the Dataset or Dataser Member and create the renameBody accordinly */
         if (oldName.indexOf(')') === oldName.length - 1) {
-            renameBody = `{
-                "request": "rename",
-                "from-dataset": {
-                  "dsn": "${oldName.substring(0, oldName.indexOf('('))}",
-                  "member": "${oldName.substring(oldName.lastIndexOf('(') + 1, oldName.length - 1)}"
-                }
-              }`;
+            renameBody = {
+                request: 'rename',
+                'from-dataset': {
+                    dsn: oldName.substring(0, oldName.indexOf('(')),
+                    member: oldName.substring(oldName.lastIndexOf('(') + 1, oldName.length - 1),
+                },
+            };
         } else {
-            renameBody = `{
-                "request": "rename",
-                "from-dataset": {
-                    "dsn": "${oldName}"
-                }
-            }`;
+            renameBody = {
+                request: 'rename',
+                'from-dataset': {
+                    dsn: oldName,
+                },
+            };
         }
-        return atlasPut(`/restfiles/ds/${encodeURIComponent(newName)}`, renameBody)
+        return atlasPutJson(`/restfiles/ds/${encodeURIComponent(newName)}`, renameBody)
             .then(response => {
                 return dispatch(checkForValidationFailure(response));
             })
