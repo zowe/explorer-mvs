@@ -22,8 +22,11 @@ import ConnectedFullScreenEditor from './containers/pages/FullScreenEditor';
 
 const appMiddleware = applyMiddleware(thunk);
 
-const enableReduxDevTools = process.env.NODE_ENV !== 'production' && window.__REDUX_DEVTOOLS_EXTENSION__;
-const store = appMiddleware(createStore)(rootReducer, Map({}), enableReduxDevTools && window.__REDUX_DEVTOOLS_EXTENSION__());
+//Must be undefined rather than false when unavailable, as redux rejects any non-function enhancer
+const devToolsEnhancer = process.env.NODE_ENV !== 'production' && typeof window.__REDUX_DEVTOOLS_EXTENSION__ === 'function'
+    ? window.__REDUX_DEVTOOLS_EXTENSION__()
+    : undefined;
+const store = appMiddleware(createStore)(rootReducer, Map({}), devToolsEnhancer);
 
 ReactDOM.render(
     <Provider store={store}>
