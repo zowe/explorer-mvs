@@ -1,10 +1,6 @@
 # Change Log
 All notable changes to the MVS-Explorer will be documented in this file.
 
-## <3.0.8>
-### Bug fixes
-- Fixed the MVS Explorer showing a blank page in production builds. Redux rejected the `false` value that was passed as the store enhancer when the Redux DevTools extension was disabled, which threw before the application could render.
-
 ## <2.0.1>
 ### New features and enhancements
 - Diable the submit button & give a warning message, in Dialogs when Dataset or Dataset Member name is invalid
