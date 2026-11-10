@@ -12,7 +12,7 @@
 import { fetchDatasetTreeChildren } from './treeDS';
 import { fetchDSMembers } from './treeDatasets';
 import {
-    atlasGet, atlasPut, atlasPost, encodeURLComponent,
+    atlasGet, atlasPutText, atlasPost, encodeURLComponent,
 } from '../utilities/urlUtils';
 import { constructAndPushMessage } from './snackbarNotifications';
 import { checkForValidationFailure } from './validation';
@@ -190,7 +190,7 @@ export function saveDataset(file, content, etag) {
     return dispatch => {
         dispatch(requestSave(file));
         const endpoint = `/restfiles/ds/${encodeURLComponent(file)}`;
-        return atlasPut(endpoint, content, etag)
+        return atlasPutText(endpoint, content, etag)
             .then(response => {
                 return dispatch(checkForValidationFailure(response));
             })
@@ -256,7 +256,7 @@ export function saveAsDatasetMember(DSName, newDSMember, newContent) {
     return dispatch => {
         const newDS = `${DSName}(${newDSMember})`;
         dispatch(requestSaveAs(newDS));
-        return atlasPut(`/restfiles/ds/${encodeURIComponent(newDS)}`, newContent, null)
+        return atlasPutText(`/restfiles/ds/${encodeURIComponent(newDS)}`, newContent, null)
             .then(response => {
                 return dispatch(checkForValidationFailure(response));
             })
