@@ -28,9 +28,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - uses: zowe-actions/shared-actions/prepare-workflow@main
+      - uses: zowe-actions/shared-actions/prepare-workflow@77d7d9b50e60fedc8132b5e5eb6d611c4e483416 # main
 
-      - uses: zowe-actions/shared-actions/docker-prepare@main
+      - uses: zowe-actions/shared-actions/docker-prepare@77d7d9b50e60fedc8132b5e5eb6d611c4e483416 # main
         with:
           registry-user: ${{ secrets.ARTIFACTORY_X_USERNAME }}
           registry-password: ${{ secrets.ARTIFACTORY_X_PASSWORD }}
@@ -40,7 +40,7 @@ jobs:
           linux-distro: ubuntu
           cpu-arch: amd64
 
-      - uses: zowe-actions/shared-actions/docker-build-local@main
+      - uses: zowe-actions/shared-actions/docker-build-local@77d7d9b50e60fedc8132b5e5eb6d611c4e483416 # main
         timeout-minutes: 5
 
   build-ubuntu-s390x:
@@ -48,9 +48,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - uses: zowe-actions/shared-actions/prepare-workflow@main
+      - uses: zowe-actions/shared-actions/prepare-workflow@77d7d9b50e60fedc8132b5e5eb6d611c4e483416 # main
 
-      - uses: zowe-actions/shared-actions/docker-prepare@main
+      - uses: zowe-actions/shared-actions/docker-prepare@77d7d9b50e60fedc8132b5e5eb6d611c4e483416 # main
         with:
           registry-user: ${{ secrets.ARTIFACTORY_X_USERNAME }}
           registry-password: ${{ secrets.ARTIFACTORY_X_PASSWORD }}
@@ -60,7 +60,7 @@ jobs:
           linux-distro: ubuntu
           cpu-arch: s390x
 
-      - uses: zowe-actions/shared-actions/docker-build-zlinux@main
+      - uses: zowe-actions/shared-actions/docker-build-zlinux@77d7d9b50e60fedc8132b5e5eb6d611c4e483416 # main
         with:
           zlinux-host: ${{ secrets.ZLINUX_HOST }}
           zlinux-ssh-user: ${{ secrets.ZLINUX_SSH_USER }}
@@ -76,9 +76,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - uses: zowe-actions/shared-actions/prepare-workflow@main
+      - uses: zowe-actions/shared-actions/prepare-workflow@77d7d9b50e60fedc8132b5e5eb6d611c4e483416 # main
 
-      - uses: zowe-actions/shared-actions/docker-prepare@main
+      - uses: zowe-actions/shared-actions/docker-prepare@77d7d9b50e60fedc8132b5e5eb6d611c4e483416 # main
         with:
           registry-user: ${{ secrets.ARTIFACTORY_X_USERNAME }}
           registry-password: ${{ secrets.ARTIFACTORY_X_PASSWORD }}
@@ -87,7 +87,7 @@ jobs:
           image-name: explorer-mvs
           linux-distro: ubuntu
 
-      - uses: zowe-actions/shared-actions/docker-manifest@main
+      - uses: zowe-actions/shared-actions/docker-manifest@77d7d9b50e60fedc8132b5e5eb6d611c4e483416 # main
         with:
           linux-distro: ubuntu
           cpu-arch-list: "amd64 s390x"
@@ -98,9 +98,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - uses: zowe-actions/shared-actions/prepare-workflow@main
+      - uses: zowe-actions/shared-actions/prepare-workflow@77d7d9b50e60fedc8132b5e5eb6d611c4e483416 # main
 
-      - uses: zowe-actions/shared-actions/docker-prepare@main
+      - uses: zowe-actions/shared-actions/docker-prepare@77d7d9b50e60fedc8132b5e5eb6d611c4e483416 # main
         with:
           registry-user: ${{ secrets.ARTIFACTORY_X_USERNAME }}
           registry-password: ${{ secrets.ARTIFACTORY_X_PASSWORD }}
@@ -113,7 +113,7 @@ jobs:
           redhat-registry-user: ${{ secrets.REDHAT_DEVELOPER_USER }}
           redhat-registry-password: ${{ secrets.REDHAT_DEVELOPER_PASSWORD }}
 
-      - uses: zowe-actions/shared-actions/docker-build-local@main
+      - uses: zowe-actions/shared-actions/docker-build-local@77d7d9b50e60fedc8132b5e5eb6d611c4e483416 # main
         timeout-minutes: 5
 
   build-ubi-s390x:
@@ -121,9 +121,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - uses: zowe-actions/shared-actions/prepare-workflow@main
+      - uses: zowe-actions/shared-actions/prepare-workflow@77d7d9b50e60fedc8132b5e5eb6d611c4e483416 # main
 
-      - uses: zowe-actions/shared-actions/docker-prepare@main
+      - uses: zowe-actions/shared-actions/docker-prepare@77d7d9b50e60fedc8132b5e5eb6d611c4e483416 # main
         with:
           registry-user: ${{ secrets.ARTIFACTORY_X_USERNAME }}
           registry-password: ${{ secrets.ARTIFACTORY_X_PASSWORD }}
@@ -133,7 +133,7 @@ jobs:
           linux-distro: ubi
           cpu-arch: s390x
 
-      - uses: zowe-actions/shared-actions/docker-build-zlinux@main
+      - uses: zowe-actions/shared-actions/docker-build-zlinux@77d7d9b50e60fedc8132b5e5eb6d611c4e483416 # main
         with:
           zlinux-host: ${{ secrets.ZLINUX_HOST }}
           zlinux-ssh-user: ${{ secrets.ZLINUX_SSH_USER }}
@@ -152,9 +152,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - uses: zowe-actions/shared-actions/prepare-workflow@main
+      - uses: zowe-actions/shared-actions/prepare-workflow@77d7d9b50e60fedc8132b5e5eb6d611c4e483416 # main
 
-      - uses: zowe-actions/shared-actions/docker-prepare@main
+      - uses: zowe-actions/shared-actions/docker-prepare@77d7d9b50e60fedc8132b5e5eb6d611c4e483416 # main
         with:
           registry-user: ${{ secrets.ARTIFACTORY_X_USERNAME }}
           registry-password: ${{ secrets.ARTIFACTORY_X_PASSWORD }}
@@ -163,7 +163,7 @@ jobs:
           image-name: explorer-mvs
           linux-distro: ubi
 
-      - uses: zowe-actions/shared-actions/docker-manifest@main
+      - uses: zowe-actions/shared-actions/docker-manifest@77d7d9b50e60fedc8132b5e5eb6d611c4e483416 # main
         with:
           linux-distro: ubi
           cpu-arch-list: "amd64 s390x"
