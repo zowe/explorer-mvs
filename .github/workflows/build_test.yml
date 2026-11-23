@@ -28,7 +28,7 @@ jobs:
     steps:
       # this action will fail the whole workflow if permission check fails
       - name: check permission
-        uses: zowe-actions/shared-actions/permission-check@main
+        uses: zowe-actions/shared-actions/permission-check@77d7d9b50e60fedc8132b5e5eb6d611c4e483416 # main
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
@@ -39,7 +39,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Validate package.json
-        uses: zowe-actions/shared-actions/validate-package-json@main
+        uses: zowe-actions/shared-actions/validate-package-json@77d7d9b50e60fedc8132b5e5eb6d611c4e483416 # main
         with:
           excluded-packages: explorer-fvt-utilities
 
@@ -65,7 +65,7 @@ jobs:
             ${{ runner.os }}-build-cache-node-modules-
 
       - name: '[Prep 3] Prepare workflow'
-        uses: zowe-actions/shared-actions/prepare-workflow@main
+        uses: zowe-actions/shared-actions/prepare-workflow@77d7d9b50e60fedc8132b5e5eb6d611c4e483416 # main
 
       - name: '[Prep 4] Setup Node'
         uses: actions/setup-node@v4
@@ -78,7 +78,7 @@ jobs:
       #     npm -v
 
       - name: '[Setup] NodeJS project setup'
-        uses: zowe-actions/nodejs-actions/setup@main
+        uses: zowe-actions/nodejs-actions/setup@51d0830982b1ef6c0168fe0c288ed6b69bc892c1 # main
         with:
           package-name: 'org.zowe.explorer-mvs'
 
@@ -143,12 +143,12 @@ jobs:
             ${{ runner.os }}-build-cache-node-modules-
 
       - name: '[Prep 3] Setup jFrog CLI'
-        uses: jfrog/setup-jfrog-cli@v2
+        uses: jfrog/setup-jfrog-cli@11ee3f9bb82595485cb55670e4f93885080e183b # v2
         env:
           JF_ENV_1: ${{ secrets.JF_ARTIFACTORY_TOKEN }}
           
       - name: '[Prep 4] Prepare workflow'
-        uses: zowe-actions/shared-actions/prepare-workflow@main
+        uses: zowe-actions/shared-actions/prepare-workflow@77d7d9b50e60fedc8132b5e5eb6d611c4e483416 # main
 
       - name: '[Prep 5] Setup Node'
         uses: actions/setup-node@v4
@@ -161,7 +161,7 @@ jobs:
       #     npm -v
 
       - name: '[Setup] NodeJS project setup'
-        uses: zowe-actions/nodejs-actions/setup@main
+        uses: zowe-actions/nodejs-actions/setup@51d0830982b1ef6c0168fe0c288ed6b69bc892c1 # main
         with:
           package-name: 'org.zowe.explorer-mvs'
 
@@ -187,7 +187,7 @@ jobs:
             -Dsonar.links.ci=https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
       - name: '[Packaging] Make pax'
-        uses: zowe-actions/shared-actions/make-pax@main
+        uses: zowe-actions/shared-actions/make-pax@77d7d9b50e60fedc8132b5e5eb6d611c4e483416 # main
         with:
           pax-name: 'explorer-mvs'
           pax-options: '-o saveext'
@@ -195,7 +195,7 @@ jobs:
           pax-ssh-password: ${{ secrets.SSH_MARIST_RACF_PASSWORD }}
 
       - name: '[Publish] Publish'
-        uses: zowe-actions/shared-actions/publish@main
+        uses: zowe-actions/shared-actions/publish@77d7d9b50e60fedc8132b5e5eb6d611c4e483416 # main
         if: success()
         with:
           artifacts: .pax/explorer-mvs.pax
@@ -203,7 +203,7 @@ jobs:
 
       - name: 'Call build image workflow'
         if: ${{ success() && github.event.inputs.PERFORM_RELEASE == 'true' && env.IS_RELEASE_BRANCH == 'true' }}
-        uses: zowe-actions/shared-actions/workflow-remote-call-wait@main
+        uses: zowe-actions/shared-actions/workflow-remote-call-wait@77d7d9b50e60fedc8132b5e5eb6d611c4e483416 # main
         with:
           github-token: ${{ secrets.ZOWE_ROBOT_TOKEN }}
           owner: zowe
@@ -217,10 +217,10 @@ jobs:
 
       - name: '[Release 1] Release (if necessary)'
         if: ${{ success() && github.event.inputs.PERFORM_RELEASE == 'true' && env.IS_RELEASE_BRANCH == 'true' }}
-        uses: zowe-actions/shared-actions/release@main
+        uses: zowe-actions/shared-actions/release@77d7d9b50e60fedc8132b5e5eb6d611c4e483416 # main
 
       - name: '[Release 2] NPM bump version (if necessary)' 
         if: ${{ success() && github.event.inputs.PERFORM_RELEASE == 'true' && env.IS_RELEASE_BRANCH == 'true' && env.IS_FORMAL_RELEASE_BRANCH == 'true' && env.PRE_RELEASE_STRING == ''}}
-        uses: zowe-actions/nodejs-actions/bump-version@main
+        uses: zowe-actions/nodejs-actions/bump-version@51d0830982b1ef6c0168fe0c288ed6b69bc892c1 # main
         env: 
           GITHUB_TOKEN: ${{ secrets.ZOWE_ROBOT_TOKEN }}
